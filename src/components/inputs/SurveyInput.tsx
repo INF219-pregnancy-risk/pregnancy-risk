@@ -96,7 +96,9 @@ const SurveyInput = ({ survey, setSurvey, id, ...props }: SurveyInputProps) => {
             className="text-black"
           >
             {input.data.choices.map((choice) => (
-              <option value={choice}>{choice}</option>
+              <option value={choice} key={choice}>
+                {choice}
+              </option>
             ))}
           </select>
         </div>
@@ -106,7 +108,7 @@ const SurveyInput = ({ survey, setSurvey, id, ...props }: SurveyInputProps) => {
         <div {...props}>
           <label htmlFor={id}>{input.label}</label>
           {input.data.choices?.map((choice) => (
-            <div className="flex gap-5">
+            <div className="flex gap-5" key={choice}>
               <input
                 type="checkbox"
                 id={choice}

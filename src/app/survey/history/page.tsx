@@ -15,6 +15,7 @@ const page = () => {
             ([key, { date, survey }]) => {
               return (
                 <Link
+                  key={key}
                   href={`/survey/history/${key}`}
                   className="bg-blue-200 text-gray-600 p-4 rounded-md shadow-md text-center w-max"
                 >

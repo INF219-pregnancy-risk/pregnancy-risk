@@ -9,10 +9,10 @@ import {
   setLocalIndex,
   setLocalSurvey,
 } from "@/utility/store";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [survey, setSurvey] = useState<object>(getSurvery());
   const [surveyIndex, setSurveyIndex] = useState<number>(getSurveryIndex());
   const router = useRouter();
@@ -158,4 +158,4 @@ const NextSlide = (
   addToLocalSurvey(survey);
 };
 
-export default page;
+export default Page;
