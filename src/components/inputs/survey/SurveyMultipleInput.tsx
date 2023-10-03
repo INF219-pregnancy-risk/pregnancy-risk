@@ -33,7 +33,7 @@ const SurveyMultipleInput = ({
         },
       }));
     }
-  }, [surveyData]);
+  }, [surveyData, input.id, input.values, setSurvey]);
 
   return (
     <div className="flex gap-4">
@@ -41,6 +41,7 @@ const SurveyMultipleInput = ({
         return (
           <SurveyButton
             id={option}
+            key={option}
             checked={surveyData ? surveyData[option] : false}
             className="bg-blue-400 hover:bg-blue-500 duration-200"
             onClick={() => {

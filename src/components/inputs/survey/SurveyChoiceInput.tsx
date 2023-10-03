@@ -31,6 +31,7 @@ const SurveyChoiceInput = ({
         return (
           <SurveyButton
             id={option}
+            key={option}
             checked={surveyData === option}
             className="bg-blue-400 hover:bg-blue-500 duration-200"
             onClick={() => {

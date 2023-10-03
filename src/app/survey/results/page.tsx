@@ -26,12 +26,32 @@ const parse = (data: object | undefined) => {
   return Object.entries(data || {}).map(([key, value]) => {
     if (typeof value === "object") {
       return (
-        <p style={{ marginLeft: "1rem" }}>
-          {key}: {parse(value)}
+        <p key={key}>
+          <span
+            style={{
+              color: "orange",
+            }}
+          >
+            {key}
+          </span>
+          : {"{"}
+          <div style={{ marginLeft: "1rem" }}>{parse(value)}</div>
+          {"}"}
         </p>
       );
     }
-    return <p>{`${key}: ${value}`}</p>;
+    return (
+      <p key={key}>
+        <span
+          style={{
+            color: "blue",
+          }}
+        >
+          {key}
+        </span>
+        {`: ${value}`}
+      </p>
+    );
   });
 };
 

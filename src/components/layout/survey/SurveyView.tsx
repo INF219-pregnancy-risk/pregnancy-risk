@@ -31,7 +31,7 @@ const SurveyView = ({
       ...prev,
       skipped: skippedSlides,
     }));
-  }, [skippedSlides]);
+  }, [skippedSlides, setSurvey]);
 
   return (
     <div className="flex flex-col w-full h-[600px] bg-gray-100 relative">

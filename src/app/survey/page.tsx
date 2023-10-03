@@ -64,11 +64,11 @@ const SurveyPage = () => {
 
   const router = useRouter();
 
-  const query = useEffect(() => {
+  useEffect(() => {
     if (isSubmitted) {
       router.push("/survey/results");
     }
-  }, [isSubmitted]);
+  }, [isSubmitted, router]);
 
   useEffect(() => {
     setSurveyUtil(survey);
