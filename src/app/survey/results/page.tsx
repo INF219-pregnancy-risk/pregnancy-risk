@@ -1,7 +1,7 @@
 import React from "react";
 
 const ResultsPage = () => {
-  return <div>You will die</div>;
+  return <div>Result</div>;
 };
 
 export default ResultsPage;
