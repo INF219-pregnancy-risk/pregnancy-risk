@@ -3,7 +3,6 @@
 import { Survey } from "@/types/RiskInput";
 
 export const setLocalStorage = (key: string, value: string) => {
-  return 0;
   if (typeof window === "undefined") return 0;
   try {
     localStorage.setItem(key, value);
@@ -14,7 +13,6 @@ export const setLocalStorage = (key: string, value: string) => {
 };
 
 export const getLocalStorage = (key: string) => {
-  return null;
   if (typeof window === "undefined") return null;
 
   try {
@@ -25,7 +23,6 @@ export const getLocalStorage = (key: string) => {
 };
 
 export const removeLocalStorage = (key: string) => {
-  return 0;
   if (typeof window === "undefined") return 0;
 
   try {
