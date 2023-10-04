@@ -1,21 +1,16 @@
 "use client";
 
 import React from "react";
-import {
-  InputType,
-  RiskType,
-  Survey,
-  INPUT,
-  SurveyQuestions,
-} from "@/types/RiskInput";
+import { TYPE, ID, SurveyQuestions, RiskType } from "@/types/RiskInput";
 
 import SurveyIntegerInput from "./SurveyIntegerInput";
 import SurveyBooleanInput from "./SurveyBooleanInput";
 import SurveyMultipleInput from "./SurveyMultipleInput";
 import SurveyChoiceInput from "./SurveyChoiceInput";
+import { Survey } from "@/types/Survey";
 
 interface SurveyInputSlideProps {
-  questionID: INPUT;
+  questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   nextSlide: () => void;
@@ -47,7 +42,7 @@ const Parser = ({
   nextSlide,
   questionID,
 }: SurveyInputSlideProps) => {
-  switch (InputType[questionID]) {
+  switch (TYPE[questionID]) {
     case RiskType.INTEGER:
       return (
         <SurveyIntegerInput
@@ -91,15 +86,15 @@ const Parser = ({
   }
 };
 
-const getInfo = (input: INPUT) => {
-  switch (InputType[input]) {
+const getInfo = (input: ID) => {
+  switch (TYPE[input]) {
     case RiskType.BOOLEAN:
       return null;
-    case RiskType.CHOICE:
+    case RiskType.INTEGER:
       return "Choose one";
     case RiskType.MULTIPLE:
       return "Choose multiple";
-    case RiskType.INTEGER:
+    case RiskType.CHOICE:
       return "Input a number";
     default:
       return null;

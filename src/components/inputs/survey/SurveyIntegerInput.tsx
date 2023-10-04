@@ -1,14 +1,9 @@
 import React, { use, useEffect } from "react";
-import {
-  INPUT,
-  RiskInputInteger,
-  Survey,
-  SurveyInteger,
-  SurveyQuestions,
-} from "@/types/RiskInput";
+import { ID, RiskInputInteger, SurveyQuestions } from "@/types/RiskInput";
+import { Survey, SurveyInteger } from "@/types/Survey";
 
 interface SurveyIntegerInputProps {
-  questionID: INPUT;
+  questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;

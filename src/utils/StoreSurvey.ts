@@ -1,6 +1,6 @@
 "use client";
 
-import { Survey } from "@/types/RiskInput";
+import { Survey } from "@/types/Survey";
 
 export const setLocalStorage = (key: string, value: string) => {
   if (typeof window === "undefined") return 0;
@@ -40,7 +40,7 @@ export const setSurveyUtil = (survey: Survey) => {
 export const getSurveyUtil = (): Survey => {
   const survey = getLocalStorage("survey");
 
-  const def = { data:{}, skipped: []} as Survey;
+  const def = { data: {}, skipped: [] } as Survey;
 
   if (!survey) return def;
   try {

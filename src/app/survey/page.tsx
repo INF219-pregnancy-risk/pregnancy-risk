@@ -1,6 +1,6 @@
 "use client";
 
-import { Survey, SurveyEntries } from "@/types/RiskInput";
+import { ID } from "@/types/RiskInput";
 import SurveyParseInput from "@/components/inputs/survey/SurveyParseInput";
 import PageWarpper from "@/components/layout/PageWarpper";
 import SurveyContainer from "@/components/layout/survey/SurveyContainer";
@@ -13,6 +13,7 @@ import {
   setSurveyIndexUtil,
   setSurveyUtil,
 } from "@/utils/StoreSurvey";
+import { Survey, SurveyEntries } from "@/types/Survey";
 
 const SurveyPage = () => {
   const [survey, setSurvey] = React.useState<Survey>({ data: {}, skipped: [] });
@@ -79,7 +80,7 @@ const SurveyPage = () => {
           {isLoading ? (
             <h1>Loading.....</h1>
           ) : (
-            SurveyEntries.map(([id, input], index) => {
+            SurveyEntries.map(([id, ID], index) => {
               return (
                 index == currentSlide && (
                   <SurveyParseInput

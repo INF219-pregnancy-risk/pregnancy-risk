@@ -1,220 +1,118 @@
-// types.ts
-
-export enum RiskType {
-  INTEGER = "integer",
-  BOOLEAN = "boolean",
-  MULTIPLE = "multiple",
-  CHOICE = "choice",
+// Ensure all IDs are used in TYPE
+function ensureAllIdsAreUsed<T extends { [K in keyof typeof ID]: any }>(
+  obj: T
+): T {
+  return obj;
 }
+// Type of survey questions
+type SurveyQuestionsType = {
+  [K in keyof typeof TYPE]?: RiskInputs[(typeof TYPE)[K]];
+};
 
+/**
+ * Type of risk input !! mustbe caps !!
+ * @enum {string}
+ * @readonly
+ *
+ */
+export const RiskType = {
+  INTEGER: "INTEGER",
+  BOOLEAN: "BOOLEAN",
+  MULTIPLE: "MULIPLE",
+  CHOICE: "CHOICE",
+} as const;
+export type RiskType = (typeof RiskType)[keyof typeof RiskType];
+
+// All riskinputs have this
 export interface RiskInput {
   label: string;
 }
-
+// Integer riskinput
 export interface RiskInputInteger extends RiskInput {
   min?: number;
   max?: number;
 }
-
-export interface RiskInputBoolean extends RiskInput {}
-
+// Multiple riskinput
 export interface RiskInputMultiple extends RiskInput {
   values: { [key: string]: string };
 }
-
+// Choice riskinput
 export interface RiskInputChoice extends RiskInput {
   options: { [key: string]: string };
 }
+// Boolean riskinput
+export interface RiskInputBoolean extends RiskInput {}
 
-type FilteredKeys<T, U> = {
-  [P in keyof T]: T[P] extends U ? P : never;
-}[keyof T];
-
-type InputIntegers = FilteredKeys<InputTypes, RiskType.INTEGER>;
-type InputBooleans = FilteredKeys<InputTypes, RiskType.BOOLEAN>;
-type InputMultiples = FilteredKeys<InputTypes, RiskType.MULTIPLE>;
-type InputChoices = FilteredKeys<InputTypes, RiskType.CHOICE>;
-
-type QuestionInputIntegers = {
-  [key in InputIntegers]?: RiskInputInteger;
+// Map risktype to riskinput
+export type RiskInputs = {
+  [RiskType.INTEGER]: RiskInputInteger;
+  [RiskType.BOOLEAN]: RiskInputBoolean;
+  [RiskType.MULTIPLE]: RiskInputMultiple;
+  [RiskType.CHOICE]: RiskInputChoice;
 };
 
-type QuestionInputBooleans = {
-  [key in InputBooleans]?: RiskInputBoolean;
-};
+// ID of riskinputs, !! must be caps !!
+export const ID = {
+  AGE: "AGE",
+  WEIGHT: "WEIGHT",
+  HEIGHT: "HEIGHT",
+  DIABETES: "DIABETES",
+  HYPERTENSION: "HYPERTENSION",
+  ACTIVITY: "ACTIVITY",
+  ETNISITY: "ETNISITY",
+} as const;
+export type ID = (typeof ID)[keyof typeof ID];
 
-type QuestionInputMultiples = {
-  [key in InputMultiples]?: RiskInputMultiple;
-};
+// Map ID to risktype
+export const TYPE = {
+  [ID.AGE]: RiskType.INTEGER,
+  [ID.WEIGHT]: RiskType.INTEGER,
+  [ID.HEIGHT]: RiskType.INTEGER,
+  [ID.DIABETES]: RiskType.BOOLEAN,
+  [ID.HYPERTENSION]: RiskType.BOOLEAN,
+  [ID.ACTIVITY]: RiskType.MULTIPLE,
+  [ID.ETNISITY]: RiskType.CHOICE,
+} as const;
+const _ = ensureAllIdsAreUsed(TYPE); // If TYPE does not cover all IDs, TypeScript will throw an error here.
+export type TYPE = (typeof TYPE)[keyof typeof TYPE];
 
-type QuestionInputChoices = {
-  [key in InputChoices]?: RiskInputChoice;
-};
-
-type InputTypes = {
-  [key in INPUT]: RiskType;
-};
-
-export enum INPUT {
-  AGE = "AGE",
-  WEIGHT = "WEIGHT",
-  HEIGHT = "HEIGHT",
-  DIABETES = "DIABETES",
-  GDM = "GDM",
-  PCOS = "PCOS",
-  ACTIVITY = "ACTIVITY",
-  ETNISITY = "ETNISITY",
-  OTHER = "OTHER",
-  TEST = "TEST",
-}
-
-export const InputType: InputTypes = {
-  [INPUT.AGE]: RiskType.INTEGER,
-  [INPUT.WEIGHT]: RiskType.INTEGER,
-  [INPUT.HEIGHT]: RiskType.INTEGER,
-  [INPUT.DIABETES]: RiskType.BOOLEAN,
-  [INPUT.GDM]: RiskType.BOOLEAN,
-  [INPUT.PCOS]: RiskType.BOOLEAN,
-  [INPUT.ACTIVITY]: RiskType.MULTIPLE,
-  [INPUT.ETNISITY]: RiskType.CHOICE,
-  [INPUT.OTHER]: RiskType.BOOLEAN,
-  [INPUT.TEST]: RiskType.BOOLEAN,
-};
-
-type QuestionInputs =
-  | QuestionInputIntegers
-  | QuestionInputBooleans
-  | QuestionInputMultiples
-  | QuestionInputChoices;
-
-export const SurveyQuestions: { [key in INPUT]?: RiskInput } = {
-  [INPUT.AGE]: {
-    label: "What is your age?",
-    min: 0,
-    max: 100,
-  },
-  [INPUT.WEIGHT]: {
+// Survey questions
+export const SurveyQuestions: SurveyQuestionsType = {
+  [ID.AGE]: {
     label: "What is your age?",
   },
-  [INPUT.ETNISITY]: {
-    label: "What is your etnisity?",
-    options: {
-      white: "White",
-      black: "Black",
-      asian: "Asian",
-      other: "Other",
-    },
+  [ID.WEIGHT]: {
+    label: "What is your weight?",
+    min: 50,
+    max: 200,
   },
-  [INPUT.ACTIVITY]: {
-    label: "What is your activity?",
+  [ID.HEIGHT]: {
+    label: "What is your height?",
+    min: 100,
+    max: 250,
+  },
+  [ID.DIABETES]: {
+    label: "Do you have diabetes?",
+  },
+  [ID.HYPERTENSION]: {
+    label: "Do you have hypertension?",
+  },
+  [ID.ACTIVITY]: {
+    label: "Select your activity level:",
     values: {
-      walking: "Walking",
-      running: "Running",
-      swimming: "Swimming",
+      LOW: "Low",
+      MODERATE: "Moderate",
+      HIGH: "High",
     },
   },
-  [INPUT.GDM]: {
-    label: "Have you had gestational diabetes?",
-  },
-} as QuestionInputs;
-
-export const SurveyEntries = Object.entries(SurveyQuestions) as [
-  INPUT,
-  RiskInput
-][];
-
-export type SurveyBoolean = boolean;
-
-export type SurveyInteger = number;
-
-export type SurveyMultiple = { [key: string]: boolean };
-
-export type SurveyChoice = string;
-
-export type SurveyData =
-  | SurveyBoolean
-  | SurveyInteger
-  | SurveyMultiple
-  | SurveyChoice;
-
-export interface Survey {
-  data: {
-    [key in INPUT]?: SurveyData;
-  };
-  skipped: INPUT[];
-}
-
-export interface Condition {
-  name: string;
-  description: string;
-  refrences: number[];
-  baseRisk: number;
-}
-
-export interface ConditionsType {
-  [key: string]: Condition;
-}
-
-export interface Factor {
-  id: string;
-  multiplier: number;
-}
-
-export interface FactorBool extends Factor {
-  type: RiskType.BOOLEAN;
-  condition: (value: boolean) => boolean;
-}
-
-export interface FactorInteger extends Factor {
-  type: RiskType.INTEGER;
-  condition: (value: number) => boolean;
-}
-
-const Conditions: ConditionsType = {
-  gdm: {
-    name: "Gestational Diabetes Mellitus",
-    description: `Gestational diabetes mellitus is defined as carbohydrate intolerance resulting in
-    hyperglycaemia, including impaired glucose tolerance with first onset or detection
-    during pregnancy and affects about 5-10% of pregnancies [7]]. Gestational diabetes
-    increases the risk of complications for both mother and child during pregnancy,
-    childbirth and beyond`,
-    refrences: [8, 9, 10],
-    baseRisk: 0.1,
+  [ID.ETNISITY]: {
+    label: "Select your ethnicity:",
+    options: {
+      ASIAN: "Asian",
+      BLACK: "Black",
+      WHITE: "White",
+      HISPANIC: "Hispanic",
+      OTHER: "Other",
+    },
   },
 };
-
-/*
-  const Factors: ComplicationFactors = {
-    gdm: [
-      {
-        id: "age",
-        type: RiskType.INTEGER,
-        condition: (value) => value > 30 && value <= 40, 
-        multiplier: 3
-      },
-      {
-        id: "age",
-        type: RiskType.INTEGER,
-        condition: (value) => value > 40, 
-        multiplier: 5
-      },
-      {
-        id: "diabetes",
-        type: RiskType.BOOLEAN,
-        condition: (value) => value === true,
-        multiplier: 3
-      }
-    ]
-  }
-  */
-
-/*
-  Object.entries(Factors).map(([id, factors]) => {
-    let risk = Conditions[id].baseRisk
-    factors.map(factor => {
-      if (factor.condition(survey.data[factor.id]))) {
-        risk = risk * factor.multiplier
-      }
-    }
-  });
-  */

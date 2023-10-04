@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
-import {
-  INPUT,
-  RiskInputChoice,
-  Survey,
-  SurveyChoice,
-  SurveyQuestions,
-} from "@/types/RiskInput";
+import { ID, RiskInputChoice, SurveyQuestions } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
+import { Survey, SurveyChoice } from "@/types/Survey";
 
 interface SurveyChoiceInputProps {
-  questionID: INPUT;
+  questionID: ID;
   nextSlide: () => void;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;

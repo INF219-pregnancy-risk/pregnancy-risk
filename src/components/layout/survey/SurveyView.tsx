@@ -2,7 +2,8 @@
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
-import { INPUT, Survey } from "@/types/RiskInput";
+import { ID } from "@/types/RiskInput";
+import { Survey } from "@/types/Survey";
 import { resetSurveyUtil } from "@/utils/StoreSurvey";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect } from "react";
@@ -14,7 +15,7 @@ export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
   nextSlide: () => void;
   currentSlide: number;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
-  surveyID: INPUT;
+  surveyID: ID;
 }
 const SurveyView = ({
   children,
@@ -25,13 +26,16 @@ const SurveyView = ({
   currentSlide,
   surveyID,
 }: SurveyViewProps) => {
-  const [skippedSlides, setSkippedSlides] = React.useState<INPUT[]>([]);
+  const [skippedSlides, setSkippedSlides] = React.useState<ID[]>([]);
 
   useEffect(() => {
-    setSurvey((prev) => ({
-      ...prev,
-      skipped: skippedSlides,
-    }));
+    setSurvey(
+      (prev) =>
+        ({
+          ...prev,
+          skipped: skippedSlides,
+        } as Survey)
+    );
   }, [skippedSlides, setSurvey]);
 
   return (

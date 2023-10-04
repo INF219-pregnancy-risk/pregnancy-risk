@@ -1,14 +1,25 @@
 "use client";
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
-import { RiskType, Survey } from "@/types/RiskInput";
 import { getSurveyUtil } from "@/utils/StoreSurvey";
 import React from "react";
 
-
 const ResultsPage = () => {
-  const survey = {"data":{"age":34,"weight":65,"height":180,"polycysticOvarySyndrome":true,"highBloodPressure":true,"familyHistoryHypertension":true ,"familyHistoryDiabetes":false,"activity":{"walking":false,"running":true,"swimming":true},"etnisity":"white"},"skipped":["diabetes"]}
-  
+  const survey = {
+    data: {
+      age: 34,
+      weight: 65,
+      height: 180,
+      polycysticOvarySyndrome: true,
+      highBloodPressure: true,
+      familyHistoryHypertension: true,
+      familyHistoryDiabetes: false,
+      activity: { walking: false, running: true, swimming: true },
+      etnisity: "white",
+    },
+    skipped: ["diabetes"],
+  };
+
   return (
     <div className="flex flex-col w-screen justify-center items-center h-screen gap-8">
       <h1>Results</h1>

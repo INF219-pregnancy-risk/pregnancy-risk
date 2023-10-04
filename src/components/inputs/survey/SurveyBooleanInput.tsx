@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { INPUT, Survey, SurveyBoolean } from "@/types/RiskInput";
+import { ID } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
+import { Survey, SurveyBoolean } from "@/types/Survey";
 
 interface SurveyBooleanInputProps {
-  questionID: INPUT;
+  questionID: ID;
   nextSlide: () => void;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
@@ -27,7 +28,6 @@ const SurveyBooleanInput = ({
       setNextButton(false);
     }
   }, [surveyData, setNextButton]);
-
   // handle change
   const handleChange = (bool: boolean) => {
     setSurvey((prev) => {

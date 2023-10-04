@@ -1,15 +1,10 @@
-import React, { use, useEffect } from "react";
-import {
-  INPUT,
-  RiskInputMultiple,
-  Survey,
-  SurveyMultiple,
-  SurveyQuestions,
-} from "@/types/RiskInput";
+import React, { useEffect } from "react";
+import { ID, RiskInputMultiple, SurveyQuestions } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
+import { Survey, SurveyMultiple } from "@/types/Survey";
 
 interface SurveyMultipleInputProps {
-  questionID: INPUT;
+  questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
