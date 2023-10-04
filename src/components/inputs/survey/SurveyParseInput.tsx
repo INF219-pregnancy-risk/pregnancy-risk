@@ -2,11 +2,12 @@
 
 import React from "react";
 import {
+  InputType,
   RiskInputBoolean,
   RiskInputChoice,
   RiskInputInteger,
   RiskInputMultiple,
-  RiskInputs,
+  RiskInput,
   RiskType,
   Survey,
 } from "@/types/RiskInput";
@@ -17,7 +18,7 @@ import SurveyMultipleInput from "./SurveyMultipleInput";
 import SurveyChoiceInput from "./SurveyChoiceInput";
 
 interface SurveyInputSlideProps {
-  input: RiskInputs;
+  input: RiskInput;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   nextSlide: () => void;
@@ -43,7 +44,7 @@ const Parser = ({
   setNextButton,
   nextSlide,
 }: SurveyInputSlideProps) => {
-  switch (input.type) {
+  switch (InputType[input.id]) {
     case RiskType.INTEGER:
       const integerInput = input as RiskInputInteger; // Cast input to RiskInput
       return (
@@ -91,8 +92,8 @@ const Parser = ({
   }
 };
 
-const getInfo = (input: RiskInputs) => {
-  switch (input.type) {
+const getInfo = (input: RiskInput) => {
+  switch (InputType[input.id]) {
     case RiskType.BOOLEAN:
       return null;
     case RiskType.CHOICE:

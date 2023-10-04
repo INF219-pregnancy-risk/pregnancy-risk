@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React from "react";
 import { RiskInputBoolean, Survey, SurveyBoolean } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
 
@@ -19,17 +19,17 @@ const SurveyBooleanInput = ({
 }: SurveyBooleanInputProps) => {
   const surveyData = survey.data[input.id] as SurveyBoolean;
 
-  if (surveyData === false || surveyData === true) {
+  if (surveyData != undefined) {
     setNextButton(true);
   }
-
+  
   const handleChange = (bool: boolean) => {
     setSurvey((prev) => ({
       ...prev,
       data: {
         ...prev.data,
-        [input.id]: bool as SurveyBoolean,
-      },
+        [input.id]: bool,
+      }
     }));
   };
 

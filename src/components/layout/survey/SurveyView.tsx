@@ -2,7 +2,7 @@
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
-import { RiskInputs, RiskType, Survey } from "@/types/RiskInput";
+import { InputDeclarations, RiskInput, RiskType, Survey } from "@/types/RiskInput";
 import { resetSurveyUtil } from "@/utils/StoreSurvey";
 import { AnimatePresence, motion } from "framer-motion";
 import { get } from "http";
@@ -14,6 +14,7 @@ export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
   prevSlide: () => void;
   nextSlide: () => void;
   currentSlide: number;
+  SurveyInputs: RiskInput[];
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
 }
 const SurveyView = ({
@@ -22,11 +23,15 @@ const SurveyView = ({
   nextSlide,
   prevSlide,
   setSurvey,
+  SurveyInputs,
   currentSlide,
 }: SurveyViewProps) => {
-  const [skippedSlides, setSkippedSlides] = React.useState<number[]>([]);
+  const [skippedSlides, setSkippedSlides] = React.useState<InputDeclarations[]>([]);
 
   useEffect(() => {
+    console.log(skippedSlides);
+    console.log(SurveyInputs);
+    console.log(currentSlide);
     setSurvey((prev) => ({
       ...prev,
       skipped: skippedSlides,
@@ -70,7 +75,7 @@ const SurveyView = ({
           className="bg-gray-400 hover:bg-gray-500 duration-200 active:bg-gray-400 active:scale-95"
           onClick={() => {
             setSkippedSlides((prev) =>
-              prev.includes(currentSlide) ? prev : [...prev, currentSlide]
+              prev.includes(SurveyInputs[currentSlide].id) ? prev : [...prev, SurveyInputs[currentSlide].id ]
             );
             nextSlide();
           }}
@@ -80,7 +85,7 @@ const SurveyView = ({
         <SurveyButton
           disabled={!nextButton}
           onClick={() => {
-            setSkippedSlides((prev) => prev.filter((i) => i !== currentSlide));
+            setSkippedSlides((prev) => prev.filter((i) => i !== SurveyInputs[currentSlide].id));
             nextSlide();
           }}
           className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"

@@ -1,5 +1,5 @@
 import React, { use, useEffect } from "react";
-import { RiskInputMultiple, Survey, SurveyMultiple } from "@/types/RiskInput";
+import { RiskInputMultiple, Survey, SurveyBoolean, SurveyMultiple } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
 
 interface SurveyMultipleInputProps {
@@ -15,25 +15,32 @@ const SurveyMultipleInput = ({
   survey,
   setNextButton,
 }: SurveyMultipleInputProps) => {
-  const surveyData: SurveyMultiple = survey.data[input.id] as SurveyMultiple;
+
+  const surveyData = survey.data[input.id] as SurveyMultiple;
 
   setNextButton(true);
 
   useEffect(() => {
     if (!surveyData) {
-      let newData: SurveyMultiple = {};
-      Object.entries(input.values).forEach(([option, value]) => {
-        newData[option] = false;
-      });
+      let data: SurveyMultiple = {};
+
+      Object.entries(input.values).map(([option, value]) => {
+        data[option] = false;
+      }
+      );
+
       setSurvey((prev) => ({
         ...prev,
         data: {
           ...prev.data,
-          [input.id]: newData,
+          [input.id]: data,
         },
       }));
+
     }
-  }, [surveyData, input.id, input.values, setSurvey]);
+  }, []
+  );
+
 
   return (
     <div className="flex gap-4">
@@ -42,20 +49,25 @@ const SurveyMultipleInput = ({
           <SurveyButton
             id={option}
             key={option}
-            checked={surveyData ? surveyData[option] : false}
+            checked={surveyData ? surveyData[option] : false }
             className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
             onClick={() => {
-              setSurvey((prev) => ({
-                ...prev,
-                data: {
-                  ...prev.data,
-                  [input.id]: {
-                    ...surveyData,
-                    [option]: surveyData ? !surveyData[option] : true,
+              
+              setSurvey((prev) => {
+                const last = prev.data[input.id] as SurveyMultiple;
+                return {
+                  ...prev,
+                  data: {
+                    ...prev.data,
+                    [input.id]: {
+                      ...last,
+                      [option]: !last[option],
+                    },
                   },
-                },
-              }));
-            }}
+                };
+              });
+            }
+            }
           >
             {value}
           </SurveyButton>

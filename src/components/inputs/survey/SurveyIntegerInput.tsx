@@ -14,6 +14,13 @@ const SurveyIntegerInput = ({
   survey,
   setNextButton,
 }: SurveyIntegerInputProps) => {
+
+  const surveyData = survey.data[input.id] as SurveyInteger;
+
+  if (surveyData) {
+    setNextButton(true);
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // only allow numbers
     const re = /^[0-9\b]+$/;
@@ -22,17 +29,11 @@ const SurveyIntegerInput = ({
         ...prev,
         data: {
           ...prev.data,
-          [input.id]: parseInt(e.target.value) as SurveyInteger,
+          [input.id]: parseInt(e.target.value),
         },
       }));
     }
   };
-
-  const surveyData = survey.data[input.id] as SurveyInteger;
-
-  if (surveyData) {
-    setNextButton(true);
-  }
 
   return (
     <div>

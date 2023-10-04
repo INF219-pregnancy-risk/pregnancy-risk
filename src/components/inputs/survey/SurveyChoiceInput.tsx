@@ -1,5 +1,5 @@
-import React from "react";
-import { RiskInputChoice, Survey, SurveyChoice } from "@/types/RiskInput";
+import React, { useEffect } from "react";
+import { RiskInputChoice, Survey, SurveyBoolean, SurveyChoice } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
 
 interface SurveyChoiceInputProps {
@@ -23,8 +23,6 @@ const SurveyChoiceInput = ({
     setNextButton(true);
   }
 
-  console.log(surveyData, input);
-
   return (
     <div className="w-full flex flex-wrap gap-4 items-center justify-center">
       {Object.entries(input.options).map(([option, value]) => {
@@ -39,7 +37,7 @@ const SurveyChoiceInput = ({
                 ...prev,
                 data: {
                   ...prev.data,
-                  [input.id]: option as SurveyChoice,
+                  [input.id]: option,
                 },
               }));
             }}

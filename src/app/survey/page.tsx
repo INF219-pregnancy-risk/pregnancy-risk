@@ -1,6 +1,6 @@
 "use client";
 
-import { RiskInputs, RiskType, Survey } from "@/types/RiskInput";
+import { InputDeclarations, RiskInput, RiskInputChoice, RiskInputInteger, RiskInputMultiple, Survey } from "@/types/RiskInput";
 import SurveyParseInput from "@/components/inputs/survey/SurveyParseInput";
 import PageWarpper from "@/components/layout/PageWarpper";
 import SurveyContainer from "@/components/layout/survey/SurveyContainer";
@@ -14,40 +14,37 @@ import {
   setSurveyUtil,
 } from "@/utils/StoreSurvey";
 
-const SurveyInputSlides: RiskInputs[] = [
+const SurveyInputSlides: RiskInput[] = [
   {
-    id: "age",
+    id: InputDeclarations.AGE,
     label: "What is your age?",
-    type: RiskType.INTEGER,
-    min: 1,
-    max: 10,
+    min: 0,
+    max: 100,
+  } as RiskInputInteger,
+  {
+    id: InputDeclarations.DIABETES,
+    label: "What is your age?",
   },
   {
-    id: "diabetes",
-    label: "Do you have any in your family with diabetes?",
-    type: RiskType.BOOLEAN,
-  },
-  {
-    id: "activity",
-    label: "Do you excerise?",
-    type: RiskType.MULTIPLE,
-    values: {
-      walking: "Walking 20 min a day",
-      running: "Lifting 3 times a week",
-      swimming: "Swimming 2 times a month",
-    },
-  },
-  {
-    id: "etnisity",
+    id: InputDeclarations.ETNISITY,
     label: "What is your etnisity?",
-    type: RiskType.CHOICE,
     options: {
-      white: "White / Something",
-      black: "Black / Afro",
+      white: "White",
+      black: "Black",
       asian: "Asian",
       other: "Other",
     },
-  },
+  } as RiskInputChoice,
+  {
+    id: InputDeclarations.ACTIVITY,
+    label: "What is your activity?",
+    values: {
+      walking: "Walking",
+      running: "Running",
+      swimming: "Swimming",
+    },
+  } as RiskInputMultiple,
+
 ];
 
 const SurveyPage = () => {
@@ -104,13 +101,17 @@ const SurveyPage = () => {
   return (
     <PageWarpper>
       <h1 className="pb-4">You are at survey</h1>
-
+      <p>
+         {JSON.stringify(survey)}
+      </p>
+     
       <SurveyContainer index={currentSlide}>
         <SurveyView
           setSurvey={setSurvey}
           nextButton={nextButton}
           nextSlide={nextSlide}
           prevSlide={prevSlide}
+          SurveyInputs={SurveyInputSlides}
           currentSlide={currentSlide}
         >
           {isLoading ? (
