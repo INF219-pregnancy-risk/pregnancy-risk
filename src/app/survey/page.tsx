@@ -23,6 +23,14 @@ const SurveyInputSlides: RiskInputs[] = [
     max: 10,
   },
   {
+    id: "weight",
+    label: "What is your age?",
+    type: RiskType.INTEGER,
+    min: 1,
+    max: 10,
+  },
+
+  {
     id: "diabetes",
     label: "Do you have any in your family with diabetes?",
     type: RiskType.BOOLEAN,
