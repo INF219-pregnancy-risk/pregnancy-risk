@@ -5,14 +5,18 @@ export enum RiskType {
   BOOLEAN = "boolean",
   MULTIPLE = "multiple",
   CHOICE = "choice",
-  SUBQUESTION = "subquestion",
+  //SUBQUESTION = "subquestion",
 }
 
 export interface RiskInputType {
   id: string;
   label: string;
   type: RiskType;
+  subQuestions?: RiskInputs[];
+  condition?: ((value: any) => boolean) | boolean | null;
 }
+
+
 
 export interface RiskInputInteger extends RiskInputType {
   type: RiskType.INTEGER;
@@ -22,7 +26,9 @@ export interface RiskInputInteger extends RiskInputType {
 
 export interface RiskInputBoolean extends RiskInputType {
   type: RiskType.BOOLEAN;
+  // condition?: RiskType.BOOLEAN;  // Add this for subquestions
 }
+
 
 export interface RiskInputMultiple extends RiskInputType {
   type: RiskType.MULTIPLE;

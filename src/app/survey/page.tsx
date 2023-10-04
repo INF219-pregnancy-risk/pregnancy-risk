@@ -20,19 +20,72 @@ const SurveyInputSlides: RiskInputs[] = [
     label: "What is your age?",
     type: RiskType.INTEGER,
     min: 1,
-    max: 10,
-  },
-  {
-    id: "weight",
-    label: "What is your age?",
-    type: RiskType.INTEGER,
-    min: 1,
-    max: 10,
+    max: 110,
+    subQuestions: [
+      {
+        id: "ost",
+        label: "Did you have any ost?",
+        type: RiskType.BOOLEAN,
+        condition: (value) => value > 50
+      }
+    ]
   },
 
   {
+    id: "weight",
+    label: "What is your weight in kg?",
+    type: RiskType.INTEGER,
+    min: 1,
+    max: 700,
+  },
+
+  {
+    id: "height",
+    label: "What is your height in cm?",
+    type: RiskType.INTEGER,
+    min: 1,
+    max: 300,
+  },
+  {
+    id: "etnisity",
+    label: "What is your etnisity?",
+    type: RiskType.CHOICE,
+    options: {
+      white: "White",
+      afroCaribbean: "Afro-Caribbean",
+      black: "Black",
+      asian: "Asian",
+      other: "Other",
+    },
+  },
+  {
+    id: "kids",
+    label: "Do you have any kids already?",
+    type: RiskType.BOOLEAN,
+    subQuestions: [
+      {
+        id: "stillbirth",
+        label: "Did you have any stillbirth?",
+        type: RiskType.BOOLEAN,
+        condition: true
+      }
+    ]
+  },
+
+
+  {
     id: "diabetes",
-    label: "Do you have any in your family with diabetes?",
+    label: "Do you have anyone in your family with diabetes?",
+    type: RiskType.BOOLEAN,
+  },
+  {
+    id: "PCOS",
+    label: "Do you have polycystic ovary syndrome (PCOS)?",
+    type: RiskType.BOOLEAN,
+  },
+  {
+    id: "blood-pressure",
+    label: "Do you have a family history of hypertension/high blood pressure?",
     type: RiskType.BOOLEAN,
   },
   {
@@ -46,15 +99,9 @@ const SurveyInputSlides: RiskInputs[] = [
     },
   },
   {
-    id: "etnisity",
-    label: "What is your etnisity?",
-    type: RiskType.CHOICE,
-    options: {
-      white: "White / Something",
-      black: "Black / Afro",
-      asian: "Asian",
-      other: "Other",
-    },
+    id: "diet",
+    label: "Do you diet?",
+    type: RiskType.BOOLEAN,
   },
 ];
 
@@ -126,18 +173,46 @@ const SurveyPage = () => {
           ) : (
             SurveyInputSlides.map((input, index) => {
               return (
-                index == currentSlide && (
-                  <SurveyParseInput
-                    key={input.id}
-                    nextSlide={nextSlide}
-                    setNextButton={setNextButton}
-                    setSurvey={setSurvey}
-                    survey={survey}
-                    input={input}
-                  />
+                index === currentSlide && (
+                  <div key={input.id}>
+                    <SurveyParseInput
+                      nextSlide={nextSlide}
+                      setNextButton={setNextButton}
+                      setSurvey={setSurvey}
+                      survey={survey}
+                      input={input}
+                    />
+                    {input.subQuestions && input.subQuestions.map(subInput => {
+                      let conditionMet = false;
+                      const userAnswer = survey.data[input.id];
+
+                      if (typeof subInput.condition === "boolean") {
+                        conditionMet = userAnswer === subInput.condition;
+                      } else if (typeof subInput.condition === "function") {
+                        conditionMet = subInput.condition(userAnswer);
+                      }
+
+                      if (conditionMet) {
+                        return (
+                          <SurveyParseInput
+                            key={subInput.id}
+                            nextSlide={nextSlide}
+                            setNextButton={setNextButton}
+                            setSurvey={setSurvey}
+                            survey={survey}
+                            input={subInput}
+                          />
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
                 )
               );
             })
+
+
+
           )}
         </SurveyView>
       </SurveyContainer>
