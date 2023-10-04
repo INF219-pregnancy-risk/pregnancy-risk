@@ -37,7 +37,7 @@ const SurveyBooleanInput = ({
     <div className="flex gap-6">
       <SurveyButton
         checked={surveyData === true}
-        className="bg-blue-400 hover:bg-blue-500 duration-200"
+        className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
         onClick={() => {
           handleChange(true);
         }}
@@ -46,7 +46,7 @@ const SurveyBooleanInput = ({
       </SurveyButton>
       <SurveyButton
         checked={surveyData === false}
-        className="bg-gray-300 hover:bg-gray-400 duration-200"
+        className="bg-gray-300 hover:bg-gray-400 duration-200 active:bg-gray-300 active:scale-95"
         onClick={() => {
           handleChange(false);
         }}

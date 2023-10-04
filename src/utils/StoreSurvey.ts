@@ -37,14 +37,16 @@ export const setSurveyUtil = (survey: Survey) => {
   return setLocalStorage("survey", JSON.stringify(survey));
 };
 
-export const getSurveyUtil = (): Survey | null => {
+export const getSurveyUtil = (): Survey => {
   const survey = getLocalStorage("survey");
 
-  if (!survey) return null;
+  const def = { data: {}, slides: [] } as Survey;
+
+  if (!survey) return def;
   try {
-    return JSON.parse(survey);
+    return JSON.parse(survey) as Survey;
   } catch (e) {
-    return null;
+    return def;
   }
 };
 

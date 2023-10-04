@@ -24,7 +24,19 @@ interface SurveyInputSlideProps {
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SurveyParseInput = ({
+const SurveyParseInput = ({ input, ...props }: SurveyInputSlideProps) => {
+  return (
+    <>
+      <div>
+        <h1 className="font-semibold text-2xl">{input.label}</h1>
+        <i className="text-base text-gray-500">{getInfo(input)}</i>
+      </div>
+      <Parser {...props} input={input} />
+    </>
+  );
+};
+
+const Parser = ({
   input,
   setSurvey,
   survey,
@@ -76,6 +88,21 @@ const SurveyParseInput = ({
       );
     default:
       return <div>Error parsing: Input</div>; // Handle unknown types
+  }
+};
+
+const getInfo = (input: RiskInputs) => {
+  switch (input.type) {
+    case RiskType.BOOLEAN:
+      return null;
+    case RiskType.CHOICE:
+      return "Choose one";
+    case RiskType.MULTIPLE:
+      return "Choose multiple";
+    case RiskType.INTEGER:
+      return "Input a number";
+    default:
+      return null;
   }
 };
 

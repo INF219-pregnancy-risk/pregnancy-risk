@@ -1,7 +1,9 @@
 "use client";
 
+import LinkButton from "@/components/inputs/buttons/LinkButton";
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
 import { RiskInputs, RiskType, Survey } from "@/types/RiskInput";
+import { resetSurveyUtil } from "@/utils/StoreSurvey";
 import { AnimatePresence, motion } from "framer-motion";
 import { get } from "http";
 import React, { useEffect } from "react";
@@ -9,7 +11,6 @@ import React, { useEffect } from "react";
 export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   nextButton: boolean;
-  input: RiskInputs;
   prevSlide: () => void;
   nextSlide: () => void;
   currentSlide: number;
@@ -17,7 +18,6 @@ export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 const SurveyView = ({
   children,
-  input,
   nextButton,
   nextSlide,
   prevSlide,
@@ -35,6 +35,15 @@ const SurveyView = ({
 
   return (
     <div className="flex flex-col w-full h-[600px] bg-gray-100 relative">
+      <div className="w-full flex justify-end">
+        <LinkButton
+          href="/"
+          className="bg-red-500 m-4 hover:bg-red-600 duration-200 active:scale-95 active:bg-red-400"
+          onClick={resetSurveyUtil}
+        >
+          EXIT
+        </LinkButton>
+      </div>
       <section className="flex grow justify-center flex-col gap-8">
         <AnimatePresence mode="wait">
           <motion.div
@@ -45,10 +54,6 @@ const SurveyView = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="flex w-full flex-col gap-8 items-center justify-center">
-              <div>
-                <h1 className="text-xl">{input.label}</h1>
-                <i className="text-gray-500 text-sm">{getInfo(input)}</i>
-              </div>
               {children}
             </div>
           </motion.div>
@@ -56,13 +61,13 @@ const SurveyView = ({
       </section>
       <div className="grid grid-cols-3 items-center justify-items-center pb-8">
         <SurveyButton
-          className="bg-blue-400 hover:bg-blue-500 duration-200"
+          className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
           onClick={prevSlide}
         >
           PREV
         </SurveyButton>
         <SurveyButton
-          className="bg-gray-400 hover:bg-gray-300 duration-200"
+          className="bg-gray-400 hover:bg-gray-500 duration-200 active:bg-gray-400 active:scale-95"
           onClick={() => {
             setSkippedSlides((prev) =>
               prev.includes(currentSlide) ? prev : [...prev, currentSlide]
@@ -78,28 +83,13 @@ const SurveyView = ({
             setSkippedSlides((prev) => prev.filter((i) => i !== currentSlide));
             nextSlide();
           }}
-          className="bg-blue-400 hover:bg-blue-500 duration-200"
+          className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
         >
           NEXT
         </SurveyButton>
       </div>
     </div>
   );
-};
-
-const getInfo = (input: RiskInputs) => {
-  switch (input.type) {
-    case RiskType.BOOLEAN:
-      return null;
-    case RiskType.CHOICE:
-      return "Choose one";
-    case RiskType.MULTIPLE:
-      return "Choose multiple";
-    case RiskType.INTEGER:
-      return "Input a number";
-    default:
-      return null;
-  }
 };
 
 export default SurveyView;

@@ -51,12 +51,9 @@ const SurveyInputSlides: RiskInputs[] = [
 ];
 
 const SurveyPage = () => {
-  const [survey, setSurvey] = React.useState<Survey>(
-    (getSurveyUtil() as Survey) || { data: {}, skipped: [] }
-  );
-  const [currentSlide, setCurrentSlide] = React.useState<number>(
-    getSurveyIndexUtil() || 0
-  );
+  const [survey, setSurvey] = React.useState<Survey>({ data: {}, skipped: [] });
+  const [currentSlide, setCurrentSlide] = React.useState<number>(0);
+
   const [nextButton, setNextButton] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>("");
@@ -69,6 +66,11 @@ const SurveyPage = () => {
       router.push("/survey/results");
     }
   }, [isSubmitted, router]);
+
+  useEffect(() => {
+    setSurvey(getSurveyUtil());
+    setCurrentSlide(getSurveyIndexUtil());
+  }, []);
 
   useEffect(() => {
     setSurveyUtil(survey);
@@ -102,24 +104,33 @@ const SurveyPage = () => {
   return (
     <PageWarpper>
       <h1 className="pb-4">You are at survey</h1>
-      <p className="pb-4">Current slide: {currentSlide}</p>
-      <p>survey: {JSON.stringify(survey)}</p>
+
       <SurveyContainer index={currentSlide}>
         <SurveyView
           setSurvey={setSurvey}
           nextButton={nextButton}
           nextSlide={nextSlide}
           prevSlide={prevSlide}
-          input={SurveyInputSlides[currentSlide]}
           currentSlide={currentSlide}
         >
-          <SurveyParseInput
-            nextSlide={nextSlide}
-            setNextButton={setNextButton}
-            setSurvey={setSurvey}
-            survey={survey}
-            input={SurveyInputSlides[currentSlide]}
-          />
+          {isLoading ? (
+            <h1>Loading.....</h1>
+          ) : (
+            SurveyInputSlides.map((input, index) => {
+              return (
+                index == currentSlide && (
+                  <SurveyParseInput
+                    key={input.id}
+                    nextSlide={nextSlide}
+                    setNextButton={setNextButton}
+                    setSurvey={setSurvey}
+                    survey={survey}
+                    input={input}
+                  />
+                )
+              );
+            })
+          )}
         </SurveyView>
       </SurveyContainer>
     </PageWarpper>
