@@ -8,30 +8,120 @@ export enum RiskType {
 }
 
 export interface RiskInput {
-  id: InputDeclarations;
   label: string;
-
 }
 
 export interface RiskInputInteger extends RiskInput {
-
   min?: number;
   max?: number;
 }
 
-export interface RiskInputBoolean extends RiskInput {
-
-}
+export interface RiskInputBoolean extends RiskInput {}
 
 export interface RiskInputMultiple extends RiskInput {
-
   values: { [key: string]: string };
 }
 
 export interface RiskInputChoice extends RiskInput {
-
   options: { [key: string]: string };
 }
+
+type FilteredKeys<T, U> = {
+  [P in keyof T]: T[P] extends U ? P : never;
+}[keyof T];
+
+type InputIntegers = FilteredKeys<InputTypes, RiskType.INTEGER>;
+type InputBooleans = FilteredKeys<InputTypes, RiskType.BOOLEAN>;
+type InputMultiples = FilteredKeys<InputTypes, RiskType.MULTIPLE>;
+type InputChoices = FilteredKeys<InputTypes, RiskType.CHOICE>;
+
+type QuestionInputIntegers = {
+  [key in InputIntegers]?: RiskInputInteger;
+};
+
+type QuestionInputBooleans = {
+  [key in InputBooleans]?: RiskInputBoolean;
+};
+
+type QuestionInputMultiples = {
+  [key in InputMultiples]?: RiskInputMultiple;
+};
+
+type QuestionInputChoices = {
+  [key in InputChoices]?: RiskInputChoice;
+};
+
+type InputTypes = {
+  [key in INPUT]: RiskType;
+};
+
+export enum INPUT {
+  AGE = "AGE",
+  WEIGHT = "WEIGHT",
+  HEIGHT = "HEIGHT",
+  DIABETES = "DIABETES",
+  GDM = "GDM",
+  PCOS = "PCOS",
+  ACTIVITY = "ACTIVITY",
+  ETNISITY = "ETNISITY",
+  OTHER = "OTHER",
+  TEST = "TEST",
+}
+
+export const InputType: InputTypes = {
+  [INPUT.AGE]: RiskType.INTEGER,
+  [INPUT.WEIGHT]: RiskType.INTEGER,
+  [INPUT.HEIGHT]: RiskType.INTEGER,
+  [INPUT.DIABETES]: RiskType.BOOLEAN,
+  [INPUT.GDM]: RiskType.BOOLEAN,
+  [INPUT.PCOS]: RiskType.BOOLEAN,
+  [INPUT.ACTIVITY]: RiskType.MULTIPLE,
+  [INPUT.ETNISITY]: RiskType.CHOICE,
+  [INPUT.OTHER]: RiskType.BOOLEAN,
+  [INPUT.TEST]: RiskType.BOOLEAN,
+};
+
+type QuestionInputs =
+  | QuestionInputIntegers
+  | QuestionInputBooleans
+  | QuestionInputMultiples
+  | QuestionInputChoices;
+
+export const SurveyQuestions: { [key in INPUT]?: RiskInput } = {
+  [INPUT.AGE]: {
+    label: "What is your age?",
+    min: 0,
+    max: 100,
+  },
+  [INPUT.WEIGHT]: {
+    label: "What is your age?",
+  },
+  [INPUT.ETNISITY]: {
+    label: "What is your etnisity?",
+    options: {
+      white: "White",
+      black: "Black",
+      asian: "Asian",
+      other: "Other",
+    },
+  },
+  [INPUT.ACTIVITY]: {
+    label: "What is your activity?",
+    values: {
+      walking: "Walking",
+      running: "Running",
+      swimming: "Swimming",
+    },
+  },
+  [INPUT.GDM]: {
+    label: "Have you had gestational diabetes?",
+  },
+} as QuestionInputs;
+
+export const SurveyEntries = Object.entries(SurveyQuestions) as [
+  INPUT,
+  RiskInput
+][];
 
 export type SurveyBoolean = boolean;
 
@@ -41,50 +131,18 @@ export type SurveyMultiple = { [key: string]: boolean };
 
 export type SurveyChoice = string;
 
-export type SurveyData = SurveyBoolean | SurveyInteger | SurveyMultiple | SurveyChoice;
-
-export type InputTypes = {
-  [key in InputDeclarations]: RiskType;
-}
-
-export enum InputDeclarations {
-  AGE="age",
-  WEIGHT ="weight",
-  HEIGHT = "height",
-  DIABETES = "diabetes",
-  GDM = "gdm",
-  PCOS = "pcos",
-  ACTIVITY = "activity",
-  ETNISITY = "etnisity",
-}
-
-export const InputType: InputTypes = {
-  [InputDeclarations.AGE]: RiskType.INTEGER,
-  [InputDeclarations.WEIGHT]: RiskType.INTEGER,
-  [InputDeclarations.HEIGHT]: RiskType.INTEGER,
-  [InputDeclarations.DIABETES]: RiskType.BOOLEAN,
-  [InputDeclarations.GDM]: RiskType.BOOLEAN,
-  [InputDeclarations.ACTIVITY]: RiskType.MULTIPLE,
-  [InputDeclarations.ETNISITY]: RiskType.CHOICE,
-  [InputDeclarations.PCOS]: RiskType.BOOLEAN,
-}
+export type SurveyData =
+  | SurveyBoolean
+  | SurveyInteger
+  | SurveyMultiple
+  | SurveyChoice;
 
 export interface Survey {
   data: {
-    [key in InputDeclarations]?: SurveyData;
+    [key in INPUT]?: SurveyData;
   };
-  skipped: InputDeclarations[];
+  skipped: INPUT[];
 }
-
-
-
-
-
-
-
-
-
-
 
 export interface Condition {
   name: string;
@@ -121,12 +179,11 @@ const Conditions: ConditionsType = {
     increases the risk of complications for both mother and child during pregnancy,
     childbirth and beyond`,
     refrences: [8, 9, 10],
-    baseRisk: 0.1
-  }
-}
+    baseRisk: 0.1,
+  },
+};
 
-  
-  /*
+/*
   const Factors: ComplicationFactors = {
     gdm: [
       {
@@ -150,7 +207,7 @@ const Conditions: ConditionsType = {
     ]
   }
   */
-  
+
 /*
   Object.entries(Factors).map(([id, factors]) => {
     let risk = Conditions[id].baseRisk

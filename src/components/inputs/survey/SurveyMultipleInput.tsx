@@ -1,24 +1,36 @@
 import React, { use, useEffect } from "react";
-import { RiskInputMultiple, Survey, SurveyBoolean, SurveyMultiple } from "@/types/RiskInput";
+import {
+  INPUT,
+  RiskInputMultiple,
+  Survey,
+  SurveyMultiple,
+  SurveyQuestions,
+} from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
 
 interface SurveyMultipleInputProps {
-  input: RiskInputMultiple;
+  questionID: INPUT;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SurveyMultipleInput = ({
-  input,
+  questionID,
   setSurvey,
   survey,
   setNextButton,
 }: SurveyMultipleInputProps) => {
+  const surveyData = survey.data[questionID] as SurveyMultiple;
+  const input = SurveyQuestions[questionID] as RiskInputMultiple;
 
-  const surveyData = survey.data[input.id] as SurveyMultiple;
-
-  setNextButton(true);
+  useEffect(() => {
+    if (!surveyData) {
+      setNextButton(false);
+    } else {
+      setNextButton(true);
+    }
+  }, [surveyData, setNextButton]);
 
   useEffect(() => {
     if (!surveyData) {
@@ -26,21 +38,17 @@ const SurveyMultipleInput = ({
 
       Object.entries(input.values).map(([option, value]) => {
         data[option] = false;
-      }
-      );
+      });
 
       setSurvey((prev) => ({
         ...prev,
         data: {
           ...prev.data,
-          [input.id]: data,
+          [questionID]: data,
         },
       }));
-
     }
-  }, []
-  );
-
+  }, []);
 
   return (
     <div className="flex gap-4">
@@ -49,25 +57,23 @@ const SurveyMultipleInput = ({
           <SurveyButton
             id={option}
             key={option}
-            checked={surveyData ? surveyData[option] : false }
+            checked={surveyData ? surveyData[option] : false}
             className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
             onClick={() => {
-              
               setSurvey((prev) => {
-                const last = prev.data[input.id] as SurveyMultiple;
+                const last = prev.data[questionID] as SurveyMultiple;
                 return {
                   ...prev,
                   data: {
                     ...prev.data,
-                    [input.id]: {
+                    [questionID]: {
                       ...last,
                       [option]: !last[option],
                     },
                   },
                 };
               });
-            }
-            }
+            }}
           >
             {value}
           </SurveyButton>

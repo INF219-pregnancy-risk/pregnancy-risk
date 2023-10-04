@@ -2,10 +2,9 @@
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
-import { InputDeclarations, RiskInput, RiskType, Survey } from "@/types/RiskInput";
+import { INPUT, Survey } from "@/types/RiskInput";
 import { resetSurveyUtil } from "@/utils/StoreSurvey";
 import { AnimatePresence, motion } from "framer-motion";
-import { get } from "http";
 import React, { useEffect } from "react";
 
 export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,8 +13,8 @@ export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
   prevSlide: () => void;
   nextSlide: () => void;
   currentSlide: number;
-  SurveyInputs: RiskInput[];
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
+  surveyID: INPUT;
 }
 const SurveyView = ({
   children,
@@ -23,15 +22,12 @@ const SurveyView = ({
   nextSlide,
   prevSlide,
   setSurvey,
-  SurveyInputs,
   currentSlide,
+  surveyID,
 }: SurveyViewProps) => {
-  const [skippedSlides, setSkippedSlides] = React.useState<InputDeclarations[]>([]);
+  const [skippedSlides, setSkippedSlides] = React.useState<INPUT[]>([]);
 
   useEffect(() => {
-    console.log(skippedSlides);
-    console.log(SurveyInputs);
-    console.log(currentSlide);
     setSurvey((prev) => ({
       ...prev,
       skipped: skippedSlides,
@@ -75,7 +71,7 @@ const SurveyView = ({
           className="bg-gray-400 hover:bg-gray-500 duration-200 active:bg-gray-400 active:scale-95"
           onClick={() => {
             setSkippedSlides((prev) =>
-              prev.includes(SurveyInputs[currentSlide].id) ? prev : [...prev, SurveyInputs[currentSlide].id ]
+              prev.includes(surveyID) ? prev : [...prev, surveyID]
             );
             nextSlide();
           }}
@@ -85,7 +81,7 @@ const SurveyView = ({
         <SurveyButton
           disabled={!nextButton}
           onClick={() => {
-            setSkippedSlides((prev) => prev.filter((i) => i !== SurveyInputs[currentSlide].id));
+            setSkippedSlides((prev) => prev.filter((i) => i !== surveyID));
             nextSlide();
           }}
           className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"

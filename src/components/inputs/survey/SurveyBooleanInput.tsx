@@ -1,9 +1,9 @@
-import React from "react";
-import { RiskInputBoolean, Survey, SurveyBoolean } from "@/types/RiskInput";
+import React, { useEffect } from "react";
+import { INPUT, Survey, SurveyBoolean } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
 
 interface SurveyBooleanInputProps {
-  input: RiskInputBoolean;
+  questionID: INPUT;
   nextSlide: () => void;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
@@ -11,26 +11,34 @@ interface SurveyBooleanInputProps {
 }
 
 const SurveyBooleanInput = ({
-  input,
+  questionID,
   setSurvey,
   nextSlide,
   survey,
   setNextButton,
 }: SurveyBooleanInputProps) => {
-  const surveyData = survey.data[input.id] as SurveyBoolean;
+  const surveyData = survey.data[questionID] as SurveyBoolean;
 
-  if (surveyData != undefined) {
-    setNextButton(true);
-  }
-  
+  // disable next button if input is not answered
+  useEffect(() => {
+    if (surveyData !== undefined) {
+      setNextButton(true);
+    } else {
+      setNextButton(false);
+    }
+  }, [surveyData, setNextButton]);
+
+  // handle change
   const handleChange = (bool: boolean) => {
-    setSurvey((prev) => ({
-      ...prev,
-      data: {
-        ...prev.data,
-        [input.id]: bool,
-      }
-    }));
+    setSurvey((prev) => {
+      return {
+        ...prev,
+        data: {
+          ...prev.data,
+          [questionID]: bool,
+        },
+      };
+    });
   };
 
   return (
