@@ -1,6 +1,6 @@
 "use client";
 
-import { RiskInputs, RiskType, Survey } from "@/types/RiskInput";
+import { ID } from "@/types/RiskInput";
 import SurveyParseInput from "@/components/inputs/survey/SurveyParseInput";
 import PageWarpper from "@/components/layout/PageWarpper";
 import SurveyContainer from "@/components/layout/survey/SurveyContainer";
@@ -13,42 +13,7 @@ import {
   setSurveyIndexUtil,
   setSurveyUtil,
 } from "@/utils/StoreSurvey";
-
-const SurveyInputSlides: RiskInputs[] = [
-  {
-    id: "age",
-    label: "What is your age?",
-    type: RiskType.INTEGER,
-    min: 1,
-    max: 10,
-  },
-  {
-    id: "diabetes",
-    label: "Do you have any in your family with diabetes?",
-    type: RiskType.BOOLEAN,
-  },
-  {
-    id: "activity",
-    label: "Do you excerise?",
-    type: RiskType.MULTIPLE,
-    values: {
-      walking: "Walking 20 min a day",
-      running: "Lifting 3 times a week",
-      swimming: "Swimming 2 times a month",
-    },
-  },
-  {
-    id: "etnisity",
-    label: "What is your etnisity?",
-    type: RiskType.CHOICE,
-    options: {
-      white: "White / Something",
-      black: "Black / Afro",
-      asian: "Asian",
-      other: "Other",
-    },
-  },
-];
+import { Survey, SurveyEntries } from "@/types/Survey";
 
 const SurveyPage = () => {
   const [survey, setSurvey] = React.useState<Survey>({ data: {}, skipped: [] });
@@ -82,15 +47,12 @@ const SurveyPage = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prevIndex) => {
-      if (prevIndex === SurveyInputSlides.length - 1) {
+      if (prevIndex === SurveyEntries.length - 1) {
         setIsSubmitted(true);
         return prevIndex;
       }
 
-      const nextSlideIndex = Math.min(
-        prevIndex + 1,
-        SurveyInputSlides.length - 1
-      );
+      const nextSlideIndex = Math.min(prevIndex + 1, SurveyEntries.length - 1);
 
       setNextButton(false);
       return nextSlideIndex;
@@ -104,6 +66,7 @@ const SurveyPage = () => {
   return (
     <PageWarpper>
       <h1 className="pb-4">You are at survey</h1>
+      <p>{JSON.stringify(survey)}</p>
 
       <SurveyContainer index={currentSlide}>
         <SurveyView
@@ -112,20 +75,21 @@ const SurveyPage = () => {
           nextSlide={nextSlide}
           prevSlide={prevSlide}
           currentSlide={currentSlide}
+          surveyID={SurveyEntries[currentSlide][0]}
         >
           {isLoading ? (
             <h1>Loading.....</h1>
           ) : (
-            SurveyInputSlides.map((input, index) => {
+            SurveyEntries.map(([id, ID], index) => {
               return (
                 index == currentSlide && (
                   <SurveyParseInput
-                    key={input.id}
+                    key={id}
                     nextSlide={nextSlide}
                     setNextButton={setNextButton}
                     setSurvey={setSurvey}
                     survey={survey}
-                    input={input}
+                    questionID={id}
                   />
                 )
               );

@@ -1,47 +1,80 @@
-import React from "react";
-import { RiskInputInteger, Survey, SurveyInteger } from "@/types/RiskInput";
+import React, { use, useEffect } from "react";
+import { ID, RiskInputInteger, SurveyQuestions } from "@/types/RiskInput";
+import { Survey, SurveyInteger } from "@/types/Survey";
 
 interface SurveyIntegerInputProps {
-  input: RiskInputInteger;
+  questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SurveyIntegerInput = ({
-  input,
+  questionID,
   setSurvey,
   survey,
   setNextButton,
 }: SurveyIntegerInputProps) => {
+  const surveyData = survey.data[questionID] as SurveyInteger;
+  const input = SurveyQuestions[questionID] as RiskInputInteger;
+
+  // disable next button if input is NaN
+  useEffect(() => {
+    if (isNaN(surveyData)) {
+      setNextButton(false);
+    } else {
+      setNextButton(true);
+    }
+  }, [surveyData, setNextButton]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // only allow numbers
     const re = /^[0-9\b]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
+      let value = parseInt(e.target.value);
+
+      // set min and max if they exist
+      if (input.min) {
+        if (value < input.min) {
+          value = input.min;
+        }
+      }
+
+      if (input.max) {
+        if (value > input.max) {
+          value = input.max;
+        }
+      }
+
+      // if value is NaN, remove the question from the survey
+      if (isNaN(value)) {
+        setSurvey((prev) => {
+          const data = prev.data;
+          delete data[questionID];
+          return {
+            ...prev,
+            data: data,
+          };
+        });
+        return;
+      }
+      // otherwise, set the value
       setSurvey((prev) => ({
         ...prev,
         data: {
           ...prev.data,
-          [input.id]: parseInt(e.target.value) as SurveyInteger,
+          [questionID]: value,
         },
       }));
     }
   };
-
-  const surveyData = survey.data[input.id] as SurveyInteger;
-
-  if (surveyData) {
-    setNextButton(true);
-  }
 
   return (
     <div>
       <input
         type="text"
         className="border-2 border-gray-200 rounded-lg p-2"
-        min={input?.min ? input.min : 0}
-        max={input?.max ? input.max : 9999999999999}
-        value={surveyData ? surveyData : ""}
+        value={!isNaN(surveyData) ? surveyData : ""}
         onChange={handleChange}
       />
     </div>
