@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiskInputChoice, Survey, SurveyChoice } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
 
@@ -18,6 +18,7 @@ const SurveyChoiceInput = ({
   setNextButton,
 }: SurveyChoiceInputProps) => {
   const surveyData = survey.data[input.id] as SurveyChoice;
+  const [showSubQuestions, setShowSubQuestions] = useState(false);
 
   if (surveyData) {
     setNextButton(true);

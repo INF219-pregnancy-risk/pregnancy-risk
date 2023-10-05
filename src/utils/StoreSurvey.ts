@@ -40,7 +40,7 @@ export const setSurveyUtil = (survey: Survey) => {
 export const getSurveyUtil = (): Survey => {
   const survey = getLocalStorage("survey");
 
-  const def = { data: {}, slides: [] } as Survey;
+  const def = { data: {}, subQuestion: {}, slides: [] } as Survey;
 
   if (!survey) return def;
   try {

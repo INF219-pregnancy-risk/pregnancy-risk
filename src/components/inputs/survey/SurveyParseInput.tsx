@@ -22,16 +22,39 @@ interface SurveyInputSlideProps {
   survey: Survey;
   nextSlide: () => void;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
+  showSubQuestions: boolean;
 }
 
-const SurveyParseInput = ({ input, ...props }: SurveyInputSlideProps) => {
+const SurveyParseInput = ({
+  input,
+  showSubQuestions,
+  ...props
+}: SurveyInputSlideProps) => {
   return (
     <>
       <div>
         <h1 className="font-semibold text-2xl">{input.label}</h1>
         <i className="text-base text-gray-500">{getInfo(input)}</i>
       </div>
-      <Parser {...props} input={input} />
+
+      <Parser showSubQuestions={false} {...props} input={input} />
+      {showSubQuestions && input.condition && input.condition.length > 0 && (
+        <div>
+          {input.condition[0].subQuestions.map((subQuestion, index) => {
+            if ("type" in subQuestion && "label" in subQuestion) {
+              return (
+                <div key={index}>
+                  <label>{subQuestion.label}</label>
+                  <Parser showSubQuestions={false} {...props} input={subQuestion as RiskInputs}
+                  />
+                </div>
+              );
+            } else {
+              return <div key={index}>Invalid subQuestion format</div>;
+            }
+          })}
+        </div>
+      )}
     </>
   );
 };
@@ -86,6 +109,7 @@ const Parser = ({
           survey={survey}
         />
       );
+
     default:
       return <div>Error parsing: Input</div>; // Handle unknown types
   }

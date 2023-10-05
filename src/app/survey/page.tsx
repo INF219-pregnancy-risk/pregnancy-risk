@@ -1,6 +1,16 @@
 "use client";
 
-import { RiskInputs, RiskType, Survey } from "@/types/RiskInput";
+import {
+  RiskInputType,
+  RiskInputs,
+  RiskType,
+  Survey,
+  SurveyBoolean,
+  SurveyData,
+  SurveyInteger,
+  SurveyMultiple,
+  SurveySubQuestion,
+} from "@/types/RiskInput";
 import SurveyParseInput from "@/components/inputs/survey/SurveyParseInput";
 import PageWarpper from "@/components/layout/PageWarpper";
 import SurveyContainer from "@/components/layout/survey/SurveyContainer";
@@ -21,11 +31,35 @@ const SurveyInputSlides: RiskInputs[] = [
     type: RiskType.INTEGER,
     min: 1,
     max: 10,
+    condition: [
+      {
+        triggerValue: (value) => value >= 50,
+        subQuestions: [
+          {
+            id: "example 0",
+            label: "example label 0",
+            type: RiskType.BOOLEAN,
+          },
+        ],
+      },
+    ],
   },
   {
     id: "diabetes",
     label: "Do you have any in your family with diabetes?",
     type: RiskType.BOOLEAN,
+    condition: [
+      {
+        triggerValue: (value) => value,
+        subQuestions: [
+          {
+            id: "example 0",
+            label: "example label 0",
+            type: RiskType.BOOLEAN,
+          },
+        ],
+      },
+    ],
   },
   {
     id: "activity",
@@ -36,7 +70,21 @@ const SurveyInputSlides: RiskInputs[] = [
       running: "Lifting 3 times a week",
       swimming: "Swimming 2 times a month",
     },
+    condition: [
+      {
+        triggerValue: (value) =>
+          Object.entries(value).filter(([key, value]) => !value).length > 1,
+        subQuestions: [
+          {
+            id: "example 0",
+            label: "example label 0",
+            type: RiskType.BOOLEAN,
+          },
+        ],
+      },
+    ],
   },
+
   {
     id: "etnisity",
     label: "What is your etnisity?",
@@ -47,11 +95,29 @@ const SurveyInputSlides: RiskInputs[] = [
       asian: "Asian",
       other: "Other",
     },
+    condition: [
+      {
+        triggerValue: (value) => value === "black",
+        subQuestions: [
+          {
+            id: "example 0",
+            label: "example label 0",
+            type: RiskType.BOOLEAN,
+          },
+        ],
+      },
+    ],
   },
 ];
 
+console.log("Subquestions");
+
 const SurveyPage = () => {
-  const [survey, setSurvey] = React.useState<Survey>({ data: {}, skipped: [] });
+  const [survey, setSurvey] = React.useState<Survey>({
+    data: {},
+    skipped: [],
+  });
+  const [showSubQuestions, setShowSubQuestions] = React.useState<boolean>(false);
   const [currentSlide, setCurrentSlide] = React.useState<number>(0);
 
   const [nextButton, setNextButton] = React.useState<boolean>(false);
@@ -79,6 +145,32 @@ const SurveyPage = () => {
   useEffect(() => {
     setSurveyIndexUtil(currentSlide);
   }, [currentSlide]);
+
+  useEffect(() => {
+    console.log("Effect triggered: ", survey, currentSlide);
+
+    if (currentSlide < SurveyInputSlides.length) {
+      const currentInput = SurveyInputSlides[
+        currentSlide
+      ] as RiskInputType<SurveyData>;
+      const currentInputData = survey.data[currentInput.id] as SurveyData;
+
+      console.log("Current Input: ", currentInput);
+      console.log("Current Input Data: ", currentInputData);
+
+      if (currentInput.condition) {
+        for (const condition of currentInput.condition) {
+          if (condition.triggerValue(currentInputData)) {
+            console.log("Condition met, showing subquestions");
+            setShowSubQuestions(true);
+            return;
+          }
+        }
+      }
+    }
+    console.log("No condition met, hiding subquestions");
+    setShowSubQuestions(false);
+  }, [survey, currentSlide]);
 
   const nextSlide = () => {
     setCurrentSlide((prevIndex) => {
@@ -120,12 +212,12 @@ const SurveyPage = () => {
               return (
                 index == currentSlide && (
                   <SurveyParseInput
-                    key={input.id}
-                    nextSlide={nextSlide}
-                    setNextButton={setNextButton}
+                    input={input}
                     setSurvey={setSurvey}
                     survey={survey}
-                    input={input}
+                    nextSlide={nextSlide}
+                    setNextButton={setNextButton}
+                    showSubQuestions={showSubQuestions}
                   />
                 )
               );

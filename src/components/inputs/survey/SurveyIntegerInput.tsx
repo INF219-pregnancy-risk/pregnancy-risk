@@ -1,5 +1,5 @@
 import React from "react";
-import { RiskInputInteger, Survey, SurveyInteger } from "@/types/RiskInput";
+import { RiskInputInteger, Survey, SurveyData, SurveyInteger } from "@/types/RiskInput";
 
 interface SurveyIntegerInputProps {
   input: RiskInputInteger;
@@ -23,6 +23,7 @@ const SurveyIntegerInput = ({
         data: {
           ...prev.data,
           [input.id]: parseInt(e.target.value) as SurveyInteger,
+          
         },
       }));
     }
@@ -44,6 +45,7 @@ const SurveyIntegerInput = ({
         value={surveyData ? surveyData : ""}
         onChange={handleChange}
       />
+      
     </div>
   );
 };
