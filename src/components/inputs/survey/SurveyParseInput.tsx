@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { TYPE, ID, SurveyQuestions, RiskType } from "@/types/RiskInput";
 
 import SurveyIntegerInput from "./SurveyIntegerInput";
@@ -9,16 +9,28 @@ import SurveyMultipleInput from "./SurveyMultipleInput";
 import SurveyChoiceInput from "./SurveyChoiceInput";
 import { Survey } from "@/types/Survey";
 
-interface SurveyInputSlideProps {
+interface SurveyInputSlideProps<T> {
   questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
   nextSlide: () => void;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
+  showSubQuestions: boolean;
+  handleValueChange?: (newValue: T) => void;
 }
 
-const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
+const SurveyParseInput = <T,>({
+  questionID,
+  showSubQuestions,
+  ...props
+}: SurveyInputSlideProps<T>) => {
   const input = SurveyQuestions[questionID];
+  const [currentValue, setCurrentValue] = useState<T | null>(null); // you might want to change any to a more specific type
+
+  // Function to handle value changes
+  const handleValueChange = (newValue: T) => {
+    setCurrentValue(newValue);
+  };
 
   if (!input) {
     return <div>Error parsing: Input</div>;
@@ -30,18 +42,46 @@ const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
         <h1 className="font-semibold text-2xl">{input.label}</h1>
         <i className="text-base text-gray-500">{getInfo(questionID)}</i>
       </div>
-      <Parser {...props} questionID={questionID} />
+
+      <Parser
+        {...props}
+        showSubQuestions={false}
+        questionID={questionID}
+        handleValueChange={handleValueChange}
+      />
+      {showSubQuestions &&
+        input.subquestions &&
+        input.subquestions.length > 0 && (
+          <div>
+            {input.subquestions.map((subQuestion, index) => {
+              if (subQuestion.input[subQuestion.id]?.label) {
+                return (
+                  <div key={index}>
+                    <label>{subQuestion.input[subQuestion.id]?.label}</label>
+                    <Parser
+                      showSubQuestions={false}
+                      {...props}
+                      questionID={subQuestion.id}
+                    />
+                  </div>
+                );
+              } else {
+                return <div key={index}>Invalid subQuestion format</div>;
+              }
+            })}
+          </div>
+        )}
     </>
   );
 };
 
-const Parser = ({
+const Parser = <T,>({
   setSurvey,
   survey,
   setNextButton,
   nextSlide,
   questionID,
-}: SurveyInputSlideProps) => {
+}: SurveyInputSlideProps<T>) => {
   switch (TYPE[questionID]) {
     case RiskType.INTEGER:
       return (

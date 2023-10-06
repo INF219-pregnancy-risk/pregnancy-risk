@@ -16,7 +16,7 @@ const SurveyIntegerInput = ({
   setNextButton,
 }: SurveyIntegerInputProps) => {
   const surveyData = survey.data[questionID] as SurveyInteger;
-  const input = SurveyQuestions[questionID] as RiskInputInteger;
+  const input = SurveyQuestions[questionID] as RiskInputInteger<number>;
 
   // disable next button if input is NaN
   useEffect(() => {

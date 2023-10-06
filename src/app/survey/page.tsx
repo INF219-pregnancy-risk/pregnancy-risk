@@ -18,6 +18,7 @@ import { Survey, SurveyEntries } from "@/types/Survey";
 const SurveyPage = () => {
   const [survey, setSurvey] = React.useState<Survey>({ data: {}, skipped: [] });
   const [currentSlide, setCurrentSlide] = React.useState<number>(0);
+  const [showSubQuestions, setShowSubQuestions] = React.useState<boolean>(false);
 
   const [nextButton, setNextButton] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -90,6 +91,7 @@ const SurveyPage = () => {
                     setSurvey={setSurvey}
                     survey={survey}
                     questionID={id}
+                    showSubQuestions={showSubQuestions}
                   />
                 )
               );

@@ -8,19 +8,27 @@ export type SurveyMultiple = { [key: string]: boolean };
 
 export type SurveyChoice = string;
 
+export type SurveySubQuestion = { [key: string]: SurveyBoolean };
+
 export type SurveyData =
   | SurveyBoolean
   | SurveyInteger
   | SurveyMultiple
-  | SurveyChoice;
+  | SurveyChoice
+  | SurveySubQuestion;
 
-export interface Survey {
-  data: {
-    [key in ID]?: SurveyData;
-  };
-  skipped: ID[];
-}
+  export interface Survey {
+    data: {
+      [key: string]: SurveyData | {
+        value: SurveyData,
+        subQuestions?: {
+          [key: string]: SurveySubQuestion
+        }
+      };
+    };
+    skipped?: number[] | null;
+  }
 
-export const SurveyEntries: [ID, RiskInput][] = Object.entries(
+export const SurveyEntries: [ID, RiskInput<any>][] = Object.entries(
   SurveyQuestions
 ).map(([id, question]) => [id as ID, question]);
