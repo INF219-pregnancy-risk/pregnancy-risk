@@ -60,6 +60,22 @@ export const ID = {
   HYPERTENSION: "HYPERTENSION",
   ACTIVITY: "ACTIVITY",
   ETNISITY: "ETNISITY",
+  SLE_OR_APS: "SLE_OR_APS",
+  GDM: "GDM",
+  POS: "POS",
+  PPE: "PPE",
+  T2DM: "T2DM",
+  SMOKING: "SMOKING",
+  STRESS: "STRESS",
+  PREVIOUS_PRETERM: "PREVIOUS_PRETERM",
+  CERVICAL_SURGERY: "CERVICAL_SURGERY",
+  MULTIPLE_GESTATIONS: "MULTIPLE_GESTATIONS",
+  HEPATITIS_C: "HEPATITIS_C",
+  ECLAMPSIA: "ECLAMPSIA",
+  INFERILITY_TREATMENT: "INFERILITY_TREATMENT",
+  GONORHEA_SYPHILIS: "GONORHEA_SYPHILIS",
+
+
 } as const;
 export type ID = (typeof ID)[keyof typeof ID];
 
@@ -69,9 +85,24 @@ export const TYPE = {
   [ID.WEIGHT]: RiskType.INTEGER,
   [ID.HEIGHT]: RiskType.INTEGER,
   [ID.DIABETES]: RiskType.BOOLEAN,
+  [ID.POS]: RiskType.BOOLEAN,
+  [ID.GDM]: RiskType.BOOLEAN,
+  [ID.PPE]: RiskType.BOOLEAN,
+  [ID.SLE_OR_APS]: RiskType.BOOLEAN,
+  [ID.T2DM]: RiskType.BOOLEAN,
   [ID.HYPERTENSION]: RiskType.BOOLEAN,
+  [ID.SMOKING]: RiskType.BOOLEAN,
+  [ID.STRESS]: RiskType.BOOLEAN,
+  [ID.PREVIOUS_PRETERM]: RiskType.BOOLEAN,
+  [ID.CERVICAL_SURGERY]: RiskType.BOOLEAN,
+  [ID.MULTIPLE_GESTATIONS]: RiskType.BOOLEAN,
+  [ID.HEPATITIS_C]: RiskType.BOOLEAN,
+  [ID.ECLAMPSIA]: RiskType.BOOLEAN,
+  [ID.INFERILITY_TREATMENT]: RiskType.BOOLEAN,
+  [ID.GONORHEA_SYPHILIS]: RiskType.BOOLEAN,
   [ID.ACTIVITY]: RiskType.MULTIPLE,
   [ID.ETNISITY]: RiskType.CHOICE,
+  
 } as const;
 const _ = ensureAllIdsAreUsed(TYPE); // If TYPE does not cover all IDs, TypeScript will throw an error here.
 export type TYPE = (typeof TYPE)[keyof typeof TYPE];
