@@ -1,6 +1,7 @@
 "use client";
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
+import { Survey } from "@/types/Survey";
 import { getSurveyUtil } from "@/utils/StoreSurvey";
 import React from "react";
 

@@ -18,8 +18,8 @@ type SurveyQuestionsType = {
 export const RiskType = {
   INTEGER: "INTEGER",
   BOOLEAN: "BOOLEAN",
-  MULTIPLE: "MULIPLE",
   CHOICE: "CHOICE",
+  MULTIPLE: "MULTIPLE",
 } as const;
 export type RiskType = (typeof RiskType)[keyof typeof RiskType];
 

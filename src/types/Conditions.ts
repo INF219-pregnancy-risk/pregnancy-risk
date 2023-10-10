@@ -1,6 +1,6 @@
 
 import { ID, RiskType, TYPE } from "./RiskInput";
-import { Survey, SurveyBoolean, SurveyChoice, SurveyInteger, SurveyMultiple } from "./Survey";
+import { Survey, SurveyBoolean, SurveyChoice, SurveyData, SurveyInteger, SurveyMultiple } from "./Survey";
 
 export interface Condition {
   name: string;
@@ -65,45 +65,53 @@ const Conditions: ConditionsType = {
   },
 };
 
-const calculateRisk = (survey: Survey) => {
-  const results = [];
+type RiskTypeToFactor = {
 
-  Object.entries(ComplicationFactors).map(([id, factors]) => {
-    let risk = Conditions[id].baseRisk
+  [RiskType.BOOLEAN]: FactorBool;
+  [RiskType.INTEGER]: FactorInteger;
+  [RiskType.CHOICE]: FactorString;
+  [RiskType.MULTIPLE]: FactorMultiple;
+};
 
-    factors.map(factor => {
-      let factorParsed = null;
-      switch (factor.type) {
-        case RiskType.BOOLEAN:
-          factorParsed = factor as FactorBool;
-          break;
-        case RiskType.INTEGER:
-          factorParsed = factor as FactorInteger;
-          break;
-        case RiskType.CHOICE:
-          factorParsed = factor as FactorString;
-          break;
-       /* case RiskType.MULTIPLE:
-          factorParsed = factor as FactorMultiple;
-          break;
-          */
+type RiskTypeToValue = {
+  [RiskType.BOOLEAN]: SurveyBoolean;
+  [RiskType.INTEGER]: SurveyInteger;
+  [RiskType.CHOICE]: SurveyChoice;
+  [RiskType.MULTIPLE]: SurveyMultiple;
+};
+
+const calculateRisk = (survey: Survey): any[] => {
+  const results: any[] = [];
+
+  Object.entries(ComplicationFactors).forEach(([complicationId, factors]) => {
+    let risk = 0;
+    const missingFactors: string[] = [];
+
+    factors.forEach(factor => {
+      const surveyValue = survey.data[factor.id] as RiskTypeToValue[typeof factor.type];
+      const factorTyped = factor as RiskTypeToFactor[typeof factor.type];
+      
+      if (surveyValue === undefined) {
+        missingFactors.push(factor.id);
+        return; 
       }
-    })
-  });    
 
-  return [
-    {
-      id: "hypertension",
-      score: 56,
-      missing: ["age", "weight", "height", "familyHistoryHypertension"],
-    },
-    {
-      id: "diabetes",
-      score: 12,
-      missing: [],
-    },
-  ]
-}
+      if (factorTyped.condition(surveyValue)) {
+        risk += factor.multiplier;
+      }
+    });
+
+    results.push({
+      id: complicationId,
+      score: risk,
+      missing: missingFactors,
+    });
+  });
+
+  return results;
+};
+
+
 
 type ComplicationSet = FactorBool | FactorInteger | FactorString | FactorMultiple;
 
@@ -111,62 +119,68 @@ const gdmFactors = [
   {
     id: ID.AGE,
     type: RiskType.INTEGER,
-    condition: (value: number) => value >= 26 && value <= 35, 
+    condition: (value: SurveyInteger) => value >= 26 && value <= 35, 
     multiplier: 2
   },
   {
     id: ID.AGE,
     type: RiskType.INTEGER,
-    condition: (value: number) => value > 35, 
+    condition: (value: SurveyInteger) => value > 35, 
     multiplier: 3
   },
   {
     id: ID.DIABETES,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value,
+    condition: (value: SurveyBoolean) => value,
     multiplier: 3
   },
   {
     id: ID.GDM,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value,
+    condition: (value: SurveyBoolean) => value,
     multiplier: 10
   },
  
   {
     id: ID.ETNISITY,
     type: RiskType.CHOICE,
-    condition: (value: string) => value !== "WHITE",
+    condition: (value: SurveyChoice) => value !== "WHITE",
+    multiplier: 2.5
+  },
+  {
+    id: ID.POS,
+    type: RiskType.MULTIPLE,
+    condition: (value: SurveyMultiple) => value["WHITE"] && value["AFRICAN"],
     multiplier: 2.5
   },
   {
     id: ID.POS,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value,
+    condition: (value: SurveyBoolean) => value,
     multiplier: 2.5
   },
   {
     id: ID.HYPERTENSION,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value,
+    condition: (value: SurveyBoolean) => value,
     multiplier: 2.5
   },
   {
     id: ID.ACTIVITY,
     type: RiskType.CHOICE,
-    condition: (value: string) => value === "LOW",
+    condition: (value: SurveyChoice) => value === "LOW",
     multiplier: 1
   },
   {
     id: ID.ACTIVITY,
     type: RiskType.CHOICE,
-    condition: (value: string) => value === "MEDIUM",
+    condition: (value: SurveyChoice) => value === "MEDIUM",
     multiplier: 2
   },
   {
     id: ID.ACTIVITY,
     type: RiskType.CHOICE,
-    condition: (value: string) => value === "HIGH",
+    condition: (value: SurveyChoice) => value === "HIGH",
     multiplier: 3
   }
 ];
@@ -175,38 +189,38 @@ const preeclampsiaFactors = [
   {
     id: ID.HYPERTENSION,
     type: RiskType.CHOICE,
-    condition: (value: string) => value === "CHRONIC",
+    condition: (value: SurveyChoice) => value === "CHRONIC",
     multiplier: 6
   },
   {
     id: ID.HYPERTENSION,
     type: RiskType.CHOICE,
-    condition: (value: string) => value === "YES",
+    condition: (value: SurveyChoice) => value === "YES",
     multiplier: 2
   },
 
   {
     id: ID.ETNISITY,
     type: RiskType.CHOICE,
-    condition: (value: string) => value === "Afro-Caribbean",
+    condition: (value: SurveyChoice) => value === "Afro-Caribbean",
     multiplier: 2.5
   },
   {
     id: ID.PPE,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value ,
+    condition: (value: SurveyBoolean) => value ,
     multiplier: 6
   },
   {
     id: ID.SLE_OR_APS,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value ,
+    condition: (value: SurveyBoolean) => value ,
     multiplier: 2
   },
   {
     id: ID.T2DM,
     type: RiskType.BOOLEAN,
-    condition: (value: boolean) => value,
+    condition: (value: SurveyBoolean) => value,
     multiplier: 1
   }
 ];
@@ -214,56 +228,56 @@ const preeclampsiaFactors = [
     {
       id: ID.AGE,
       type: RiskType.INTEGER,
-      condition: (value: number) => value > 35, 
+      condition: (value: SurveyInteger) => value > 35, 
       multiplier: 1.4
     },
     {
       id: ID.ETNISITY,
       type: RiskType.CHOICE,
-      condition: (value: string) => value === "BLACK",
+      condition: (value: SurveyChoice) => value === "BLACK",
       multiplier: 1.4
     },
     /* bmi */
     {
       id: ID.SMOKING,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value,
+      condition: (value: SurveyBoolean) => value,
       multiplier: 1.4
     },
     {
       id: ID.STRESS,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value,
+      condition: (value: SurveyBoolean) => value,
       multiplier: 2
     },
     {
       id: ID.PREVIOUS_PRETERM,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value ,
+      condition: (value: SurveyBoolean) => value ,
       multiplier: 5
     },
     {
       id: ID.CERVICAL_SURGERY,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value,
+      condition: (value: SurveyBoolean) => value,
       multiplier: 1
     },
     {
       id: ID.MULTIPLE_GESTATIONS,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value,
+      condition: (value: SurveyBoolean) => value,
       multiplier: 10
     },
     {
       id: ID.HEPATITIS_C,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value,
+      condition: (value: SurveyBoolean) => value,
       multiplier: 2
     },
     {
       id: ID.DIABETES,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value ,
+      condition: (value: SurveyBoolean) => value ,
       multiplier: 4
     },
     {
@@ -275,25 +289,25 @@ const preeclampsiaFactors = [
     {
       id: ID.HYPERTENSION,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value ,
+      condition: (value: SurveyBoolean) => value ,
       multiplier: 3
     },
     {
       id: ID.ECLAMPSIA,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value ,
+      condition: (value: SurveyBoolean) => value ,
       multiplier: 7
     },
     {
       id: ID.INFERILITY_TREATMENT,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value ,
+      condition: (value: SurveyBoolean) => value ,
       multiplier: 5
     },
     {
       id: ID.GONORHEA_SYPHILIS,
       type: RiskType.BOOLEAN,
-      condition: (value: boolean) => value,
+      condition: (value: SurveyBoolean) => value,
       multiplier: 1.5
     },
   ];
