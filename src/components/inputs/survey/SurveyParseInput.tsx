@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { TYPE, ID, SurveyQuestions, RiskType } from "@/types/RiskInput";
+import { TYPE, ID, SurveyQuestions, RiskType, SurveyQuestionsType, RiskInput, RiskInputSubQuestion } from "@/types/RiskInput";
 
 import SurveyIntegerInput from "./SurveyIntegerInput";
 import SurveyBooleanInput from "./SurveyBooleanInput";
@@ -13,18 +13,19 @@ interface SurveyInputSlideProps<T> {
   questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
+  questions: SurveyQuestionsType;
   nextSlide: () => void;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
-  showSubQuestions: boolean;
   handleValueChange?: (newValue: T) => void;
 }
 
 const SurveyParseInput = <T,>({
   questionID,
-  showSubQuestions,
+  survey,
+  questions,
   ...props
 }: SurveyInputSlideProps<T>) => {
-  const input = SurveyQuestions[questionID];
+  const input = questions[questionID];
   const [currentValue, setCurrentValue] = useState<T | null>(null); // you might want to change any to a more specific type
 
   // Function to handle value changes
@@ -45,31 +46,40 @@ const SurveyParseInput = <T,>({
 
       <Parser
         {...props}
-        showSubQuestions={false}
+        survey={survey}
+        questions={SurveyQuestions}
         questionID={questionID}
         handleValueChange={handleValueChange}
       />
-      {showSubQuestions &&
+      {
         input.subquestions &&
-        input.subquestions.length > 0 && (
-          <div>
+         (
+          <>
+          {survey.data[questionID]}
             {input.subquestions.map((subQuestion, index) => {
-              if (subQuestion.input[subQuestion.id]?.label) {
+              const subQuestionID = subQuestion as RiskInputSubQuestion<boolean | string | number | { [key: string]: boolean }>;
+              if(survey.data[questionID] === undefined) return null;
+              if (subQuestionID.surveyConditionTriggerValue(survey.data[questionID] as boolean | string | number | { [key: string]: boolean })) {
                 return (
-                  <div key={index}>
-                    <label>{subQuestion.input[subQuestion.id]?.label}</label>
-                    <Parser
-                      showSubQuestions={false}
-                      {...props}
-                      questionID={subQuestion.id}
-                    />
-                  </div>
+                  Object.entries(subQuestion.input).map(([option, value]) => {
+                    return (
+                      <SurveyParseInput
+                        {...props}
+                        key={option}
+                        questionID={option as ID}
+                        survey={survey}
+                        questions={subQuestion.input}
+                        handleValueChange={handleValueChange}
+                      />
+                    );
+                  }
+                  )
                 );
               } else {
-                return <div key={index}>Invalid subQuestion format</div>;
+                return null;
               }
             })}
-          </div>
+          </>
         )}
     </>
   );

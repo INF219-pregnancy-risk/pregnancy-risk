@@ -17,7 +17,7 @@ const SurveyMultipleInput = ({
   setNextButton,
 }: SurveyMultipleInputProps) => {
   const surveyData = survey.data[questionID] as SurveyMultiple;
-  const input = SurveyQuestions[questionID] as RiskInputMultiple< {[key: string]: boolean }>;
+  const input = SurveyQuestions[questionID] as RiskInputMultiple;
 
   useEffect(() => {
     if (!surveyData) {

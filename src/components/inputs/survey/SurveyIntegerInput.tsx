@@ -16,7 +16,7 @@ const SurveyIntegerInput = ({
   setNextButton,
 }: SurveyIntegerInputProps) => {
   const surveyData = survey.data[questionID] as SurveyInteger;
-  const input = SurveyQuestions[questionID] as RiskInputInteger<number>;
+  const input = SurveyQuestions[questionID] as RiskInputInteger;
 
   // disable next button if input is NaN
   useEffect(() => {
@@ -34,13 +34,13 @@ const SurveyIntegerInput = ({
       let value = parseInt(e.target.value);
 
       // set min and max if they exist
-      if (input.min) {
+      if (input?.min) {
         if (value < input.min) {
           value = input.min;
         }
       }
 
-      if (input.max) {
+      if (input?.max) {
         if (value > input.max) {
           value = input.max;
         }

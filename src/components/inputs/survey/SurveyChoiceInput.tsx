@@ -19,7 +19,7 @@ const SurveyChoiceInput = ({
   setNextButton,
 }: SurveyChoiceInputProps) => {
   const surveyData = survey.data[questionID] as SurveyChoice;
-  const input = SurveyQuestions[questionID] as RiskInputChoice<string>; // la til <string> her
+  const input = SurveyQuestions[questionID] as RiskInputChoice; // la til <string> her
 
   useEffect(() => {
     if (!surveyData) {

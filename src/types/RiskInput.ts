@@ -5,7 +5,7 @@ function ensureAllIdsAreUsed<T extends { [K in keyof typeof ID]: any }>(
   return obj;
 }
 // Type of survey questions
-type SurveyQuestionsType = {
+export type SurveyQuestionsType = {
   [K in keyof typeof TYPE]?: RiskInputs[(typeof TYPE)[K]];
 };
 
@@ -30,37 +30,33 @@ export interface RiskInput<T> {
 }
 
 export interface RiskInputSubQuestion<T> {
-  id: ID;
   surveyConditionTriggerValue: (value: T) => boolean;
   input: SurveyQuestionsType;
 }
 // Integer riskinput
-export interface RiskInputInteger<T> extends RiskInput<T> {
+export interface RiskInputInteger extends RiskInput<number> {
   value?: number;
-  subquestions?: RiskInputSubQuestion<T>[];
   min?: number;
   max?: number;
   
 }
 // Multiple riskinput
-export interface RiskInputMultiple<T> extends RiskInput<T> {
+export interface RiskInputMultiple extends RiskInput<{ [key: string]: boolean }> {
   values: { [key: string]: string };
-  subquestions: RiskInputSubQuestion<T>[];
 }
 // Choice riskinput
-export interface RiskInputChoice<T> extends RiskInput<T> {
+export interface RiskInputChoice extends RiskInput<string> {
   options: { [key: string]: string };
-  subquestions: RiskInputSubQuestion<T>[];
 }
 // Boolean riskinput
-export interface RiskInputBoolean<T> extends RiskInput<T> {}
+export interface RiskInputBoolean extends RiskInput<boolean> {}
 
 // Map risktype to riskinput
 export type RiskInputs = {
-  [RiskType.INTEGER]: RiskInputInteger<number>;
-  [RiskType.BOOLEAN]: RiskInputBoolean<boolean>;
-  [RiskType.MULTIPLE]: RiskInputMultiple<{ [key: string]: boolean }>;
-  [RiskType.CHOICE]: RiskInputChoice<string>;
+  [RiskType.INTEGER]: RiskInputInteger;
+  [RiskType.BOOLEAN]: RiskInputBoolean;
+  [RiskType.MULTIPLE]: RiskInputMultiple;
+  [RiskType.CHOICE]: RiskInputChoice;
 };
 
 // ID of riskinputs, !! must be caps !!
@@ -72,6 +68,7 @@ export const ID = {
   HYPERTENSION: "HYPERTENSION",
   ACTIVITY: "ACTIVITY",
   ETNISITY: "ETNISITY",
+  EXTRA: "EXTRA",
 } as const;
 export type ID = (typeof ID)[keyof typeof ID];
 
@@ -84,18 +81,17 @@ export const TYPE = {
   [ID.HYPERTENSION]: RiskType.BOOLEAN,
   [ID.ACTIVITY]: RiskType.MULTIPLE,
   [ID.ETNISITY]: RiskType.CHOICE,
+  [ID.EXTRA]: RiskType.INTEGER,
 } as const;
 
 const _ = ensureAllIdsAreUsed(TYPE); // If TYPE does not cover all IDs, TypeScript will throw an error here.
 export type TYPE = (typeof TYPE)[keyof typeof TYPE];
 
 const createSubQuestion = <T>(
-  id: ID,
   surveyConditionTriggerValue: (value: T) => boolean,
   input: SurveyQuestionsType
 ): RiskInputSubQuestion<T> => {
   return {
-    id,
     surveyConditionTriggerValue,
     input,
   };
@@ -107,11 +103,28 @@ export const SurveyQuestions: SurveyQuestionsType = {
     label: "What is your age?",
     subquestions: [
       createSubQuestion<number>( // Fill in type
-        ID.WEIGHT,
         (value) => value > 50, // Fill in condition
         {
+          [ID.EXTRA]: { //  create or Change to actual subquestion ID
+            label: "Subquestion related to age1?",
+          },
+        }
+      ),
+      createSubQuestion<number>( // Fill in type
+        (value) => value >= 50 && value <= 60, // Fill in condition
+        {
           [ID.WEIGHT]: { //  create or Change to actual subquestion ID
-            label: "Subquestion related to age?",
+            label: "Subquestion related to age2?",
+            min: 50,
+            max: 200,
+          },
+        }
+      ),
+      createSubQuestion<number>( // Fill in type
+        (value) => value <= 50, // Fill in condition
+        {
+          [ID.WEIGHT]: { //  create or Change to actual subquestion ID
+            label: "Subquestion related to age3?",
             min: 50,
             max: 200,
           },
@@ -124,7 +137,6 @@ export const SurveyQuestions: SurveyQuestionsType = {
     label: "What is your weight in kg?",
     subquestions: [
       createSubQuestion<number>( // Fill in type
-        ID.HEIGHT,
         (value) => value >= 180, // Fill in condition
         {
           [ID.HEIGHT]: { //  create or Change to actual subquestion ID
@@ -141,11 +153,10 @@ export const SurveyQuestions: SurveyQuestionsType = {
     label: "What is your height in cm?",
     subquestions: [
       createSubQuestion( // Fill in type
-        ID.WEIGHT,
         () => true, // Fill in condition
         {
           [ID.HEIGHT]: { //  create or Change to actual subquestion ID
-            label: "subquestion to height?",
+              label: "subquestion to height?",
             min: 100,
             max: 200,
           },
@@ -158,8 +169,7 @@ export const SurveyQuestions: SurveyQuestionsType = {
     label: "Do you have diabetes?",
     subquestions: [
       createSubQuestion( // Fill in type
-        ID.WEIGHT,
-        () => true, // Fill in condition
+        (value) => value, // Fill in condition
         {
           [ID.DIABETES]: { //  create or Change to actual subquestion ID
             label: "subquestion to diabetes?",
@@ -173,7 +183,6 @@ export const SurveyQuestions: SurveyQuestionsType = {
     label: "Do you have hypertension?",
     subquestions: [
       createSubQuestion( // Fill in type
-        ID.WEIGHT,
         () => true, // Fill in condition
         {
           [ID.HYPERTENSION]: { //  create or Change to actual subquestion ID
@@ -193,7 +202,6 @@ export const SurveyQuestions: SurveyQuestionsType = {
     },
     subquestions: [
       createSubQuestion(  // Fill in type
-        ID.WEIGHT,
         () => true, // Fill in condition
         {
           [ID.WEIGHT]: { //  create or Change to actual subquestion ID
@@ -217,7 +225,6 @@ export const SurveyQuestions: SurveyQuestionsType = {
     },
     subquestions: [
       createSubQuestion( // Fill in type
-        ID.WEIGHT,
         () => true, // Fill in condition
         {
           [ID.HEIGHT]: { //  create or Change to actual subquestion ID
