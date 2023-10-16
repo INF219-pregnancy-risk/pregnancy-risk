@@ -23,11 +23,22 @@
 
   --background-color: #e9e9e9;
 
-  --main-size: 1200px;
+  --main-size: 1000px;
   --main-padding: 1rem;
 }
 
 body {
   color: var(--text-primary);
   background-color: var(--background-color);
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(var(--main-padding, 0), 1fr) minmax(0, var(--main-size, 800px))
+    minmax(var(--main-padding, 0), 1fr);
+}
+
+.grid-layout > * {
+  grid-column: 2;
 }

@@ -63,7 +63,7 @@ const SurveyMultipleInput = ({
                     ...prev.data,
                     [questionID]: {
                       ...last,
-                      [option]: !last[option],
+                      [option]: last ? !last[option] : true,
                     },
                   },
                 };

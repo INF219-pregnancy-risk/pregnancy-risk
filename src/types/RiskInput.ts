@@ -1,29 +1,17 @@
-// Ensure all IDs are used in TYPE
-function ensureAllIdsAreUsed<T extends { [K in keyof typeof ID]: any }>(
-  obj: T
-): T {
-  return obj;
+export enum RiskType {
+  INTEGER = "INTEGER",
+  BOOLEAN = "BOOLEAN",
+  MULTIPLE = "MULTIPLE",
+  CHOICE = "CHOICE",
 }
-// Type of survey questions
-type SurveyQuestionsType = {
-  [K in keyof typeof TYPE]?: RiskInputs[(typeof TYPE)[K]];
+
+type RiskInputTYPE<T extends ID> = {
+  [RiskType.INTEGER]: RiskInputInteger;
+  [RiskType.BOOLEAN]: RiskInputBoolean;
+  [RiskType.MULTIPLE]: RiskInputMultiple;
+  [RiskType.CHOICE]: RiskInputChoice;
 };
 
-/**
- * Type of risk input !! mustbe caps !!
- * @enum {string}
- * @readonly
- *
- */
-export const RiskType = {
-  INTEGER: "INTEGER",
-  BOOLEAN: "BOOLEAN",
-  MULTIPLE: "MULIPLE",
-  CHOICE: "CHOICE",
-} as const;
-export type RiskType = (typeof RiskType)[keyof typeof RiskType];
-
-// All riskinputs have this
 export interface RiskInput {
   label: string;
 }
@@ -34,74 +22,83 @@ export interface RiskInputInteger extends RiskInput {
 }
 // Multiple riskinput
 export interface RiskInputMultiple extends RiskInput {
-  values: { [key: string]: string };
+  values: Record<string, string>;
 }
 // Choice riskinput
 export interface RiskInputChoice extends RiskInput {
-  options: { [key: string]: string };
+  options: Record<string, string>;
 }
 // Boolean riskinput
 export interface RiskInputBoolean extends RiskInput {}
 
-// Map risktype to riskinput
-export type RiskInputs = {
-  [RiskType.INTEGER]: RiskInputInteger;
-  [RiskType.BOOLEAN]: RiskInputBoolean;
-  [RiskType.MULTIPLE]: RiskInputMultiple;
-  [RiskType.CHOICE]: RiskInputChoice;
+const ID_DECLARATION = {
+  AGE: RiskType.INTEGER,
+  WEIGHT: RiskType.INTEGER,
+  HEIGHT: RiskType.INTEGER,
+  DIABETES: RiskType.BOOLEAN,
+  HYPERTENSION: RiskType.CHOICE,
+  ACTIVITY: RiskType.MULTIPLE,
+  ETNISITY: RiskType.CHOICE,
+  SLE_OR_APS: RiskType.BOOLEAN,
+  GDM: RiskType.BOOLEAN,
+  POS: RiskType.MULTIPLE,
+  PPE: RiskType.BOOLEAN,
+  T2DM: RiskType.BOOLEAN,
+  SMOKING: RiskType.BOOLEAN,
+  STRESS: RiskType.BOOLEAN,
+  PREVIOUS_PRETERM: RiskType.BOOLEAN,
+  CERVICAL_SURGERY: RiskType.BOOLEAN,
+  MULTIPLE_GESTATIONS: RiskType.BOOLEAN,
+  HEPATITIS_C: RiskType.BOOLEAN,
+  ECLAMPSIA: RiskType.BOOLEAN,
+  INFERILITY_TREATMENT: RiskType.BOOLEAN,
+  GONORHEA_SYPHILIS: RiskType.BOOLEAN,
+} as const;
+
+export type ID = BOOLEANS | INTEGERS | MULTIPLES | CHOICES;
+
+export const ID = Object.freeze(
+  Object.keys(ID_DECLARATION).reduce(
+    (acc, key) => ({ ...acc, [key]: key }),
+    {}
+  ) as { [key in ID]: key }
+);
+
+export const TYPE = ID_DECLARATION;
+
+type SurveyQuestionsType = {
+  [K in ID]?: RiskInputTYPE<K>[(typeof ID_DECLARATION)[K]];
 };
 
-// ID of riskinputs, !! must be caps !!
-export const ID = {
-  AGE: "AGE",
-  WEIGHT: "WEIGHT",
-  HEIGHT: "HEIGHT",
-  DIABETES: "DIABETES",
-  HYPERTENSION: "HYPERTENSION",
-  ACTIVITY: "ACTIVITY",
-  ETNISITY: "ETNISITY",
-} as const;
-export type ID = (typeof ID)[keyof typeof ID];
-
-// Map ID to risktype
-export const TYPE = {
-  [ID.AGE]: RiskType.INTEGER,
-  [ID.WEIGHT]: RiskType.INTEGER,
-  [ID.HEIGHT]: RiskType.INTEGER,
-  [ID.DIABETES]: RiskType.BOOLEAN,
-  [ID.HYPERTENSION]: RiskType.BOOLEAN,
-  [ID.ACTIVITY]: RiskType.MULTIPLE,
-  [ID.ETNISITY]: RiskType.CHOICE,
-} as const;
-const _ = ensureAllIdsAreUsed(TYPE); // If TYPE does not cover all IDs, TypeScript will throw an error here.
-export type TYPE = (typeof TYPE)[keyof typeof TYPE];
-
-// Survey questions
-export const SurveyQuestions: SurveyQuestionsType = {
+export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
+  [ID.GDM]: {
+    label: "Do you have a history of GDM?",
+  },
   [ID.AGE]: {
     label: "What is your age?",
   },
   [ID.WEIGHT]: {
     label: "What is your weight?",
-    min: 50,
-    max: 200,
   },
   [ID.HEIGHT]: {
     label: "What is your height?",
-    min: 100,
-    max: 250,
   },
   [ID.DIABETES]: {
     label: "Do you have diabetes?",
   },
   [ID.HYPERTENSION]: {
     label: "Do you have hypertension?",
+    options: {
+      CHRONIC: "Chronic",
+      GESTATIONAL: "Gestational",
+      NONE: "None",
+    },
   },
   [ID.ACTIVITY]: {
     label: "Select your activity level:",
     values: {
       LOW: "Low",
-      MODERATE: "Moderate",
+      MEDIUM: "Medium",
       HIGH: "High",
     },
   },
@@ -110,9 +107,33 @@ export const SurveyQuestions: SurveyQuestionsType = {
     options: {
       ASIAN: "Asian",
       BLACK: "Black",
-      WHITE: "White",
+      CAUCASIAN: "Caucasian",
       HISPANIC: "Hispanic",
       OTHER: "Other",
     },
   },
-};
+} as const;
+
+export type BOOLEANS = {
+  [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.BOOLEAN
+    ? key
+    : never;
+}[keyof typeof ID_DECLARATION];
+
+export type INTEGERS = {
+  [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.INTEGER
+    ? key
+    : never;
+}[keyof typeof ID_DECLARATION];
+
+export type MULTIPLES = {
+  [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.MULTIPLE
+    ? key
+    : never;
+}[keyof typeof ID_DECLARATION];
+
+export type CHOICES = {
+  [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.CHOICE
+    ? key
+    : never;
+}[keyof typeof ID_DECLARATION];
