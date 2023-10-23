@@ -44,7 +44,9 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
                   affect your risk score.
                 </i>
                 {value.missingFactors.map((factor) => (
-                  <span className="text-xs mb-1 font-bold">{factor}</span>
+                  <span className="text-xs mb-1 font-bold" key={factor}>
+                    {factor}
+                  </span>
                 ))}
               </motion.div>
             )}
