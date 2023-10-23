@@ -29,7 +29,7 @@ const ResultsPage = () => {
               className="w-full flex flex-col gap-4 mt-8"
             >
               {calculations.map((res) => {
-                return <ResultComponent id={res.id} value={res} />;
+                return <ResultComponent id={res.id} value={res} key={res.id} />;
               })}
             </motion.div>
           ) : (
