@@ -2,6 +2,7 @@
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
+import { ID, TYPE } from "@/types/RiskInput";
 import { resetSurveyUtil } from "@/utils/StoreSurvey";
 
 import React from "react";
@@ -10,6 +11,8 @@ export default function Home() {
   const [checked, setChecked] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [disabled, setDisabled] = React.useState<boolean>(false);
+
+  console.log(TYPE[ID.ACTIVITY]);
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-6 justify-center">

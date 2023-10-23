@@ -1,73 +1,56 @@
 "use client";
 
 import LinkButton from "@/components/inputs/buttons/LinkButton";
+import ResultComponent from "@/components/inputs/survey/ResultComponent";
+import { CID, CalculateRisk, Factors, ResultType } from "@/types/Conditions";
 import { getSurveyUtil } from "@/utils/StoreSurvey";
-import React from "react";
+import React, { useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const ResultsPage = () => {
-  const survey = {
-    data: {
-      age: 34,
-      weight: 65,
-      height: 180,
-      polycysticOvarySyndrome: true,
-      highBloodPressure: true,
-      familyHistoryHypertension: true,
-      familyHistoryDiabetes: false,
-      activity: { walking: false, running: true, swimming: true },
-      etnisity: "white",
-    },
-    skipped: ["diabetes"],
-  };
+  const [calculations, setCalculation] = React.useState<ResultType[]>([]);
+
+  useEffect(() => {
+    const survey = getSurveyUtil();
+    const results = CalculateRisk(survey);
+    setCalculation(results);
+  }, []);
 
   return (
-    <div className="flex flex-col w-screen justify-center items-center h-screen gap-8">
-      <h1>Results</h1>
-      <p className="break-words">
-        You answered: {parse(getSurveyUtil()?.data)}
-      </p>
-      <p className="break-words">
-        You skipped: {JSON.stringify(getSurveyUtil()?.skipped)}
-      </p>
-      <p>Thank you for taking the survey!</p>
-
-      <LinkButton href="/survey">Back to survey</LinkButton>
-      <LinkButton href="/">Back to home</LinkButton>
+    <div className="grid-layout gap-4">
+      <div className="w-full gap-6 flex flex-col h-max min-h-screen relative items-center justify-center">
+        <AnimatePresence mode="wait">
+          {calculations.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="w-full flex flex-col gap-4 mt-8"
+            >
+              {calculations.map((res) => {
+                return <ResultComponent id={res.id} value={res} key={res.id} />;
+              })}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="w-full flex flex-col gap-4 justify-center items-center"
+            >
+              <div className="w-10 h-10 border-b-blue-500 border-black/20 border-[6px] rounded-full animate-spin" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="transition-opacity duration-300 flex gap-4 p-2 bg-gray-200 rounded-lg bottom-2 left-0 opacity-100 hover:opacity-100">
+        <LinkButton href="/survey">Back</LinkButton>
+        <LinkButton href="/">Home</LinkButton>
+      </div>
     </div>
   );
-};
-
-const parse = (data: object | undefined) => {
-  return Object.entries(data || {}).map(([key, value]) => {
-    if (typeof value === "object") {
-      return (
-        <p key={key}>
-          <span
-            style={{
-              color: "orange",
-            }}
-          >
-            {key}
-          </span>
-          : {"{"}
-          <div style={{ marginLeft: "1rem" }}>{parse(value)}</div>
-          {"}"}
-        </p>
-      );
-    }
-    return (
-      <p key={key}>
-        <span
-          style={{
-            color: "blue",
-          }}
-        >
-          {key}
-        </span>
-        {`: ${value}`}
-      </p>
-    );
-  });
 };
 
 export default ResultsPage;
