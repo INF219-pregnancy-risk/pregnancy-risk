@@ -12,19 +12,38 @@
   .grid-layout {
     display: grid;
     grid-template-columns:
-      minmax(var(--grid-layout-padding, 0), auto) minmax(
+      minmax(var(--grid-layout-padding, 0), 1fr) minmax(
         0,
         var(--grid-layout-size, 1000px)
       )
-      minmax(var(--grid-layout-padding, 0), auto);
+      minmax(var(--grid-layout-padding, 0), 1fr);
   }
 
-  .grid-layout > *:not(.full-width) {
+  .grid-layout > *:not(.span-full),
+  .grid-layout > *:not(.span-left),
+  .grid-layout > *:not(.span-right) {
     grid-column: 2;
   }
 
-  .grid-layout > .full-width {
+  .grid-layout > .span-full {
     grid-column: 1 / -1;
+  }
+
+  .grid-layout > .span-left {
+    grid-column: 1 / span 1;
+  }
+
+  .grid-layout > .span-right {
+    grid-column: 3 / span 1;
+  }
+
+  .scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
@@ -145,7 +164,8 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
+  body,
+  html {
+    @apply bg-background text-foreground w-full h-full overflow-hidden;
   }
 }

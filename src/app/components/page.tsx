@@ -20,12 +20,28 @@ const ComponentsPage = () => {
 
   return (
     <>
+      <section className="grid-layout w-full py-8 gap-4">
+        <h1 className="text-4xl font-bold">Grid layout</h1>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-left rounded-md h-12">
+          This is only left
+        </div>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex rounded-md h-12">
+          This is normal span
+        </div>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-right rounded-md h-12">
+          This is only right
+        </div>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-full rounded-md h-12">
+          This span the whole width
+        </div>
+      </section>
+
       <section className="grid-layout gap-6 light bg-background text-foreground py-8">
         <h1 className="text-4xl font-bold">LightMode</h1>
         <h2 className="text-2xl font-bold">Control Panel</h2>
-        <div className="bg-muted text-muted-foreground p-4 rounded-xl gap-2 flex flex-col">
+        <div className="bg-card text-card-foreground p-4 rounded-xl gap-2 flex flex-col">
           <section className="border-2 p-2 rounded-lg flex flex-col gap-4  flex-wrap">
-            <h2 className="underline">Buttons</h2>
+            <h2 className="font-bold">Buttons</h2>
             <h3>States</h3>
             <div className="flex gap-4 flex-wrap">
               {["checked", "loading", "disabled"].map((c) => {
@@ -151,7 +167,7 @@ const ComponentsPage = () => {
           })}
         </section>
       </section>
-      <section className="grid-layout gap-6 dark bg-background text-foreground py-8">
+      <section className="grid-layout gap-6 dark bg-background text-foreground py-8 rounded-lg">
         <h1 className="text-4xl font-bold">Darkmode</h1>
         <h2 className="text-2xl font-bold">Colors</h2>
         <section className="flex items-center justify-center gap-2">

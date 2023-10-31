@@ -34,7 +34,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </div>
         </nav>
-        <main className="flex min-h-screen flex-col items-center gap-6">
+        <main className="flex min-h-screen-nav overflow-y-scroll h-full-nav flex-col items-center gap-6 scroll-hidden">
           {children}
         </main>
       </body>
