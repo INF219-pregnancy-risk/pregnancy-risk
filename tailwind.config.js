@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
+  mode: "jit",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -42,10 +43,6 @@ module.exports = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -70,9 +67,9 @@ module.exports = {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
-        danger: {
-          DEFAULT: "hsl(var(--danger))",
-          foreground: "hsl(var(--danger-foreground))",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         info: {
           DEFAULT: "hsl(var(--info))",
@@ -81,6 +78,10 @@ module.exports = {
         disabled: {
           DEFAULT: "hsl(var(--disabled))",
           foreground: "hsl(var(--disabled-foreground))",
+        },
+        cancel: {
+          DEFAULT: "hsl(var(--cancel))",
+          foreground: "hsl(var(--cancel-foreground))",
         },
       },
       borderRadius: {

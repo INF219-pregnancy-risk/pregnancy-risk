@@ -58,7 +58,7 @@ const SurveyButton = ({
       <div className="flex items-center justify-center h-full w-full relative">
         {loading && (
           <div
-            className="h-2/3 aspect-square border-t-muted-foreground border-muted rounded-full absolute animate-spin"
+            className="h-6 w-6 aspect-square border-t-muted-foreground border-muted rounded-full absolute animate-spin"
             style={{
               borderWidth: "0.4vh",
             }}

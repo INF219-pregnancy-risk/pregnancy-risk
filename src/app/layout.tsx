@@ -17,11 +17,11 @@ export const metadata: MetaData = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className}`}>
         <nav className="bg-primary w-full text-primary-foreground grid-layout h-nav">
           <div className="w-full h-full flex gap-8 items-center justify-between">
             <LinkButton href="/">
-              <h1 className="text-xl font-bold">Pregancy Risk</h1>{" "}
+              <h1 className="text-xl font-bold">Pregancy Risk</h1>
             </LinkButton>
             <div className="flex gap-8">
               <LinkButton href="/">Home</LinkButton>
@@ -34,8 +34,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </div>
         </nav>
-        <main className="flex min-h-screen flex-col items-center gap-6 mt-8">
-          {children}{" "}
+        <main className="flex min-h-screen flex-col items-center gap-6">
+          {children}
         </main>
       </body>
     </html>
