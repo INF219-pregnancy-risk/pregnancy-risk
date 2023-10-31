@@ -20,22 +20,6 @@ const ComponentsPage = () => {
 
   return (
     <>
-      <section className="grid-layout w-full py-8 gap-4">
-        <h1 className="text-4xl font-bold">Grid layout</h1>
-        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-left rounded-md h-12">
-          This is only left
-        </div>
-        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex rounded-md h-12">
-          This is normal span
-        </div>
-        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-right rounded-md h-12">
-          This is only right
-        </div>
-        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-full rounded-md h-12">
-          This span the whole width
-        </div>
-      </section>
-
       <section className="grid-layout gap-6 light bg-background text-foreground py-8">
         <h1 className="text-4xl font-bold">LightMode</h1>
         <h2 className="text-2xl font-bold">Control Panel</h2>
@@ -69,7 +53,7 @@ const ComponentsPage = () => {
 
             <input
               type="text"
-              className="border-2 rounded-lg p-2 w-full"
+              className="border-2 rounded-lg p-2 w-full bg-input ring-2 ring-ring"
               value={state.buttonText}
               maxLength={10}
               onChange={(e) =>
@@ -82,7 +66,7 @@ const ComponentsPage = () => {
             <textarea
               name="cardtext"
               id="card"
-              className="resize-none p-4 h-48 rounded-md"
+              className="resize-none p-4 h-48 rounded-md bg-input ring-2 ring-ring"
               value={state.card}
               onChange={(e) =>
                 setState((s: any) => ({ ...s, card: e.target.value }))
@@ -92,19 +76,19 @@ const ComponentsPage = () => {
         </div>
         <h1 className="text-2xl font-bold">Colors</h1>
         <section className="flex items-center justify-center gap-2">
-          <div className="bg-background text-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-card text-card-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-popover text-popover-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-primary text-primary-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-secondary text-secondary-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-accent text-accent-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-success text-success-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-warning text-warning-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-info text-info-foreground w-8 h-8 border-2 border-black rounded-full" />
+          <div className="bg-background text-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-background/50 hover:text-foreground/50" />
+          <div className="bg-card text-card-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-card/90 hover:text-card-foreground/90" />
+          <div className="bg-popover text-popover-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-popover/90 hover:text-popover-foreground/90" />
+          <div className="bg-primary text-primary-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-primary/90 hover:text-primary-foreground/90" />
+          <div className="bg-secondary text-secondary-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-secondary/90 hover:text-secondary-foreground/90" />
+          <div className="bg-accent text-accent-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-accent/90 hover:text-accent-foreground/90" />
+          <div className="bg-success text-success-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-success/90 hover:text-success-foreground/90" />
+          <div className="bg-warning text-warning-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-warning/90 hover:text-warning-foreground/90" />
+          <div className="bg-info text-info-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-info/90 hover:text-info-foreground/90" />
           <div className="bg-disabled text-disabled-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-cancel text-cancel-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-muted text-muted-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-destructive text-destructive-foreground w-8 h-8 border-2 border-black rounded-full" />
+          <div className="bg-cancel text-cancel-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-cancel/90 hover:text-cancel-foreground/90" />
+          <div className="bg-muted text-muted-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-muted/90 hover:text-muted-foreground/90" />
+          <div className="bg-destructive text-destructive-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-destructive/90 hover:text-destructive-foreground/90" />
         </section>
         <div className="flex flex-col flex-wrap">
           {[
@@ -119,7 +103,7 @@ const ComponentsPage = () => {
             "cancel",
             "muted",
           ].map((c) => {
-            const className = `bg-${c} text-${c}-foreground hover:bg-${c}/90`;
+            const className = `bg-${c} text-${c}-foreground hover:bg-${c}/90 hover:text-${c}-foreground/90`;
             const variant = {
               loading: state.loading,
               checked: state.checked,
@@ -171,19 +155,19 @@ const ComponentsPage = () => {
         <h1 className="text-4xl font-bold">Darkmode</h1>
         <h2 className="text-2xl font-bold">Colors</h2>
         <section className="flex items-center justify-center gap-2">
-          <div className="bg-background text-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-card text-card-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-popover text-popover-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-primary text-primary-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-secondary text-secondary-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-accent text-accent-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-success text-success-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-warning text-warning-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-info text-info-foreground w-8 h-8 border-2 border-black rounded-full" />
+          <div className="bg-background text-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-background/50 hover:text-foreground/50" />
+          <div className="bg-card text-card-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-card/90 hover:text-card-foreground/90" />
+          <div className="bg-popover text-popover-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-popover/90 hover:text-popover-foreground/90" />
+          <div className="bg-primary text-primary-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-primary/90 hover:text-primary-foreground/90" />
+          <div className="bg-secondary text-secondary-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-secondary/90 hover:text-secondary-foreground/90" />
+          <div className="bg-accent text-accent-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-accent/90 hover:text-accent-foreground/90" />
+          <div className="bg-success text-success-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-success/90 hover:text-success-foreground/90" />
+          <div className="bg-warning text-warning-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-warning/90 hover:text-warning-foreground/90" />
+          <div className="bg-info text-info-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-info/90 hover:text-info-foreground/90" />
           <div className="bg-disabled text-disabled-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-cancel text-cancel-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-muted text-muted-foreground w-8 h-8 border-2 border-black rounded-full" />
-          <div className="bg-destructive text-destructive-foreground w-8 h-8 border-2 border-black rounded-full" />
+          <div className="bg-cancel text-cancel-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-cancel/90 hover:text-cancel-foreground/90" />
+          <div className="bg-muted text-muted-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-muted/90 hover:text-muted-foreground/90" />
+          <div className="bg-destructive text-destructive-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-destructive/90 hover:text-destructive-foreground/90" />
         </section>
         <section>
           <h2 className="text-xl font-bold mb-4">Input</h2>
@@ -254,6 +238,21 @@ const ComponentsPage = () => {
             );
           })}
         </section>
+      </section>
+      <section className="grid-layout w-full py-8 gap-4">
+        <h1 className="text-4xl font-bold">Grid layout</h1>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-left rounded-md h-12">
+          This is only left
+        </div>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex rounded-md h-12">
+          This is normal span
+        </div>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-right rounded-md h-12">
+          This is only right
+        </div>
+        <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-full rounded-md h-12">
+          This span the whole width
+        </div>
       </section>
     </>
   );
