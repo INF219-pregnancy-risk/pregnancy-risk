@@ -111,9 +111,9 @@ export default function Home() {
 
               <Link className={buttonVariants({
                 size: "lg",
-                className: "mt-5"
+                className: "mt-5 hover:scale-105"
               })} href="/survey">
-                Get started <ArrowRight className="ml-2 h-5 w-5" />
+                Go to Survey <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>
 

@@ -2,7 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
-import { constructMetadata } from "@/utils/MetaData";
+import { constructMetadata } from "@/utils/Metadata";
 
 interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> { }
 

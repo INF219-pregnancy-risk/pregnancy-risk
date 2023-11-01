@@ -31,7 +31,7 @@ const Navbar = () => {
                                 className={buttonVariants({
                                     size: 'sm',
                                 })}>
-                                Get started <ArrowRight className="ml-1.5 h-5 w-5" />
+                                Go to Survey <ArrowRight className="ml-1.5 h-5 w-5" />
                             </Link>
                         </>
 
