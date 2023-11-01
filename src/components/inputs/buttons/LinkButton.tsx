@@ -1,67 +1,39 @@
 "use client";
-import React from "react";
-import styles from "./Button.module.css";
-import Link from "next/link";
-import { Button, Sizes } from "@/components/ui/button";
-import SurveyButton from "./SurveyButton";
+import React, { AnchorHTMLAttributes, ReactHTMLElement } from "react";
+import Link, { LinkProps } from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import { ButtonProps } from "@/components/ui/button";
+import SurveyButton, { SurveyButtonProps } from "./SurveyButton";
 
-interface LinkButtonProps extends React.HTMLAttributes<HTMLAnchorElement> {
-  loading?: boolean;
-  size?: sizes;
-  disabled?: boolean;
-  className?: string;
+interface LinkButtonProps extends SurveyButtonProps {
   href: string;
 }
 
-type sizes = "small" | "medium" | "large";
-
-const BUTTON_STYLES = {
-  small: {
-    height: "30px",
-    width: "100px",
-    fontSize: "0.75rem",
-    borderRadius: "5px",
-  },
-  medium: {
-    height: "40px",
-    width: "120px",
-    fontSize: "1rem",
-    borderRadius: "5px",
-  },
-  large: {
-    height: "50px",
-    width: "150px",
-    fontSize: "1.25rem",
-    borderRadius: "5px",
-  },
-};
-
-const getButtonStyle = (size: sizes, disabled: boolean, className?: string) => {
-  return {
-    ...BUTTON_STYLES[size],
-    color: "#fff",
-    cursor: "pointer",
-    ...(disabled && {
-      opacity: 0.2,
-      filter: "grayscale(1)",
-      cursor: "default",
-      PointerEvents: "none",
-      color: "#000",
-    }),
-    ...(!className?.includes("bg-") && { backgroundColor: "#4b93e5" }),
-  };
-};
-
 const LinkButton = ({
-  loading = false,
-  size = "medium",
-  disabled = false,
-  className = "",
   children,
-  onClick,
+  size = "default",
+  href,
+  variant = "ghost",
+  className,
   ...props
 }: LinkButtonProps) => {
-  return <Link {...props}>{children}</Link>;
+  return (
+    <Link
+      href={href}
+      className={cn(buttonVariants({ variant, size, className }))}
+    >
+      <SurveyButton
+        {...props}
+        size={"min"}
+        variant={"none"}
+        tabIndex={-1}
+        className={className}
+      >
+        {children}
+      </SurveyButton>
+    </Link>
+  );
 };
 
 export default LinkButton;

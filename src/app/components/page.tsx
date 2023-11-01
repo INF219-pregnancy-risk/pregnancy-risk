@@ -20,7 +20,7 @@ const ComponentsPage = () => {
 
   return (
     <>
-      <section className="grid-layout gap-6 light bg-background text-foreground py-8">
+      <section className="light bg-background text-foreground py-8">
         <h1 className="text-4xl font-bold">LightMode</h1>
         <h2 className="text-2xl font-bold">Control Panel</h2>
         <div className="bg-card text-card-foreground p-4 rounded-xl gap-2 flex flex-col">
@@ -239,7 +239,7 @@ const ComponentsPage = () => {
           })}
         </section>
       </section>
-      <section className="grid-layout w-full py-8 gap-4">
+      <section className="grid-layout w-full py-8 gap-4 span-full">
         <h1 className="text-4xl font-bold">Grid layout</h1>
         <div className="w-full bg-card text-card-foreground border-2 items-center justify-center flex span-left rounded-md h-12">
           This is only left

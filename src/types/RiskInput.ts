@@ -14,6 +14,7 @@ type RiskInputTYPE<T extends ID> = {
 
 export interface RiskInput {
   label: string;
+  why?: string;
 }
 // Integer riskinput
 export interface RiskInputInteger extends RiskInput {
@@ -73,6 +74,7 @@ type SurveyQuestionsType = {
 export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   [ID.GDM]: {
     label: "Do you have a history of GDM?",
+    why: "This is why its important",
   },
   [ID.AGE]: {
     label: "What is your age?",

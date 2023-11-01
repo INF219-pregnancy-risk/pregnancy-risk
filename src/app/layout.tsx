@@ -1,6 +1,8 @@
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Navbar from "@/components/layout/navbar/Navbar";
+import PageWarpper from "@/components/layout/PageWarpper";
 
 interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> {}
 interface MetaData extends React.HTMLAttributes<HTMLMetaElement> {
@@ -17,26 +19,9 @@ export const metadata: MetaData = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
-        <nav className="bg-primary w-full text-primary-foreground grid-layout h-nav">
-          <div className="w-full h-full flex gap-8 items-center justify-between">
-            <LinkButton href="/">
-              <h1 className="text-xl font-bold">Pregancy Risk</h1>
-            </LinkButton>
-            <div className="flex gap-8">
-              <LinkButton href="/">Home</LinkButton>
-              <LinkButton href="/about">About</LinkButton>
-              <LinkButton href="/survey">Survey</LinkButton>
-              <LinkButton href="/components">Components</LinkButton>
-            </div>
-            <div className="flex gap-4">
-              <LinkButton href="/report">Report a problem!</LinkButton>
-            </div>
-          </div>
-        </nav>
-        <main className="flex min-h-screen-nav overflow-y-scroll h-full-nav flex-col items-center gap-6 scroll-hidden">
-          {children}
-        </main>
+      <body className={`${inter.className} md:desktop mobile scroll-hidden`}>
+        <Navbar />
+        <PageWarpper>{children}</PageWarpper>
       </body>
     </html>
   );
