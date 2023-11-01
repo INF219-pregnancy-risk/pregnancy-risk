@@ -28,17 +28,17 @@ module.exports = {
       },
       height: {
         nav: "var(--nav-height)",
-        "full-nav": "calc(100% - var(--nav-height, 0))",
+        "full-nav": "calc(100vh - var(--nav-height, 0))",
         "full-w-nav": "calc(100% + var(--nav-height, 0))",
       },
       maxHeight: {
         nav: "var(--nav-height)",
-        "full-nav": "calc(100% - var(--nav-height, 0))",
+        "full-nav": "calc(100vh - var(--nav-height, 0))",
         "full-w-nav": "calc(100% + var(--nav-height, 0))",
       },
       minHeight: {
         nav: "var(--nav-height)",
-        "full-nav": "calc(100% - var(--nav-height, 0))",
+        "full-nav": "calc(100vh - var(--nav-height, 0))",
         "full-w-nav": "calc(100% + var(--nav-height, 0))",
       },
       colors: {

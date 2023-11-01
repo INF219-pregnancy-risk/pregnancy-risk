@@ -2,7 +2,7 @@
 
 import { ID } from "@/types/RiskInput";
 import SurveyParseInput from "@/components/inputs/survey/SurveyParseInput";
-import PageWarpper from "@/components/layout/PageWarpper";
+import PageWarpper from "@/components/layout/PageWrapper";
 import SurveyContainer from "@/components/layout/survey/SurveyContainer";
 import SurveyView from "@/components/layout/survey/SurveyView";
 import { useRouter } from "next/navigation";

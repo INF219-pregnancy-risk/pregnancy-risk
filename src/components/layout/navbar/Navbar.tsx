@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <nav className="fixed w-full text-primary-foreground h-full z-50 pointer-events-none overflow-hidden select-none">
       <div className="relative w-full h-full flex flex-col">
-        <div className="grid-layout backdrop-blur-lg border-b bg-background/90 shadow-md text-foreground h-nav p-2 transition-[height] w-full pointer-events-auto">
+        <div className="grid-layout backdrop-blur-lg border-b bg-background/75 shadow-md text-foreground h-nav p-2 transition-[height] w-full pointer-events-auto">
           <div className="flex justify-between items-center">
             <LinkButton
               href={"/"}

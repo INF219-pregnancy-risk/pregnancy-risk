@@ -4,7 +4,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 const AboutPage = () => {
   return (
-    <div className="bg-card text-card-foreground rounded-lg mt-8 shadow-lg p-8">
+    <div className="bg-popover text-popover-foreground rounded-lg mt-8 shadow-md border p-8 h-min">
       <h1 className="text-3xl font-semibold mb-4">About Us</h1>
       <p className="mb-6">
         PregnancyRisk is a Norwegian developed webservice and your trusted
@@ -35,7 +35,7 @@ const AboutPage = () => {
         score.
       </p>
 
-      <h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
+      <h2 className="text-2xl font-semibold">Contact Us</h2>
       <p className="flex gap-2">
         For any questions or feedback, please contact us at:
         <LinkButton

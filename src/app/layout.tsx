@@ -2,14 +2,14 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { constructMetadata } from "@/utils/Metadata";
 import Navbar from "@/components/layout/navbar/Navbar";
-import PageWarpper from "@/components/layout/PageWarpper";
+import PageWarpper from "@/components/layout/PageWrapper";
 import { ThemeProvider } from "@/components/layout/providers/theme-provider";
 
-interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> { }
+interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> {}
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = constructMetadata()
+export const metadata = constructMetadata();
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (

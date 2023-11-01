@@ -20,11 +20,12 @@ const ComponentsPage = () => {
 
   return (
     <>
-      <section className="light bg-background text-foreground py-8">
-        <h1 className="text-4xl font-bold">LightMode</h1>
-        <h2 className="text-2xl font-bold">Control Panel</h2>
-        <div className="bg-card text-card-foreground p-4 rounded-xl gap-2 flex flex-col">
-          <section className="border-2 p-2 rounded-lg flex flex-col gap-4  flex-wrap">
+      <section className="text-foreground py-8 flex flex-col gap-4">
+        <h1 className="text-4xl font-bold dark:flex hidden">Dark mode</h1>
+        <h1 className="text-4xl font-bold dark:hidden flex">Light Mode</h1>
+        <h2 className="text-2xl font-bold my-4">Control Panel</h2>
+        <div className="bg-muted text-muted-foreground p-4 rounded-xl gap-2 flex flex-col">
+          <section className="border-2 p-2 rounded-lg flex flex-col gap-4 flex-wrap">
             <h2 className="font-bold">Buttons</h2>
             <h3>States</h3>
             <div className="flex gap-4 flex-wrap">
@@ -53,7 +54,7 @@ const ComponentsPage = () => {
 
             <input
               type="text"
-              className="border-2 rounded-lg p-2 w-full bg-input ring-2 ring-ring"
+              className="border-background border-2 rounded-lg p-2 w-full bg-input"
               value={state.buttonText}
               maxLength={10}
               onChange={(e) =>
@@ -66,7 +67,7 @@ const ComponentsPage = () => {
             <textarea
               name="cardtext"
               id="card"
-              className="resize-none p-4 h-48 rounded-md bg-input ring-2 ring-ring"
+              className="border-background border-2 rounded-lg p-2 w-full bg-input resize-none h-40"
               value={state.card}
               onChange={(e) =>
                 setState((s: any) => ({ ...s, card: e.target.value }))
@@ -74,7 +75,7 @@ const ComponentsPage = () => {
             />
           </section>
         </div>
-        <h1 className="text-2xl font-bold">Colors</h1>
+        <h1 className="text-2xl font-bold mt-4">Colors</h1>
         <section className="flex items-center justify-center gap-2">
           <div className="bg-background text-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-background/50 hover:text-foreground/50" />
           <div className="bg-card text-card-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-card/90 hover:text-card-foreground/90" />
@@ -151,9 +152,10 @@ const ComponentsPage = () => {
           })}
         </section>
       </section>
-      <section className="grid-layout gap-6 dark bg-background text-foreground py-8 rounded-lg">
-        <h1 className="text-4xl font-bold">Darkmode</h1>
-        <h2 className="text-2xl font-bold">Colors</h2>
+      <section className="text-foreground py-8 flex flex-col gap-4 dark:light dark bg-background rounded-3xl p-8">
+        <h1 className="text-4xl font-bold dark:hidden flex">Dark mode</h1>
+        <h1 className="text-4xl font-bold dark:flex hidden">Light Mode</h1>
+        <h1 className="text-2xl font-bold mt-4">Colors</h1>
         <section className="flex items-center justify-center gap-2">
           <div className="bg-background text-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-background/50 hover:text-foreground/50" />
           <div className="bg-card text-card-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-card/90 hover:text-card-foreground/90" />
@@ -169,15 +171,6 @@ const ComponentsPage = () => {
           <div className="bg-muted text-muted-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-muted/90 hover:text-muted-foreground/90" />
           <div className="bg-destructive text-destructive-foreground w-8 h-8 border-2 border-black rounded-full hover:bg-destructive/90 hover:text-destructive-foreground/90" />
         </section>
-        <section>
-          <h2 className="text-xl font-bold mb-4">Input</h2>
-          <input
-            type="text"
-            readOnly
-            value={"Test input"}
-            className="rounded-md bg-input p-2"
-          />
-        </section>
         <div className="flex flex-col flex-wrap">
           {[
             "primary",
@@ -191,7 +184,7 @@ const ComponentsPage = () => {
             "cancel",
             "muted",
           ].map((c) => {
-            const className = `bg-${c} text-${c}-foreground hover:bg-${c}/90`;
+            const className = `bg-${c} text-${c}-foreground hover:bg-${c}/90 hover:text-${c}-foreground/90`;
             const variant = {
               loading: state.loading,
               checked: state.checked,
