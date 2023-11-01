@@ -17,6 +17,15 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        xs: { min: "320px" },
+        "xs-m": { max: "320px" },
+        "sm-m": { max: "640px" },
+        "md-m": { max: "768px" },
+        "lg-m": { max: "1024px" },
+        "xl-m": { max: "1280px" },
+        "2xl-m": { max: "1536px" },
+      },
       height: {
         nav: "var(--nav-height)",
         "full-nav": "calc(100% - var(--nav-height, 0))",

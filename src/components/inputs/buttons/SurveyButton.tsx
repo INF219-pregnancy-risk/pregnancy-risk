@@ -2,15 +2,16 @@
 
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import CheckIcon from "@mui/icons-material/Check";
 import { cn } from "@/lib/utils";
 
-interface SurveyButtonProps extends ButtonProps {
+export interface SurveyButtonProps extends ButtonProps {
   checked?: boolean;
   loading?: boolean;
   disabled?: boolean;
   icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
 }
 
 const SurveyButton = ({
@@ -19,6 +20,7 @@ const SurveyButton = ({
   disabled = false,
   className,
   icon = null,
+  iconPosition = "left",
   children,
   ...props
 }: SurveyButtonProps) => {
@@ -55,27 +57,38 @@ const SurveyButton = ({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="flex items-center justify-center h-full w-full relative">
-        {loading && (
-          <div
-            className="h-6 w-6 aspect-square border-t-muted-foreground border-muted rounded-full absolute animate-spin"
-            style={{
-              borderWidth: "0.4vh",
-            }}
-          />
+
+      {loading && (
+        <div
+          className="h-6 w-6 aspect-square border-t-current border-foreground/10 rounded-full absolute animate-spin"
+          style={{
+            borderWidth: "0.4vh",
+          }}
+        />
+      )}
+
+      <div
+        className={cn(
+          "flex items-center h-full",
+          loading && "invisible",
+          icon && children && "gap-2 grid grid-cols-[2fr_auto_1fr]"
         )}
-        <>
-          <span
-            className={cn(
-              "flex justify-center items-center",
-              loading && "invisible",
-              icon && children && "gap-2 pr-4"
-            )}
-          >
-            {icon ? icon : null}
-            {children}
-          </span>
-        </>
+      >
+        <span
+          id="icon"
+          className={cn(
+            "col-span-1 row-start-1",
+            iconPosition === "left" ? "col-start-1" : "col-start-3"
+          )}
+        >
+          {icon ? icon : null}
+        </span>
+        <span
+          id="text"
+          className="col-start-2 col-span-1 row-span-1 row-start-1 text-inherit"
+        >
+          {children}
+        </span>
       </div>
     </Button>
   );
