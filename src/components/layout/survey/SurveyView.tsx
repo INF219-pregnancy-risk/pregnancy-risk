@@ -1,5 +1,4 @@
 "use client";
-
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
 import { ID } from "@/types/RiskInput";
@@ -7,6 +6,17 @@ import { Survey } from "@/types/Survey";
 import { resetSurveyUtil } from "@/utils/StoreSurvey";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect } from "react";
+import { Button } from "@/components/ui/button"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+
+
+
 
 export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -31,10 +41,10 @@ const SurveyView = ({
   useEffect(() => {
     setSurvey(
       (prev) =>
-        ({
-          ...prev,
-          skipped: skippedSlides,
-        } as Survey)
+      ({
+        ...prev,
+        skipped: skippedSlides,
+      } as Survey)
     );
   }, [skippedSlides, setSurvey]);
 
@@ -43,8 +53,8 @@ const SurveyView = ({
       <div className="w-full flex justify-end">
         <LinkButton
           href="/"
-          className="bg-red-500 m-4 hover:bg-red-600 duration-200 active:scale-95 active:bg-red-400"
           onClick={resetSurveyUtil}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-4 transition duration-200"
         >
           EXIT
         </LinkButton>

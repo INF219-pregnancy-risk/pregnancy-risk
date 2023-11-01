@@ -8,6 +8,8 @@ import SurveyBooleanInput from "./SurveyBooleanInput";
 import SurveyMultipleInput from "./SurveyMultipleInput";
 import SurveyChoiceInput from "./SurveyChoiceInput";
 import { Survey } from "@/types/Survey";
+import AccordionSurvey from "../info/AccordionSurvey";
+import ProgressSurvey from "../info/ProgressSurvey";
 
 interface SurveyInputSlideProps {
   questionID: ID;
@@ -19,6 +21,7 @@ interface SurveyInputSlideProps {
 
 const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
   const input = SurveyQuestions[questionID];
+  const totalSlides = Object.keys(SurveyQuestions).length;
 
   if (!input) {
     return <div>Error parsing: Input</div>;
@@ -26,9 +29,13 @@ const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
 
   return (
     <>
-      <div>
+    
+    <p className="text-center text-gray-500 text-sm">Question {input.number} of {totalSlides} </p>
+<ProgressSurvey currentSlide={input.number} totalSlides={totalSlides} />    
+      <div className="w-full text-center">
         <h1 className="font-semibold text-2xl">{input.label}</h1>
         <i className="text-base text-gray-500">{getInfo(questionID)}</i>
+        <AccordionSurvey why={input.why} className="text-center" />
       </div>
       <Parser {...props} questionID={questionID} />
     </>
