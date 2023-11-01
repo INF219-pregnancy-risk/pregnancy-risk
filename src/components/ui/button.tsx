@@ -20,7 +20,7 @@ const buttonVariants = cva(
         none: "",
       },
       size: {
-        min: "h-min m-0 p-0 w-min text-inherit",
+        min: "h-min m-0 p-0 w-min",
         default: "h-10 px-4",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
