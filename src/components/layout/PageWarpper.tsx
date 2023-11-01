@@ -1,6 +1,6 @@
+
 import React from "react";
 
-interface PageWarpperProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const PageWarpper = ({ children }: PageWarpperProps) => {
   return (
@@ -12,4 +12,4 @@ const PageWarpper = ({ children }: PageWarpperProps) => {
   );
 };
 
-export default PageWarpper;
+
