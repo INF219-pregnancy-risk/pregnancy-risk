@@ -15,6 +15,7 @@ type RiskInputTYPE<T extends ID> = {
 export interface RiskInput {
   label: string;
   why?: string;
+  number : number;
 }
 // Integer riskinput
 export interface RiskInputInteger extends RiskInput {
@@ -74,19 +75,28 @@ type SurveyQuestionsType = {
 export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   [ID.GDM]: {
     label: "Do you have a history of GDM?",
-    why: "This is why its important",
+    why: "History of GDM increases the risk of GDM in future pregnancies",
+    number: 1,
   },
   [ID.AGE]: {
     label: "What is your age?",
+    why: "The older you are, the higher the risk of complications",
+    number: 2,
   },
   [ID.WEIGHT]: {
     label: "What is your weight?",
+    why: "The heavier you are, the higher the risk of complications",
+    number: 3,
   },
   [ID.HEIGHT]: {
     label: "What is your height?",
+    why: "The shorter you are, the higher the risk of complications",
+    number: 4,
   },
   [ID.DIABETES]: {
     label: "Do you have diabetes?",
+    why: "Diabetes increases the risk of complications",
+    number: 5,
   },
   [ID.HYPERTENSION]: {
     label: "Do you have hypertension?",
@@ -95,6 +105,8 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
       GESTATIONAL: "Gestational",
       NONE: "None",
     },
+    why: "Hypertension increases the risk of complications",
+    number: 6,
   },
   [ID.ACTIVITY]: {
     label: "Select your activity level:",
@@ -103,9 +115,13 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
       MEDIUM: "Medium",
       HIGH: "High",
     },
+    why: "Low activity level increases the risk of complications",
+    number: 7,
   },
   [ID.ETNISITY]: {
     label: "Select your ethnicity:",
+    why : "The ethnicity may intefere with the risk of complications",
+    number: 8,
     options: {
       ASIAN: "Asian",
       BLACK: "Black",
@@ -115,6 +131,7 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
     },
   },
 } as const;
+
 
 export type BOOLEANS = {
   [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.BOOLEAN
