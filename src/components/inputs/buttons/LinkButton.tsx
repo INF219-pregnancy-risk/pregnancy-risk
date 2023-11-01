@@ -1,6 +1,9 @@
+"use client";
 import React from "react";
 import styles from "./Button.module.css";
 import Link from "next/link";
+import { Button, Sizes } from "@/components/ui/button";
+import SurveyButton from "./SurveyButton";
 
 interface LinkButtonProps extends React.HTMLAttributes<HTMLAnchorElement> {
   loading?: boolean;
@@ -49,21 +52,6 @@ const getButtonStyle = (size: sizes, disabled: boolean, className?: string) => {
   };
 };
 
-const LoadingIconScale = {
-  small: {
-    width: "15px",
-    height: "15px",
-  },
-  medium: {
-    width: "20px",
-    height: "20px",
-  },
-  large: {
-    width: "30px",
-    height: "30px",
-  },
-};
-
 const LinkButton = ({
   loading = false,
   size = "medium",
@@ -73,47 +61,7 @@ const LinkButton = ({
   onClick,
   ...props
 }: LinkButtonProps) => {
-  return (
-    <Link
-      style={getButtonStyle(size, disabled, className)}
-      className={`${styles.button_item} ${className}`}
-      onClick={(e) => {
-        if (disabled) {
-          e.preventDefault();
-        }
-        onClick && onClick(e);
-      }}
-      {...props}
-    >
-      <div className="flex items-center justify-center h-full w-full relative select-none">
-        {loading ? (
-          <svg
-            className="animate-spin h-5 w-5 text-current"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            style={LoadingIconScale[size]}
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
-        ) : (
-          children
-        )}
-      </div>
-    </Link>
-  );
+  return <Link {...props}>{children}</Link>;
 };
 
 export default LinkButton;
