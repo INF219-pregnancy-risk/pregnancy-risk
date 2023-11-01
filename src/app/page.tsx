@@ -111,10 +111,10 @@ export default function Home() {
         <div className='mb-12 px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl sm:text-center'>
             <h2 className='mt-2 font-bold text-4xl text-gray-900 sm:text-5xl'>
-              Invest in your future, one penny at a time.
+              Navigate Your Pregnancy with Confidence and Ease.
             </h2>
             <p className='mt-4 text-lg text-gray-600'>
-              Reaching your financial goals has never been easier.
+              Navigating through pregnancy is now simpler and safer.
             </p>
           </div>
         </div>
