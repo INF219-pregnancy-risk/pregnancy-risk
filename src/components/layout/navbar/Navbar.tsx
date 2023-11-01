@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import HamburgerMenu from "./HamburgerMenu";
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { ModeToggle } from "@/components/inputs/buttons/ThemeToggler";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -52,6 +53,7 @@ const Navbar = () => {
               >
                 Take the survey
               </LinkButton>
+              <ModeToggle />
             </div>
             <div className="only-mobile h-8 flex items-center justify-center pointer-events-auto">
               <HamburgerMenu isOpen={isOpen} toggle={toggleMenu} />
@@ -97,7 +99,9 @@ const Navbar = () => {
                 Take the survey
               </LinkButton>
             </div>
-            <br />
+            <div className="flex justify-end items-center pr-8 gap-4 w-full">
+              <ModeToggle />
+            </div>
           </div>
         </div>
       </div>

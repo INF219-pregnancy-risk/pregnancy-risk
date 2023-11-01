@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/layout/navbar/Navbar";
 import PageWarpper from "@/components/layout/PageWarpper";
+import { ThemeProvider } from "@/components/layout/providers/theme-provider";
 
 interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> {}
 interface MetaData extends React.HTMLAttributes<HTMLMetaElement> {
@@ -20,8 +21,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={`${inter.className} md:desktop mobile scroll-hidden`}>
-        <Navbar />
-        <PageWarpper>{children}</PageWarpper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <PageWarpper>{children}</PageWarpper>
+        </ThemeProvider>
       </body>
     </html>
   );
