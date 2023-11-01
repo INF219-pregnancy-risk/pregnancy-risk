@@ -1,19 +1,15 @@
-import { cn } from "@/lib/utils"
-import { ReactNode } from "react"
 
-const PageWrapper = ({
-  className,
-  children,
-}: {
-  className?: string,
-  children: ReactNode
-}) => {
+import React from "react";
+
+
+const PageWarpper = ({ children }: PageWarpperProps) => {
   return (
-    <div className={cn("mx-auto w-full max-w-screen-xl px-2.5 md:px-20", className)}>
+    <main
+      className={`grid-layout mt-[var(--nav-height)] min-h-nav transition-all`}
+    >
       {children}
-    </div>
-  )
-}
+    </main>
+  );
+};
 
-export default PageWrapper
 

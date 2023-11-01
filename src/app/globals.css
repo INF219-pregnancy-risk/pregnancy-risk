@@ -6,7 +6,10 @@
   :root {
     --grid-layout-size: 1000px;
     --grid-layout-padding: 1rem;
-    --nav-height: 75px;
+
+    --nav-height-mobile: 60px;
+    --nav-height-desktop: 90px;
+    --nav-height: var(--nav-height-desktop);
   }
 
   .grid-layout {
@@ -44,6 +47,22 @@
   .scroll-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .mobile {
+    --nav-height: var(--nav-height-mobile);
+  }
+
+  .desktop {
+    --nav-height: var(--nav-height-desktop);
+  }
+
+  .only-desktop {
+    @apply md-m:hidden;
+  }
+
+  .only-mobile {
+    @apply md:hidden;
   }
 }
 
@@ -120,12 +139,6 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
 
-    --card: 0 0% 93%;
-    --card-foreground: 221 30% 20%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 221 30% 25%;
-
     --primary: 221 80% 60%;
     --primary-foreground: 210 40% 98%;
 
@@ -153,9 +166,6 @@
     --cancel: 0 0% 90%;
     --cancel-foreground: 0 0% 20%;
 
-    --muted: 221 20% 92%;
-    --muted-foreground: 221 30% 40%;
-
     --ring: 221.2 83.2% 53.3%;
   }
 }
@@ -166,6 +176,6 @@
   }
   body,
   html {
-    @apply bg-background text-foreground w-full h-full overflow-hidden;
+    @apply bg-background text-foreground w-full h-full overflow-x-hidden antialiased;
   }
 }
