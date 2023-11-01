@@ -33,7 +33,7 @@ const SurveyView = ({
       (prev) =>
         ({
           ...prev,
-          skipped: skippedSlides,
+          skipped: skippedSlides.map(Number), // For now this is fine, but we might want to change this later
         } as Survey)
     );
   }, [skippedSlides, setSurvey]);
