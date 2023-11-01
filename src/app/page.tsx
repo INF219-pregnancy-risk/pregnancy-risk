@@ -25,27 +25,27 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="flex w-full h-full-nav">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+        <div className="flex w-full h-full-nav items-center">
+          <div className="md:grid md:grid-cols-2 gap-8 flex flex-col items-center w-full">
             {/* Text Section */}
-            <div className="max-w-4xl font-bold text-5xl md:text-6xl lg:text-7xl">
-              <h1 className="text-primary text-4xl md:text-5xl lg:text-6xl">
+            <div className="">
+              <h1 className="text-primary text-5xl text-center md:text-start md:text-6xl font-bold">
                 Pregnancy Risk
               </h1>
 
-              <p className="mt-4 text-xl lg:text-3xl">
+              <p className="mt-4 text-xl text-center md:text-start md:text-3xl">
                 Instant assessment for a safer maternity.
               </p>
             </div>
 
             {/* Image Section */}
-            <div className="flex">
+            <div className="flex relative h-auto w-[400px] max-w-full aspect-square md:h-auto">
               <Image
                 // src='/pregnant.svg'
                 src="/gptpregnant.png"
                 alt="product preview"
-                width={400}
-                height={350}
+                layout="fill"
+                objectFit="contain"
                 quality={100}
                 priority={true}
                 // layout="responsive"
@@ -85,8 +85,8 @@ export default function Home() {
                 sm:w-[72.1875rem]"
             />
           </div>
-          <div>
-            <p className=" mb-10 max-w-prose  sm:text-lg">
+          <div className="flex flex-col items-center md:items-start">
+            <p className="mb-10 max-w-prose md:text-lg text-center md:text-start">
               Welcome to Pregnancy Risk, your go-to resource for personalized
               pregnancy guidance. Simply answer a few questions about yourself
               and <span className="font-bold">instantly </span>
@@ -99,6 +99,7 @@ export default function Home() {
               variant={"default"}
               icon={<ArrowForwardIcon />}
               iconPosition={"right"}
+              className="w-min"
             >
               Start the Quiz
             </LinkButton>
