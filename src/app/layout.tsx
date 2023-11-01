@@ -1,8 +1,10 @@
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import { cn } from "@/lib/utils";
 
-interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> {}
+interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> { }
 interface MetaData extends React.HTMLAttributes<HTMLMetaElement> {
   description: string;
 }
@@ -17,26 +19,12 @@ export const metadata: MetaData = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
-        <nav className="bg-primary w-full text-primary-foreground grid-layout h-nav">
-          <div className="w-full h-full flex gap-8 items-center justify-between">
-            <LinkButton href="/">
-              <h1 className="text-xl font-bold">Pregancy Risk</h1>
-            </LinkButton>
-            <div className="flex gap-8">
-              <LinkButton href="/">Home</LinkButton>
-              <LinkButton href="/about">About</LinkButton>
-              <LinkButton href="/survey">Survey</LinkButton>
-              <LinkButton href="/components">Components</LinkButton>
-            </div>
-            <div className="flex gap-4">
-              <LinkButton href="/report">Report a problem!</LinkButton>
-            </div>
-          </div>
-        </nav>
-        <main className="flex min-h-screen-nav overflow-y-scroll h-full-nav flex-col items-center gap-6 scroll-hidden">
-          {children}
-        </main>
+      <body className={cn(
+        "flex min-h-screen-nav overflow-y-scroll flex-col items-center gap-6 scroll-hidden",
+        inter.className
+      )}>
+        <Navbar />
+        {children}
       </body>
     </html>
   );

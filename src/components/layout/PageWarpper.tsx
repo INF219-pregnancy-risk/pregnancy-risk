@@ -1,10 +1,19 @@
-import React from "react";
-import styles from "@/components/layout/PageWrapper.module.css";
+import { cn } from "@/lib/utils"
+import { ReactNode } from "react"
 
-interface PageWarpperProps extends React.HTMLAttributes<HTMLDivElement> {}
+const PageWrapper = ({
+  className,
+  children,
+}: {
+  className?: string,
+  children: ReactNode
+}) => {
+  return (
+    <div className={cn("mx-auto w-full max-w-screen-xl px-2.5 md:px-20", className)}>
+      {children}
+    </div>
+  )
+}
 
-const PageWarpper = ({ children }: PageWarpperProps) => {
-  return <main className={styles.main_wrapper}>{children}</main>;
-};
+export default PageWrapper
 
-export default PageWarpper;
