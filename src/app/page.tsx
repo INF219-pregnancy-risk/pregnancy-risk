@@ -45,17 +45,18 @@ export default function Home() {
                       {/* Image Section */}
                       <div>
                         <div className="flex items-center justify-center">
-                          <div className="flex items-center justify-center mt-16 sm:mt-24">
+                          <div className="flex items-center justify-center mt-16 sm:mt-24 w-full max-w-[400px] lg:max-w-none p-4 lg:p-8">
                             <div className="rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl lg:p-4">
                               <Image
-                                src='/pregnant.svg'
-                                //src='/gptpregnant.png'
+                                // src='/pregnant.svg'
+                                src='/gptpregnant.png'
                                 alt='product preview'
                                 width={400}
                                 height={350}
                                 quality={100}
                                 priority={true}
-                                className='rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10'
+                                // layout="responsive"
+                                className='rounded-md bg-white shadow-2xl ring-1 ring-gray-900/10'
                               />
                             </div>
                           </div>
