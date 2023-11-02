@@ -92,7 +92,7 @@ const SurveyPage = () => {
       index={currentSlide}
       className="min-h-screen-nav overflow-hidden flex flex-col"
     >
-      <div className="grid-layout text-primary-foreground bg-primary dark:bg-primary/50 py-8 gap-4">
+      <div className="grid-layout text-muted-foreground bg-muted dark:bg-primary/40 py-8 gap-4">
         <h2 className="text-center text-sm">
           Question {currentSlide + 1} of {SurveyEntries.length}
         </h2>
