@@ -28,7 +28,7 @@ const SurveyIntegerInput = ({
 
   useEffect(() => {
     inputRef.current?.focus({ preventScroll: true });
-  }, [inputRef]);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // only allow numbers
@@ -92,6 +92,7 @@ const SurveyIntegerInput = ({
           }
           nextSlide();
         }}
+        disabled={isNaN(surveyData)}
       >
         OK
       </SurveyButton>

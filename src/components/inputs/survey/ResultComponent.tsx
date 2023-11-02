@@ -1,10 +1,11 @@
 "use client";
 
 import { CID, Conditions, ResultType } from "@/types/Conditions";
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { ArrowUpIcon } from "@heroicons/react/24/solid";
+import { default as ArrowUpIcon } from "@mui/icons-material/ArrowUpward";
+import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
+
 interface ResultComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   id: CID;
   value: ResultType;
@@ -19,7 +20,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
   const [hovering, setHovering] = React.useState(false);
 
   return (
-    <div className="relative w-full min-h-[150px] flex flex-col bg-slate-300 flex-1 rounded-md p-2">
+    <div className="relative w-full min-h-[150px] flex flex-col bg-primary/5 flex-1 rounded-md p-2">
       <h1 className="mb-8 text-xl font-bold">{condition.name}</h1>
       {value.missingFactors.length > 0 && (
         <div
@@ -27,14 +28,14 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >
-          <ExclamationTriangleIcon className="h-8 w-8 text-yellow-500" />
+          <ExclamationTriangleIcon className="h-8 w-8 text-warning" />
           <AnimatePresence>
             {hovering && (
               <motion.div
                 initial={{ opacity: 0, y: -20, scale: 0 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0 }}
-                className="overflow-hidden min-w-[150px] min-h-[75px] z-50 top-0 right-0 translate-y-full flex flex-col justify-center bg-gray-100 rounded-md p-2 absolute"
+                className="overflow-hidden min-w-[150px] min-h-[75px] z-50 top-0 right-0 translate-y-full flex flex-col justify-center bg-popover rounded-md p-2 absolute"
               >
                 <span className="text-sm font-bold mb-2 text-center">
                   Missing Factors
@@ -55,7 +56,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
       )}
       <div className="w-full flex rounded-full h-2 bg-gray-200 relative">
         <motion.div
-          className="h-full absolute rounded-l-full bg-blue-400"
+          className="h-full absolute rounded-l-full bg-primary"
           style={{
             left: `${0}%`,
             width: `${low * steps}%`,
@@ -66,7 +67,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
           </span>
         </motion.div>
         <motion.div
-          className="h-full absolute bg-green-400"
+          className="h-full absolute bg-success"
           style={{
             left: `${low * steps}%`,
             width: `${increased * steps - low * steps}%`,
@@ -77,7 +78,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
           </span>
         </motion.div>
         <motion.div
-          className="h-full absolute bg-yellow-400"
+          className="h-full absolute bg-warning"
           style={{
             left: `${increased * steps}%`,
             width: `${moderate * steps - increased * steps}%`,
@@ -88,7 +89,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
           </span>
         </motion.div>
         <motion.div
-          className="h-full absolute bg-red-400"
+          className="h-full absolute bg-destructive"
           style={{
             left: `${moderate * steps}%`,
             width: `${high * steps - moderate * steps}%`,
@@ -107,10 +108,11 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
         ></motion.div>
         <motion.div className="h-full w-full relative" style={{}}>
           <ArrowUpIcon
-            className="h-8 w-8 absolute top-0 text-black -translate-x-1/2"
+            className="h-auto aspect-square absolute text-foreground -translate-x-1/2"
             style={{
               left: `${value.risk * steps}%`,
-              top: "120%",
+              top: "0.5rem",
+              width: "1.5rem",
             }}
           />
         </motion.div>

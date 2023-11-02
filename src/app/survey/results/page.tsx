@@ -4,8 +4,8 @@ import LinkButton from "@/components/inputs/buttons/LinkButton";
 import ResultComponent from "@/components/inputs/survey/ResultComponent";
 import { CID, CalculateRisk, Factors, ResultType } from "@/types/Conditions";
 import { getSurveyUtil } from "@/utils/StoreSurvey";
-import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect } from "react";
 
 const ResultsPage = () => {
   const [calculations, setCalculation] = React.useState<ResultType[]>([]);
@@ -40,12 +40,12 @@ const ResultsPage = () => {
               transition={{ duration: 1 }}
               className="w-full flex flex-col gap-4 justify-center items-center"
             >
-              <div className="w-10 h-10 border-b-blue-500 border-black/20 border-[6px] rounded-full animate-spin" />
+              <div className="w-10 h-10 border-black/20 border-[6px] rounded-full animate-spin" />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-      <div className="transition-opacity duration-300 flex gap-4 p-2 bg-gray-200 rounded-lg bottom-2 left-0 opacity-100 hover:opacity-100">
+      <div className="transition-opacity duration-300 flex gap-4 p-2 bg-muted text-muted-foreground rounded-lg bottom-2 left-0 opacity-100 hover:opacity-100">
         <LinkButton href="/survey">Back</LinkButton>
         <LinkButton href="/">Home</LinkButton>
       </div>
