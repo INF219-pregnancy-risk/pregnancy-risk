@@ -19,7 +19,7 @@ const SurveyIntegerInput = ({
   const inputRef = useRef<HTMLInputElement>(null);
   // disable next button if input is NaN
   useEffect(() => {
-    if (isNaN(surveyData)) {
+    if (isNaN(surveyData) && !survey?.skipped.includes(questionID)) {
       setNextButton(false);
     } else {
       setNextButton(true);
@@ -27,7 +27,9 @@ const SurveyIntegerInput = ({
   }, [surveyData, setNextButton]);
 
   useEffect(() => {
-    inputRef.current?.focus({ preventScroll: true });
+    if (isNaN(surveyData) && !survey?.skipped.includes(questionID)) {
+      inputRef.current?.focus({ preventScroll: true });
+    }
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

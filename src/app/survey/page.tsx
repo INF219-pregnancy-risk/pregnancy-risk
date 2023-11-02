@@ -13,8 +13,16 @@ import {
   setSurveyIndexUtil,
   setSurveyUtil,
 } from "@/utils/StoreSurvey";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import {
+  ArrowBack,
+  ArrowForward,
+  DangerousOutlined,
+  ErrorOutlineRounded,
+  ErrorRounded,
+  WarningOutlined,
+} from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
+import { StopCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect } from "react";
 
@@ -74,22 +82,22 @@ const SurveyPage = () => {
     setSurveyIndexUtil(currentSlide[0]);
   }, [currentSlide]);
 
-  const nextSlide = () => {
+  const nextSlide = (force?: boolean) => {
     setCurrentSlide((prev) => {
-      setDirection(1);
       if (!prev) return;
 
       const [index, id] = prev;
 
-      if (index === SurveyEntries.length - 1) {
+      if (index === SurveyEntries.length - 1 && force === true) {
         setIsSubmitted(true);
         setIsLoading(true);
         return [index, id];
       }
 
-      const nextID = SurveyEntries[index + 1][0] as ID;
+      setDirection(1);
 
       const nextSlideIndex = Math.min(index + 1, SurveyEntries.length - 1);
+      const nextID = SurveyEntries[nextSlideIndex][0] as ID;
 
       //setNextButton(false);
       return [nextSlideIndex, nextID];
@@ -129,7 +137,7 @@ const SurveyPage = () => {
   const [direction, setDirection] = React.useState(0);
 
   return (
-    <SurveyContainer className="min-h-screen-nav overflow-hidden flex flex-col">
+    <SurveyContainer className="min-h-screen-nav overflow-hidden flex flex-col relative">
       {isLoading || !currentSlide || !survey ? (
         <div className="flex flex-1 items-center justify-center dark:bg-secondary/5 bg-primary/5">
           <div className="flex h-10 w-10 aspect-square border-4 rounded-full border-t-primary animate-spin" />
@@ -149,13 +157,24 @@ const SurveyPage = () => {
             <SurveyView
               direction={direction}
               surveyID={currentSlide[1]}
-              className="flex flex-1"
+              className="flex flex-1 relative"
             >
               <AnimatePresence
                 mode="popLayout"
                 initial={false}
                 custom={direction}
               >
+                {survey.skipped.includes(currentSlide[1]) && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-warning top-4 left-4 text-start absolute font-bold w-full flex items-center gap-4"
+                  >
+                    <ErrorRounded className="w-10 h-10" /> You have skipped this
+                    slide
+                  </motion.div>
+                )}
                 <motion.div
                   key={currentSlide[0]}
                   variants={variants}
@@ -181,7 +200,7 @@ const SurveyPage = () => {
           </div>
         </>
       )}
-      <div className="h-min flex justify-center items-center gap-8 py-8">
+      <div className="h-min flex justify-center items-center gap-4 md:gap-8 py-8">
         <SurveyButton
           variant={"default"}
           onClick={prevSlide}
@@ -197,7 +216,7 @@ const SurveyPage = () => {
           size={"lg"}
           onClick={() => {
             handleSkip();
-            nextSlide();
+            nextSlide(true);
           }}
         >
           SKIP
@@ -213,7 +232,7 @@ const SurveyPage = () => {
           iconPosition="right"
           size={"lg"}
           onClick={() => {
-            nextSlide();
+            nextSlide(true);
           }}
         >
           <span className="min-w-[45px] flex justify-center">

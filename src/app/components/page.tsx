@@ -1,9 +1,11 @@
 "use client";
+
 import SurveyButton from "@/components/inputs/buttons/SurveyButton";
-import React from "react";
-import GppMaybeIcon from "@mui/icons-material/GppMaybe";
+import { Variant } from "@/components/ui/button";
 import Check from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import GppMaybeIcon from "@mui/icons-material/GppMaybe";
+import React from "react";
 
 const ComponentsPage = () => {
   const [state, setState] = React.useState({
@@ -110,6 +112,51 @@ const ComponentsPage = () => {
               checked: state.checked,
               disabled: state.disabled,
               className,
+            };
+
+            return (
+              <div
+                className="flex gap-8 my-2 border-b justify-center flex-wrap"
+                key={c}
+              >
+                <h1 className="w-20 justify-end items-center capitalize flex">
+                  {c}
+                </h1>
+                <SurveyButton
+                  size={"icon"}
+                  {...variant}
+                  icon={<GppMaybeIcon />}
+                />
+                <SurveyButton size={"sm"} {...variant}>
+                  {state.buttonText} - sm
+                </SurveyButton>
+                <SurveyButton {...variant} icon={<GppMaybeIcon />}>
+                  {state.buttonText}
+                </SurveyButton>
+                <SurveyButton size={"lg"} {...variant}>
+                  {state.buttonText} - lg
+                </SurveyButton>
+              </div>
+            );
+          })}
+          <h1 className="text-2xl font-bold my-8">Variants</h1>
+          {(
+            [
+              "default",
+              "destructive",
+              "success",
+              "ghost",
+              "link",
+              "none",
+              "outline",
+              "secondary",
+            ] as Variant[]
+          ).map((c) => {
+            const variant = {
+              loading: state.loading,
+              checked: state.checked,
+              disabled: state.disabled,
+              variant: c,
             };
 
             return (

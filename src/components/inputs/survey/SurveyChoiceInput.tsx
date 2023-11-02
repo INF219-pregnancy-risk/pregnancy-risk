@@ -17,7 +17,7 @@ const SurveyChoiceInput = ({
   const input = SurveyQuestions[questionID] as RiskInputChoice;
 
   useEffect(() => {
-    if (!surveyData) {
+    if (!surveyData && !survey?.skipped.includes(questionID)) {
       setNextButton(false);
     } else {
       setNextButton(true);

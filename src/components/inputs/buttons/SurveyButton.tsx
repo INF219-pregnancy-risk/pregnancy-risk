@@ -31,7 +31,12 @@ const SurveyButton = ({
     <Button
       disabled={disabled}
       {...props}
-      className={cn(_className, disabled && "grayscale")}
+      className={cn(
+        "max-w-min",
+        _className,
+        disabled && "grayscale",
+        props.size === "lg" && icon && "px-4"
+      )}
     >
       <AnimatePresence>
         {checked && (

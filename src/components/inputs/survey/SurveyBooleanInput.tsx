@@ -17,7 +17,7 @@ const SurveyBooleanInput = ({
 
   // disable next button if input is not answered
   useEffect(() => {
-    if (surveyData !== undefined) {
+    if (surveyData !== undefined || survey?.skipped.includes(questionID)) {
       setNextButton(true);
     } else {
       setNextButton(false);

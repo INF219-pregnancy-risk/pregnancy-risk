@@ -16,7 +16,7 @@ const SurveyMultipleInput = ({
   const input = SurveyQuestions[questionID] as RiskInputMultiple;
 
   useEffect(() => {
-    if (!surveyData) {
+    if (!surveyData && !survey?.skipped.includes(questionID)) {
       setNextButton(false);
     } else {
       setNextButton(true);
