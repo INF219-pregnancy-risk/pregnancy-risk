@@ -35,17 +35,19 @@ const AboutPage = () => {
         score.
       </p>
 
-      <h2 className="text-2xl font-semibold">Contact Us</h2>
-      <p className="flex gap-2">
+      <h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
+      <p className="gap-2 mb-2">
         For any questions or feedback, please contact us at:
-        <LinkButton
-          href="#mailto:xxx@xxx"
-          variant={"link"}
-          size={"min"}
-          icon={<EmailOutlinedIcon />}
-        >
-          Choose a mail to enter here
-        </LinkButton>
+        <div className="mt-1">
+          <LinkButton
+            href="#mailto:xxx@xxx"
+            variant={"link"}
+            size={"min"}
+            icon={<EmailOutlinedIcon />}
+          >
+            Choose a mail to enter here
+          </LinkButton>
+        </div>
       </p>
     </div>
   );
