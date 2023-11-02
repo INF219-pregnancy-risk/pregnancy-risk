@@ -1,23 +1,22 @@
-import React, { use, useEffect } from "react";
+import SurveyButton from "../buttons/SurveyButton";
+import { SurveyInputSlideProps } from "./SurveyParseInput";
 import { ID, RiskInputInteger, SurveyQuestions } from "@/types/RiskInput";
 import { Survey, SurveyInteger } from "@/types/Survey";
+import React, { useRef, useEffect, LegacyRef, MutableRefObject } from "react";
 
-interface SurveyIntegerInputProps {
-  questionID: ID;
-  setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
-  survey: Survey;
-  setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface SurveyIntegerInputProps extends SurveyInputSlideProps {}
 
 const SurveyIntegerInput = ({
   questionID,
   setSurvey,
   survey,
+  nextSlide,
   setNextButton,
 }: SurveyIntegerInputProps) => {
   const surveyData = survey.data[questionID] as SurveyInteger;
   const input = SurveyQuestions[questionID] as RiskInputInteger;
 
+  const inputRef = useRef<HTMLInputElement>(null);
   // disable next button if input is NaN
   useEffect(() => {
     if (isNaN(surveyData)) {
@@ -26,6 +25,10 @@ const SurveyIntegerInput = ({
       setNextButton(true);
     }
   }, [surveyData, setNextButton]);
+
+  useEffect(() => {
+    inputRef.current?.focus({ preventScroll: true });
+  }, [inputRef]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // only allow numbers
@@ -70,13 +73,28 @@ const SurveyIntegerInput = ({
   };
 
   return (
-    <div>
+    <div className="flex items-center justify-center gap-4">
       <input
         type="text"
-        className="border-2 border-gray-200 rounded-lg p-2"
+        inputMode="numeric"
+        className="border-2 rounded-lg p-2"
         value={!isNaN(surveyData) ? surveyData : ""}
         onChange={handleChange}
+        ref={inputRef}
       />
+      <SurveyButton
+        onClick={() => {
+          if (survey.skipped.includes(questionID)) {
+            setSurvey((prev) => ({
+              ...prev,
+              skipped: prev.skipped.filter((id) => id !== questionID),
+            }));
+          }
+          nextSlide();
+        }}
+      >
+        OK
+      </SurveyButton>
     </div>
   );
 };

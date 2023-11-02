@@ -1,34 +1,43 @@
 "use client";
-import React, { AnchorHTMLAttributes, ReactHTMLElement } from "react";
-import Link, { LinkProps } from "next/link";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { ButtonProps } from "@/components/ui/button";
-import SurveyButton, { SurveyButtonProps } from "./SurveyButton";
 
-interface LinkButtonProps extends SurveyButtonProps {
-  href: string;
+import SurveyButton, { SurveyButtonProps } from "./SurveyButton";
+import { Sizes, Variant, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import Link, { LinkProps } from "next/link";
+import React from "react";
+
+interface LinkButtonProps extends SurveyButtonProps, LinkProps {
+  children?: React.ReactNode;
+  size?: Sizes;
+  variant?: Variant;
+  className?: string;
 }
 
 const LinkButton = ({
   children,
   size = "default",
-  href,
   variant = "ghost",
   className,
+  checked,
+  loading,
+  icon,
+  iconPosition = "left",
   ...props
 }: LinkButtonProps) => {
   return (
     <Link
-      href={href}
+      {...props}
       className={cn(buttonVariants({ variant, size, className }))}
     >
       <SurveyButton
-        {...props}
-        size={"min"}
-        variant={"none"}
         tabIndex={-1}
-        className={className}
+        {...{ size, checked, loading, icon, iconPosition }}
+        variant={"none"}
+        size={"min"}
+        className={cn(
+          className,
+          "ring-0 outline-0 border-0 border-transparent ring-transparent outline-transparent bg-transparent"
+        )}
       >
         {children}
       </SurveyButton>

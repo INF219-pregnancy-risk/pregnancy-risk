@@ -14,7 +14,7 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   ...props
 }) => {
   const _className =
-    "h-0.5 bg-current transition-all duration-500 ease-in-out absolute";
+    "h-0.5 bg-current transition-all duration-500 ease-in-out absolute rounded-full";
   return (
     <Button
       onClick={toggle}

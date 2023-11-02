@@ -1,14 +1,12 @@
-import Link from "next/link";
-
-import Image from "next/image";
-
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LinkButton from "@/components/inputs/buttons/LinkButton";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      <div className="w-full min-h-full-nav flex flex-col">
+      <div className="w-full min-h-screen-nav flex flex-col">
         <div className="relative isolate">
           <div
             aria-hidden="true"
@@ -25,7 +23,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="flex w-full h-full-nav items-center">
+        <div className="flex w-full h-screen-nav items-center">
           <div className="md:grid md:grid-cols-2 gap-8 flex flex-col items-center w-full">
             {/* Text Section */}
             <div className="">

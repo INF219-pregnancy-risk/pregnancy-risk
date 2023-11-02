@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
-import { ID, RiskInputChoice, SurveyQuestions } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
+import { SurveyInputSlideProps } from "./SurveyParseInput";
+import { ID, RiskInputChoice, SurveyQuestions } from "@/types/RiskInput";
 import { Survey, SurveyChoice } from "@/types/Survey";
+import React, { useEffect } from "react";
 
-interface SurveyChoiceInputProps {
-  questionID: ID;
-  nextSlide: () => void;
-  setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
-  survey: Survey;
-  setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface SurveyChoiceInputProps extends SurveyInputSlideProps {}
 
 const SurveyChoiceInput = ({
   questionID,
@@ -45,24 +40,31 @@ const SurveyChoiceInput = ({
       return;
     }
 
-    setSurvey((prev) => ({
-      ...prev,
-      data: {
-        ...prev.data,
-        [questionID]: option,
-      },
-    }));
+    setSurvey((prev) => {
+      const isSkipped = prev.skipped.includes(questionID);
+
+      return {
+        data: {
+          ...prev.data,
+          [questionID]: option,
+        },
+        skipped: isSkipped
+          ? prev.skipped.filter((id) => id !== questionID)
+          : prev.skipped,
+      };
+    });
+    nextSlide();
   };
 
   return (
-    <div className="w-full flex flex-wrap gap-4 items-center justify-center">
+    <div className="flex flex-wrap gap-4 items-center justify-center">
       {Object.entries(input.options).map(([option, value]) => {
         return (
           <SurveyButton
             id={option}
             key={option}
             checked={surveyData === option}
-            className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
+            size={"lg"}
             onClick={() => handleChange(option)}
           >
             {value}

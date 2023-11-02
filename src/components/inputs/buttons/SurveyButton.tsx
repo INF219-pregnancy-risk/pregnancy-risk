@@ -1,18 +1,20 @@
 "use client";
 
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Button, ButtonProps } from "@/components/ui/button";
-import CheckIcon from "@mui/icons-material/Check";
 import { cn } from "@/lib/utils";
+import CheckIcon from "@mui/icons-material/Check";
+import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
 
-export interface SurveyButtonProps extends ButtonProps {
+export interface SurveyButtonProps {
   checked?: boolean;
   loading?: boolean;
   disabled?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
 }
+
+interface Props extends SurveyButtonProps, ButtonProps {}
 
 const SurveyButton = ({
   checked = false,
@@ -23,7 +25,7 @@ const SurveyButton = ({
   iconPosition = "left",
   children,
   ...props
-}: SurveyButtonProps) => {
+}: Props) => {
   const _className = cn(className, "relative");
   return (
     <Button

@@ -1,10 +1,11 @@
 // components/Navbar.tsx
 "use client";
-import { useEffect, useState } from "react";
+
 import HamburgerMenu from "./HamburgerMenu";
 import LinkButton from "@/components/inputs/buttons/LinkButton";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { ModeToggle } from "@/components/inputs/buttons/ThemeToggler";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -35,13 +36,13 @@ const Navbar = () => {
             <LinkButton
               href={"/"}
               variant={"none"}
-              className="text-xl font-bold pointer-events-auto p-0"
+              className="text-xl font-bold pointer-events-auto"
             >
               Pregnacy Risk
             </LinkButton>
             <div className="only-desktop gap-4 items-center justify-center flex">
               {navItems.map(({ href, name }) => (
-                <LinkButton key={href} icon={false} href={href}>
+                <LinkButton key={href} href={href}>
                   {name}
                 </LinkButton>
               ))}
@@ -71,7 +72,7 @@ const Navbar = () => {
           }}
         >
           <div
-            className={`flex flex-col justify-between py-8 overflow-hidden pointer-events-auto h-full bg-popover text-popover-foreground transition-[width] duration-500 ${
+            className={`flex flex-col justify-between py-8 overflow-hidden pointer-events-auto h-full bg-popover text-popover-foreground transition-[width_height] duration-500 ${
               isOpen ? "w-[300px]" : "w-0"
             }`}
             onClick={(e) => e.stopPropagation()}

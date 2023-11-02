@@ -1,14 +1,10 @@
-import React, { useEffect } from "react";
-import { ID, RiskInputMultiple, SurveyQuestions } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
+import { SurveyInputSlideProps } from "./SurveyParseInput";
+import { ID, RiskInputMultiple, SurveyQuestions } from "@/types/RiskInput";
 import { Survey, SurveyMultiple } from "@/types/Survey";
+import React, { useEffect } from "react";
 
-interface SurveyMultipleInputProps {
-  questionID: ID;
-  setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
-  survey: Survey;
-  setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface SurveyMultipleInputProps extends SurveyInputSlideProps {}
 
 const SurveyMultipleInput = ({
   questionID,
@@ -46,19 +42,19 @@ const SurveyMultipleInput = ({
   }, []);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 flex-wrap items-center justify-center">
       {Object.entries(input.values).map(([option, value]) => {
         return (
           <SurveyButton
             id={option}
             key={option}
             checked={surveyData ? surveyData[option] : false}
-            className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
+            size={"lg"}
             onClick={() => {
               setSurvey((prev) => {
                 const last = prev.data[questionID] as SurveyMultiple;
+                const isSkipped = prev.skipped.includes(questionID);
                 return {
-                  ...prev,
                   data: {
                     ...prev.data,
                     [questionID]: {
@@ -66,6 +62,9 @@ const SurveyMultipleInput = ({
                       [option]: last ? !last[option] : true,
                     },
                   },
+                  skipped: isSkipped
+                    ? prev.skipped.filter((id) => id !== questionID)
+                    : prev.skipped,
                 };
               });
             }}

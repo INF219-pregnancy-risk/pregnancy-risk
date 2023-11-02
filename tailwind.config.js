@@ -28,18 +28,18 @@ module.exports = {
       },
       height: {
         nav: "var(--nav-height)",
-        "full-nav": "calc(100vh - var(--nav-height, 0))",
-        "full-w-nav": "calc(100% + var(--nav-height, 0))",
+        "screen-nav": "var(--screen-nav)",
+        "screen-d": "var(--screen-h)",
       },
       maxHeight: {
         nav: "var(--nav-height)",
-        "full-nav": "calc(100vh - var(--nav-height, 0))",
-        "full-w-nav": "calc(100% + var(--nav-height, 0))",
+        "screen-nav": "var(--screen-nav)",
+        "screen-d": "var(--screen-h)",
       },
       minHeight: {
         nav: "var(--nav-height)",
-        "full-nav": "calc(100vh - var(--nav-height, 0))",
-        "full-w-nav": "calc(100% + var(--nav-height, 0))",
+        "screen-nav": "var(--screen-nav)",
+        "screen-d": "var(--screen-h)",
       },
       colors: {
         border: "hsl(var(--border))",

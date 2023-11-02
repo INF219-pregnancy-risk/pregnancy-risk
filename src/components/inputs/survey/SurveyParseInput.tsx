@@ -1,17 +1,15 @@
 "use client";
 
-import React from "react";
-import { TYPE, ID, SurveyQuestions, RiskType } from "@/types/RiskInput";
-
-import SurveyIntegerInput from "./SurveyIntegerInput";
-import SurveyBooleanInput from "./SurveyBooleanInput";
-import SurveyMultipleInput from "./SurveyMultipleInput";
-import SurveyChoiceInput from "./SurveyChoiceInput";
-import { Survey } from "@/types/Survey";
 import AccordionSurvey from "../info/AccordionSurvey";
-import ProgressSurvey from "../info/ProgressSurvey";
+import SurveyBooleanInput from "./SurveyBooleanInput";
+import SurveyChoiceInput from "./SurveyChoiceInput";
+import SurveyIntegerInput from "./SurveyIntegerInput";
+import SurveyMultipleInput from "./SurveyMultipleInput";
+import { TYPE, ID, SurveyQuestions, RiskType } from "@/types/RiskInput";
+import { Survey } from "@/types/Survey";
+import React from "react";
 
-interface SurveyInputSlideProps {
+export interface SurveyInputSlideProps {
   questionID: ID;
   setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   survey: Survey;
@@ -21,73 +19,37 @@ interface SurveyInputSlideProps {
 
 const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
   const input = SurveyQuestions[questionID];
-  const totalSlides = Object.keys(SurveyQuestions).length;
 
   if (!input) {
     return <div>Error parsing: Input</div>;
   }
 
   return (
-    <>
-    
-    <p className="text-center text-gray-500 text-sm">Question {input.number} of {totalSlides} </p>
-<ProgressSurvey currentSlide={input.number} totalSlides={totalSlides} />    
-      <div className="w-full text-center">
-        <h1 className="font-semibold text-2xl">{input.label}</h1>
-        <i className="text-base text-gray-500">{getInfo(questionID)}</i>
-        <AccordionSurvey why={input.why} className="text-center" />
+    <div className="h-full grid grid-cols-1 grid-rows-[1fr_auto_1fr]">
+      <div className="w-full text-center self-start gap-4 flex flex-col items-center mt-8">
+        <h1 className="font-semibold text-xl md:text-2xl">{input.label}</h1>
+        <i className="text-base text-foreground flex">{getInfo(questionID)}</i>
       </div>
-      <Parser {...props} questionID={questionID} />
-    </>
+      <div className="w-full items-center justify-center flex">
+        <Parser {...props} questionID={questionID} />
+      </div>
+      <div className="flex flex-col flex-1 items-center justify-end w-full">
+        <AccordionSurvey why={input.why} className="text-center w-full" />
+      </div>
+    </div>
   );
 };
 
-const Parser = ({
-  setSurvey,
-  survey,
-  setNextButton,
-  nextSlide,
-  questionID,
-}: SurveyInputSlideProps) => {
-  switch (TYPE[questionID]) {
+const Parser = ({ ...props }: SurveyInputSlideProps) => {
+  switch (TYPE[props.questionID]) {
     case RiskType.INTEGER:
-      return (
-        <SurveyIntegerInput
-          questionID={questionID}
-          setSurvey={setSurvey}
-          survey={survey}
-          setNextButton={setNextButton}
-        />
-      );
+      return <SurveyIntegerInput {...props} />;
     case RiskType.BOOLEAN:
-      return (
-        <SurveyBooleanInput
-          questionID={questionID}
-          nextSlide={nextSlide}
-          setSurvey={setSurvey}
-          survey={survey}
-          setNextButton={setNextButton}
-        />
-      );
+      return <SurveyBooleanInput {...props} />;
     case RiskType.MULTIPLE:
-      return (
-        <SurveyMultipleInput
-          questionID={questionID}
-          setSurvey={setSurvey}
-          setNextButton={setNextButton}
-          survey={survey}
-        />
-      );
+      return <SurveyMultipleInput {...props} />;
     case RiskType.CHOICE:
-      return (
-        <SurveyChoiceInput
-          questionID={questionID}
-          setSurvey={setSurvey}
-          nextSlide={nextSlide}
-          setNextButton={setNextButton}
-          survey={survey}
-        />
-      );
+      return <SurveyChoiceInput {...props} />;
     default:
       return <div>Error parsing: Input</div>; // Handle unknown types
   }
@@ -98,11 +60,11 @@ const getInfo = (input: ID) => {
     case RiskType.BOOLEAN:
       return null;
     case RiskType.INTEGER:
-      return "Choose one";
+      return "Input a number";
     case RiskType.MULTIPLE:
       return "Choose multiple";
     case RiskType.CHOICE:
-      return "Input a number";
+      return "Choose one";
     default:
       return null;
   }

@@ -1,108 +1,69 @@
 "use client";
-import LinkButton from "@/components/inputs/buttons/LinkButton";
-import SurveyButton from "@/components/inputs/buttons/SurveyButton";
+
+import { cn } from "@/lib/utils";
 import { ID } from "@/types/RiskInput";
-import { Survey } from "@/types/Survey";
-import { resetSurveyUtil } from "@/utils/StoreSurvey";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect } from "react";
-import { Button } from "@/components/ui/button"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-
-
-
-
+import React from "react";
 
 export interface SurveyViewProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode;
-  nextButton: boolean;
-  prevSlide: () => void;
-  nextSlide: () => void;
-  currentSlide: number;
-  setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
   surveyID: ID;
+  direction: number;
 }
+
+const variants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? "100dvw" : "-100dvw",
+      opacity: 0,
+    };
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? "100dvw" : "-100dvw",
+      opacity: 0,
+    };
+  },
+};
+
 const SurveyView = ({
   children,
-  nextButton,
-  nextSlide,
-  prevSlide,
-  setSurvey,
-  currentSlide,
+  direction,
   surveyID,
+  className,
+  ...props
 }: SurveyViewProps) => {
-  const [skippedSlides, setSkippedSlides] = React.useState<ID[]>([]);
-
-  useEffect(() => {
-    setSurvey(
-      (prev) =>
-      ({
-        ...prev,
-        skipped: skippedSlides,
-      } as Survey)
-    );
-  }, [skippedSlides, setSurvey]);
-
   return (
-    <div className="flex flex-col w-full h-[600px] bg-gray-100 relative">
-      <div className="w-full flex justify-end">
-        <LinkButton
-          href="/"
-          onClick={resetSurveyUtil}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-4 transition duration-200"
-        >
-          EXIT
-        </LinkButton>
-      </div>
-      <section className="flex grow justify-center flex-col gap-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <div className="flex w-full flex-col gap-8 items-center justify-center">
+    <div
+      {...props}
+      className={cn(
+        "flex w-full dark:bg-secondary/5 bg-primary/5 relative",
+        className
+      )}
+    >
+      <section className="w-full grid-layout">
+        <div className="flex w-full flex-col gap-8 items-center justify-center">
+          <AnimatePresence mode="wait" initial={false} custom={direction}>
+            <motion.div
+              key={surveyID}
+              variants={variants}
+              custom={direction}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="h-full relative w-full"
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
               {children}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </section>
-      <div className="grid grid-cols-3 items-center justify-items-center pb-8">
-        <SurveyButton
-          className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
-          onClick={prevSlide}
-        >
-          PREV
-        </SurveyButton>
-        <SurveyButton
-          className="bg-gray-400 hover:bg-gray-500 duration-200 active:bg-gray-400 active:scale-95"
-          onClick={() => {
-            setSkippedSlides((prev) =>
-              prev.includes(surveyID) ? prev : [...prev, surveyID]
-            );
-            nextSlide();
-          }}
-        >
-          SKIP
-        </SurveyButton>
-        <SurveyButton
-          disabled={!nextButton}
-          onClick={() => {
-            setSkippedSlides((prev) => prev.filter((i) => i !== surveyID));
-            nextSlide();
-          }}
-          className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
-        >
-          NEXT
-        </SurveyButton>
-      </div>
     </div>
   );
 };

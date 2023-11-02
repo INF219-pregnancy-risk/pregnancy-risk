@@ -1,9 +1,9 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
-import { constructMetadata } from "@/utils/Metadata";
-import Navbar from "@/components/layout/navbar/Navbar";
 import PageWarpper from "@/components/layout/PageWrapper";
+import Navbar from "@/components/layout/navbar/Navbar";
 import { ThemeProvider } from "@/components/layout/providers/theme-provider";
+import { constructMetadata } from "@/utils/Metadata";
+import { Inter } from "next/font/google";
 
 interface RootLayoutProps extends React.HTMLAttributes<HTMLBodyElement> {}
 
@@ -14,7 +14,7 @@ export const metadata = constructMetadata();
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={`${inter.className} md:desktop mobile scroll-hidden`}>
+      <body className={`${inter.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

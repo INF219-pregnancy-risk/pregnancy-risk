@@ -9,7 +9,18 @@
 
     --nav-height-mobile: 60px;
     --nav-height-desktop: 90px;
-    --nav-height: var(--nav-height-desktop);
+
+    --nav-height: var(--nav-height-mobile);
+    --screen-nav: calc(100svh - var(--nav-height-mobile, 0));
+
+    --screen-h: 100svh;
+  }
+
+  @screen md {
+    body {
+      --nav-height: var(--nav-height-desktop);
+      --screen-nav: calc(100svh - var(--nav-height-desktop, 0));
+    }
   }
 
   .grid-layout {
@@ -47,14 +58,6 @@
   .scroll-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  .mobile {
-    --nav-height: var(--nav-height-mobile);
-  }
-
-  .desktop {
-    --nav-height: var(--nav-height-desktop);
   }
 
   .only-desktop {
@@ -174,8 +177,16 @@
   * {
     @apply border-border;
   }
-  body,
   html {
-    @apply bg-background text-foreground w-full h-full overflow-x-hidden antialiased;
+    @apply w-full h-full overflow-x-hidden antialiased;
+  }
+
+  body {
+    @apply overflow-y-scroll w-full min-h-screen-d overflow-x-hidden scroll-hidden;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground;
   }
 }

@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
-import { ID } from "@/types/RiskInput";
 import SurveyButton from "../buttons/SurveyButton";
+import { SurveyInputSlideProps } from "./SurveyParseInput";
+import { ID } from "@/types/RiskInput";
 import { Survey, SurveyBoolean } from "@/types/Survey";
+import React, { useEffect } from "react";
 
-interface SurveyBooleanInputProps {
-  questionID: ID;
-  nextSlide: () => void;
-  setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
-  survey: Survey;
-  setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface SurveyBooleanInputProps extends SurveyInputSlideProps {}
 
 const SurveyBooleanInput = ({
   questionID,
@@ -31,21 +26,26 @@ const SurveyBooleanInput = ({
   // handle change
   const handleChange = (bool: boolean) => {
     setSurvey((prev) => {
+      const isSkipped = prev.skipped.includes(questionID);
+
       return {
-        ...prev,
         data: {
           ...prev.data,
           [questionID]: bool,
         },
+        skipped: isSkipped
+          ? prev.skipped.filter((id) => id !== questionID)
+          : prev.skipped,
       };
     });
+    nextSlide();
   };
 
   return (
     <div className="flex gap-6">
       <SurveyButton
         checked={surveyData === true}
-        className="bg-blue-400 hover:bg-blue-500 duration-200 active:bg-blue-400 active:scale-95"
+        size={"lg"}
         onClick={() => {
           handleChange(true);
         }}
@@ -54,7 +54,8 @@ const SurveyBooleanInput = ({
       </SurveyButton>
       <SurveyButton
         checked={surveyData === false}
-        className="bg-gray-300 hover:bg-gray-400 duration-200 active:bg-gray-300 active:scale-95"
+        size={"lg"}
+        variant={"secondary"}
         onClick={() => {
           handleChange(false);
         }}
