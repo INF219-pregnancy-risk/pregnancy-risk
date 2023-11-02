@@ -13,7 +13,7 @@ const SurveyChoiceInput = ({
   survey,
   setNextButton,
 }: SurveyChoiceInputProps) => {
-  const surveyData = survey.data[questionID] as SurveyChoice;
+  const surveyData = survey?.data[questionID] as SurveyChoice;
   const input = SurveyQuestions[questionID] as RiskInputChoice;
 
   useEffect(() => {
@@ -28,6 +28,7 @@ const SurveyChoiceInput = ({
     // if the option is already selected, unselect it
     if (surveyData === option) {
       setSurvey((prev) => {
+        if (!prev) return;
         const data = prev.data;
         delete data[questionID];
         return {
@@ -41,17 +42,19 @@ const SurveyChoiceInput = ({
     }
 
     setSurvey((prev) => {
-      const isSkipped = prev.skipped.includes(questionID);
+      const isSkipped = prev?.skipped.includes(questionID);
 
-      return {
-        data: {
-          ...prev.data,
-          [questionID]: option,
-        },
-        skipped: isSkipped
-          ? prev.skipped.filter((id) => id !== questionID)
-          : prev.skipped,
-      };
+      return prev
+        ? {
+            data: {
+              ...prev.data,
+              [questionID]: option,
+            },
+            skipped: isSkipped
+              ? prev.skipped.filter((id) => id !== questionID)
+              : prev.skipped,
+          }
+        : prev;
     });
     nextSlide();
   };

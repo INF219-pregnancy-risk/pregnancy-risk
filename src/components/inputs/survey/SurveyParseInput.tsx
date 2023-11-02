@@ -11,8 +11,8 @@ import React from "react";
 
 export interface SurveyInputSlideProps {
   questionID: ID;
-  setSurvey: React.Dispatch<React.SetStateAction<Survey>>;
-  survey: Survey;
+  setSurvey: React.Dispatch<React.SetStateAction<Survey | undefined>>;
+  survey: Survey | undefined;
   nextSlide: () => void;
   setNextButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -25,15 +25,15 @@ const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
   }
 
   return (
-    <div className="h-full grid grid-cols-1 grid-rows-[1fr_auto_1fr]">
-      <div className="w-full text-center self-start gap-4 flex flex-col items-center mt-8">
+    <div className="h-full grid grid-cols-1 grid-rows-[1fr_auto_1fr] gap-8">
+      <div className="w-full text-center self-end gap-4 flex flex-col items-center">
         <h1 className="font-semibold text-xl md:text-2xl">{input.label}</h1>
         <i className="text-base text-foreground flex">{getInfo(questionID)}</i>
       </div>
       <div className="w-full items-center justify-center flex">
         <Parser {...props} questionID={questionID} />
       </div>
-      <div className="flex flex-col flex-1 items-center justify-end w-full">
+      <div className="flex flex-col flex-1 items-center justify-end w-full place-self-start">
         <AccordionSurvey why={input.why} className="text-center w-full" />
       </div>
     </div>
