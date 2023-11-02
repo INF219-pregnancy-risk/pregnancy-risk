@@ -12,7 +12,7 @@ const SurveyMultipleInput = ({
   survey,
   setNextButton,
 }: SurveyMultipleInputProps) => {
-  const surveyData = survey.data[questionID] as SurveyMultiple;
+  const surveyData = survey?.data[questionID] as SurveyMultiple;
   const input = SurveyQuestions[questionID] as RiskInputMultiple;
 
   useEffect(() => {
@@ -31,13 +31,17 @@ const SurveyMultipleInput = ({
         data[option] = false;
       });
 
-      setSurvey((prev) => ({
-        ...prev,
-        data: {
-          ...prev.data,
-          [questionID]: data,
-        },
-      }));
+      setSurvey((prev) =>
+        prev
+          ? {
+              ...prev,
+              data: {
+                ...prev.data,
+                [questionID]: data,
+              },
+            }
+          : prev
+      );
     }
   }, []);
 
@@ -52,20 +56,22 @@ const SurveyMultipleInput = ({
             size={"lg"}
             onClick={() => {
               setSurvey((prev) => {
-                const last = prev.data[questionID] as SurveyMultiple;
-                const isSkipped = prev.skipped.includes(questionID);
-                return {
-                  data: {
-                    ...prev.data,
-                    [questionID]: {
-                      ...last,
-                      [option]: last ? !last[option] : true,
-                    },
-                  },
-                  skipped: isSkipped
-                    ? prev.skipped.filter((id) => id !== questionID)
-                    : prev.skipped,
-                };
+                const last = prev?.data[questionID] as SurveyMultiple;
+                const isSkipped = prev?.skipped.includes(questionID);
+                return prev
+                  ? {
+                      data: {
+                        ...prev.data,
+                        [questionID]: {
+                          ...last,
+                          [option]: last ? !last[option] : true,
+                        },
+                      },
+                      skipped: isSkipped
+                        ? prev.skipped.filter((id) => id !== questionID)
+                        : prev.skipped,
+                    }
+                  : prev;
               });
             }}
           >

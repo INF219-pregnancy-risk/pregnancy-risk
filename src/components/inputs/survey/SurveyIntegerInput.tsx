@@ -13,7 +13,7 @@ const SurveyIntegerInput = ({
   nextSlide,
   setNextButton,
 }: SurveyIntegerInputProps) => {
-  const surveyData = survey.data[questionID] as SurveyInteger;
+  const surveyData = survey?.data[questionID] as SurveyInteger;
   const input = SurveyQuestions[questionID] as RiskInputInteger;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +52,7 @@ const SurveyIntegerInput = ({
       // if value is NaN, remove the question from the survey
       if (isNaN(value)) {
         setSurvey((prev) => {
+          if (!prev) return;
           const data = prev.data;
           delete data[questionID];
           return {
@@ -62,13 +63,17 @@ const SurveyIntegerInput = ({
         return;
       }
       // otherwise, set the value
-      setSurvey((prev) => ({
-        ...prev,
-        data: {
-          ...prev.data,
-          [questionID]: value,
-        },
-      }));
+      setSurvey((prev) =>
+        prev
+          ? {
+              ...prev,
+              data: {
+                ...prev.data,
+                [questionID]: value,
+              },
+            }
+          : prev
+      );
     }
   };
 
@@ -84,11 +89,15 @@ const SurveyIntegerInput = ({
       />
       <SurveyButton
         onClick={() => {
-          if (survey.skipped.includes(questionID)) {
-            setSurvey((prev) => ({
-              ...prev,
-              skipped: prev.skipped.filter((id) => id !== questionID),
-            }));
+          if (survey?.skipped.includes(questionID)) {
+            setSurvey((prev) =>
+              prev
+                ? {
+                    ...prev,
+                    skipped: prev.skipped.filter((id) => id !== questionID),
+                  }
+                : prev
+            );
           }
           nextSlide();
         }}

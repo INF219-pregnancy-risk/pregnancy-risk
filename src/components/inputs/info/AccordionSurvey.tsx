@@ -20,7 +20,7 @@ const AccordionSurvey = ({
 }: AccordionSurveyProps) => {
   return (
     <Accordion type="single" collapsible {...props} className={cn(className)}>
-      <AccordionItem value="item-1">
+      <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="text-center items-center justify-center">
           Why is this important?
         </AccordionTrigger>

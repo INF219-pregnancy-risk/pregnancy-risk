@@ -48,20 +48,7 @@ const SurveyView = ({
     >
       <section className="w-full grid-layout">
         <div className="flex w-full flex-col gap-8 items-center justify-center">
-          <AnimatePresence mode="wait" initial={false} custom={direction}>
-            <motion.div
-              key={surveyID}
-              variants={variants}
-              custom={direction}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="h-full relative w-full"
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          {children}
         </div>
       </section>
     </div>

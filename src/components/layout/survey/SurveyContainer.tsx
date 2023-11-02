@@ -1,13 +1,11 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
-interface SurveyContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  index: number;
-}
+interface SurveyContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SurveyContainer = ({
   children,
-  index,
+
   className,
   ...props
 }: SurveyContainerProps) => {

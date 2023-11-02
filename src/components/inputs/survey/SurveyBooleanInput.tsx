@@ -13,7 +13,7 @@ const SurveyBooleanInput = ({
   survey,
   setNextButton,
 }: SurveyBooleanInputProps) => {
-  const surveyData = survey.data[questionID] as SurveyBoolean;
+  const surveyData = survey?.data[questionID] as SurveyBoolean;
 
   // disable next button if input is not answered
   useEffect(() => {
@@ -26,17 +26,19 @@ const SurveyBooleanInput = ({
   // handle change
   const handleChange = (bool: boolean) => {
     setSurvey((prev) => {
-      const isSkipped = prev.skipped.includes(questionID);
+      const isSkipped = prev?.skipped.includes(questionID);
 
-      return {
-        data: {
-          ...prev.data,
-          [questionID]: bool,
-        },
-        skipped: isSkipped
-          ? prev.skipped.filter((id) => id !== questionID)
-          : prev.skipped,
-      };
+      return prev
+        ? {
+            data: {
+              ...prev.data,
+              [questionID]: bool,
+            },
+            skipped: isSkipped
+              ? prev.skipped.filter((id) => id !== questionID)
+              : prev.skipped,
+          }
+        : prev;
     });
     nextSlide();
   };
