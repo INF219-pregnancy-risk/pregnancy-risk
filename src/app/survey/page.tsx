@@ -13,10 +13,7 @@ import {
   setSurveyIndexUtil,
   setSurveyUtil,
 } from "@/utils/StoreSurvey";
-import {
-  ArrowBackIos as ArrowBack,
-  ArrowForwardIos as ArrowForward,
-} from "@mui/icons-material";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect } from "react";
@@ -192,7 +189,7 @@ const SurveyPage = () => {
           icon={<ArrowBack />}
           disabled={isLoading}
         >
-          PREV
+          <span className="min-w-[45px] flex justify-center">BACK</span>
         </SurveyButton>
         <SurveyButton
           disabled={isLoading}
@@ -207,7 +204,11 @@ const SurveyPage = () => {
         </SurveyButton>
         <SurveyButton
           disabled={!nextButton || isLoading}
-          variant={"default"}
+          variant={
+            !currentSlide || currentSlide[0] < SurveyEntries.length - 1
+              ? "default"
+              : "success"
+          }
           icon={<ArrowForward />}
           iconPosition="right"
           size={"lg"}
@@ -215,7 +216,11 @@ const SurveyPage = () => {
             nextSlide();
           }}
         >
-          NEXT
+          <span className="min-w-[45px] flex justify-center">
+            {!currentSlide || currentSlide[0] < SurveyEntries.length - 1
+              ? "NEXT"
+              : "FINISH"}
+          </span>
         </SurveyButton>
       </div>
     </SurveyContainer>
