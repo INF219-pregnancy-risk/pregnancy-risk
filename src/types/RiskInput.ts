@@ -57,6 +57,34 @@ const ID_DECLARATION = {
   GONORHEA_SYPHILIS: RiskType.BOOLEAN,
 } as const;
 
+const ID_NAME_MAPPING = {
+  AGE: "Age",
+  WEIGHT: "Weight",
+  HEIGHT: "Height",
+  DIABETES: "Diabetes",
+  HYPERTENSION: "Hypertension",
+  ACTIVITY: "Activity Level",
+  ETNISITY: "Ethnicity",
+  SLE_OR_APS: "SLE or APS",
+  GDM: "Gestational Diabetes Mellitus",
+  POS: "Polycystic Ovary Syndrome",
+  PPE: "Pre-eclampsia",
+  T2DM: "Type 2 Diabetes Mellitus",
+  SMOKING: "Smoking Status",
+  STRESS: "Stress Level",
+  PREVIOUS_PRETERM: "Previous Preterm Birth",
+  CERVICAL_SURGERY: "History of Cervical Surgery",
+  MULTIPLE_GESTATIONS: "Multiple Gestations",
+  HEPATITIS_C: "Hepatitis C",
+  ECLAMPSIA: "Eclampsia",
+  INFERILITY_TREATMENT: "Infertility Treatment",
+  GONORHEA_SYPHILIS: "Gonorrhea or Syphilis Infection",
+};
+
+export function getRegularNameForId(id: keyof typeof ID_DECLARATION): string {
+  return ID_NAME_MAPPING[id] || "Unknown";
+}
+
 export type ID = BOOLEANS | INTEGERS | MULTIPLES | CHOICES;
 
 export const ID = Object.freeze(

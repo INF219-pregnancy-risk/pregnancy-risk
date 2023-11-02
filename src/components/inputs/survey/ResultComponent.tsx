@@ -4,6 +4,8 @@ import { CID, Conditions, ResultType } from "@/types/Conditions";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { default as ArrowUpIcon } from "@mui/icons-material/ArrowUpward";
 import { AnimatePresence, motion } from "framer-motion";
+import AccordationResult from "../info/AccordionResult";
+import { getRegularNameForId } from "@/types/RiskInput";
 import React from "react";
 
 interface ResultComponentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -19,8 +21,21 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
 
   const [hovering, setHovering] = React.useState(false);
 
+  const calculationContent = Object.entries(value.increasedBy)
+  .map(([factor, amount]) => `${factor}: ${amount}`)
+  .join(' + ')
+  .trim();
+
+  const getRiskColorClass = (risk: number) => {
+    if (risk >= high) return 'text-red-900';
+    if (risk >= moderate) return 'text-destructive';
+    if (risk >= increased) return 'text-warning';
+    if (risk >= low) return 'text-success';
+    return 'text-primary';
+  };
+
   return (
-    <div className="relative w-full min-h-[150px] flex flex-col bg-primary/5 flex-1 rounded-md p-2">
+    <div className="relative w-full min-h-[150px] flex flex-col bg-primary/5 flex-1 rounded-md p-8">
       <h1 className="mb-8 text-xl font-bold">{condition.name}</h1>
       {value.missingFactors.length > 0 && (
         <div
@@ -46,7 +61,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
                 </i>
                 {value.missingFactors.map((factor) => (
                   <span className="text-xs mb-1 font-bold" key={factor}>
-                    {factor}
+                    {getRegularNameForId(factor)}
                   </span>
                 ))}
               </motion.div>
@@ -135,8 +150,27 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
         <div className="text-sm text-gray-500">Risk Score</div>
       </div>
       <div className="flex flex-col items-center justify-center my-2">
-        <div className="flex flex-row items-center justify-center">
-          <span className="text-sm ml-2">{condition.description}</span>
+      <div className="grid grid-cols-1 items-center justify-center text-center w-full">
+          <AccordationResult
+            header={"Description of " + condition.name}
+            content={condition.description}
+            className="my-2"
+          />
+
+          <AccordationResult
+            key="calculation-accordion"
+            header="Calculation for this complication"
+            content={
+              <span className={`text-md font-medium bg-primary-100 rounded-lg p-2 shadow`}>
+                {calculationContent + " = "}
+                <span className={`text-lg font-semibold ${getRiskColorClass(value.risk)}`}>
+                  {value.risk}
+                </span>
+              </span>
+            }
+            className="my-4"
+
+          />
         </div>
       </div>
     </div>
