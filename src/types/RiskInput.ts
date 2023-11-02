@@ -15,7 +15,7 @@ type RiskInputTYPE<T extends ID> = {
 export interface RiskInput {
   label: string;
   why?: string;
-  number : number;
+  info?: string;
 }
 // Integer riskinput
 export interface RiskInputInteger extends RiskInput {
@@ -76,27 +76,29 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   [ID.GDM]: {
     label: "Do you have a history of GDM?",
     why: "History of GDM increases the risk of GDM in future pregnancies",
-    number: 1,
+    info: "Gestational diabetes mellitus (GDM) is a condition in which a hormone made by the placenta prevents the body from using insulin effectively. Glucose builds up in the blood instead of being absorbed by the cells. The body is unable to regulate the high levels of glucose in the blood, leading to hyperglycemia.",
+
   },
   [ID.AGE]: {
     label: "What is your age?",
     why: "The older you are, the higher the risk of complications",
-    number: 2,
+  
   },
   [ID.WEIGHT]: {
     label: "What is your weight?",
     why: "The heavier you are, the higher the risk of complications",
-    number: 3,
+
   },
   [ID.HEIGHT]: {
     label: "What is your height?",
     why: "The shorter you are, the higher the risk of complications",
-    number: 4,
+
   },
   [ID.DIABETES]: {
     label: "Do you have diabetes?",
     why: "Diabetes increases the risk of complications",
-    number: 5,
+    info: "Diabetes is a disease that occurs when your blood glucose, also called blood sugar, is too high. Blood glucose is your main source of energy and comes from the food you eat. Insulin, a hormone made by the pancreas, helps glucose from food get into your cells to be used for energy. Sometimes your body doesn’t make enough—or any—insulin or doesn’t use insulin well. Glucose then stays in your blood and doesn’t reach your cells.",
+
   },
   [ID.HYPERTENSION]: {
     label: "Do you have hypertension?",
@@ -106,7 +108,8 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
       NONE: "None",
     },
     why: "Hypertension increases the risk of complications",
-    number: 6,
+    info: "Hypertension is a condition in which the force of the blood against the artery walls is too high. Usually hypertension is defined as blood pressure above 140/90, and is considered severe if the pressure is above 180/120. High blood pressure often has no symptoms. Over time, if untreated, it can cause health conditions, such as heart disease and stroke.",
+  
   },
   [ID.ACTIVITY]: {
     label: "Select your activity level:",
@@ -116,12 +119,11 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
       HIGH: "High",
     },
     why: "Low activity level increases the risk of complications",
-    number: 7,
+    info: "Physical activity is defined as any bodily movement produced by skeletal muscles that requires energy expenditure. Physical inactivity has been identified as the fourth leading risk factor for global mortality causing an estimated 3.2 million deaths globally.",
   },
   [ID.ETNISITY]: {
     label: "Select your ethnicity:",
     why : "The ethnicity may intefere with the risk of complications",
-    number: 8,
     options: {
       ASIAN: "Asian",
       BLACK: "Black",

@@ -1,6 +1,7 @@
 "use client";
 
 import AccordionSurvey from "../info/AccordionSurvey";
+import InfoSurvey from "../info/InfoSurvey";
 import SurveyBooleanInput from "./SurveyBooleanInput";
 import SurveyChoiceInput from "./SurveyChoiceInput";
 import SurveyIntegerInput from "./SurveyIntegerInput";
@@ -26,9 +27,12 @@ const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
 
   return (
     <div className="h-full grid grid-cols-1 grid-rows-[1fr_auto_1fr]">
-      <div className="w-full text-center self-start gap-4 flex flex-col items-center mt-8">
-        <h1 className="font-semibold text-xl md:text-2xl">{input.label}</h1>
-        <i className="text-base text-foreground flex">{getInfo(questionID)}</i>
+      <div className="w-full text-center self-start gap-4 flex mt-8 justify-center">
+        <div>
+          <h1 className="font-semibold text-xl md:text-2xl">{input.label}</h1>
+          <i className="text-base text-foreground flex">{getInfo(questionID)}</i>
+        </div>
+        {input.info && <InfoSurvey className="text-red-500 place-self-start" content={input.info} />}
       </div>
       <div className="w-full items-center justify-center flex">
         <Parser {...props} questionID={questionID} />
