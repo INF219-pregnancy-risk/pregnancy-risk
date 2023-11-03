@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
 import React from "react";
 
-interface LinkButtonProps extends SurveyButtonProps, LinkProps {
+export interface LinkButtonProps extends SurveyButtonProps, LinkProps {
   children?: React.ReactNode;
   size?: Sizes;
   variant?: Variant;
@@ -21,12 +21,14 @@ const LinkButton = ({
   checked,
   loading,
   icon,
+  href,
   iconPosition = "left",
   ...props
 }: LinkButtonProps) => {
   return (
     <Link
       {...props}
+      href={href}
       className={cn(buttonVariants({ variant, size, className }))}
     >
       <SurveyButton

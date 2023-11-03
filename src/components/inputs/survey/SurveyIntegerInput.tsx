@@ -54,12 +54,16 @@ const SurveyIntegerInput = ({
       // if value is NaN, remove the question from the survey
       if (isNaN(value)) {
         setSurvey((prev) => {
-          if (!prev) return;
+          if (!prev) return prev;
           const data = prev.data;
           delete data[questionID];
           return {
             ...prev,
             data: data,
+            metadata: {
+              ...prev.metadata,
+              finished: false,
+            },
           };
         });
         return;

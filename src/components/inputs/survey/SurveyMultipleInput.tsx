@@ -60,6 +60,7 @@ const SurveyMultipleInput = ({
                 const isSkipped = prev?.skipped.includes(questionID);
                 return prev
                   ? {
+                      ...prev,
                       data: {
                         ...prev.data,
                         [questionID]: {
@@ -70,6 +71,10 @@ const SurveyMultipleInput = ({
                       skipped: isSkipped
                         ? prev.skipped.filter((id) => id !== questionID)
                         : prev.skipped,
+                      metadata: {
+                        ...prev.metadata,
+                        finished: false,
+                      },
                     }
                   : prev;
               });

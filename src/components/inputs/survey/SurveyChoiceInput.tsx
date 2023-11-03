@@ -28,13 +28,17 @@ const SurveyChoiceInput = ({
     // if the option is already selected, unselect it
     if (surveyData === option) {
       setSurvey((prev) => {
-        if (!prev) return;
+        if (!prev) return prev;
         const data = prev.data;
         delete data[questionID];
         return {
           ...prev,
           data: {
             ...data,
+          },
+          metadata: {
+            ...prev.metadata,
+            finished: false,
           },
         };
       });
@@ -46,6 +50,7 @@ const SurveyChoiceInput = ({
 
       return prev
         ? {
+            ...prev,
             data: {
               ...prev.data,
               [questionID]: option,
@@ -53,6 +58,10 @@ const SurveyChoiceInput = ({
             skipped: isSkipped
               ? prev.skipped.filter((id) => id !== questionID)
               : prev.skipped,
+            metadata: {
+              ...prev.metadata,
+              finished: false,
+            },
           }
         : prev;
     });

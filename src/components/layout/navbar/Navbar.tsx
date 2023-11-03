@@ -3,6 +3,7 @@
 
 import HamburgerMenu from "./HamburgerMenu";
 import LinkButton from "@/components/inputs/buttons/LinkButton";
+import StartSurveyButton from "@/components/inputs/buttons/StartSurveyButton";
 import { ModeToggle } from "@/components/inputs/buttons/ThemeToggler";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useEffect, useState } from "react";
@@ -46,14 +47,7 @@ const Navbar = () => {
                   {name}
                 </LinkButton>
               ))}
-              <LinkButton
-                href="/survey"
-                variant={"default"}
-                icon={<ArrowForwardIcon />}
-                iconPosition={"right"}
-              >
-                Take the survey
-              </LinkButton>
+              <StartSurveyButton />
               <ModeToggle />
             </div>
             <div className="only-mobile h-8 flex items-center justify-center pointer-events-auto">
@@ -89,16 +83,7 @@ const Navbar = () => {
                   {name}
                 </LinkButton>
               ))}
-              <LinkButton
-                href="/survey"
-                variant={"default"}
-                icon={<ArrowForwardIcon />}
-                iconPosition={"right"}
-                onClick={toggleMenu}
-                className="text-lg w-min"
-              >
-                Take the survey
-              </LinkButton>
+              <StartSurveyButton onClick={toggleMenu} />
             </div>
             <div className="flex justify-end items-center pr-8 gap-4 w-full">
               <ModeToggle />

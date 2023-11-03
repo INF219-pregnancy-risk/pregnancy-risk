@@ -24,7 +24,8 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { StopCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { set } from "react-hook-form";
 
 const variants = {
   enter: (direction: number) => {
@@ -49,20 +50,27 @@ const variants = {
 
 const SurveyPage = () => {
   const [survey, setSurvey] = React.useState<Survey>();
-  const [currentSlide, setCurrentSlide] = React.useState<[number, ID]>();
+  const [currentSlide, setCurrentSlide] = React.useState<number>();
 
-  const [nextButton, setNextButton] = React.useState<boolean>(true);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const questionID = useMemo(() => {
+    if (currentSlide === undefined) return;
+    return SurveyEntries[currentSlide][0] as ID;
+  }, [currentSlide]);
+
+  const [nextButton, setNextButton] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>("");
   const [isSubmitted, setIsSubmitted] = React.useState<boolean>(false);
 
   const router = useRouter();
 
   useEffect(() => {
+    setIsLoading(true);
     const survey = getSurveyUtil();
     const index = getSurveyIndexUtil();
-    setSurvey(survey);
-    setCurrentSlide([index, SurveyEntries[index][0]]);
+
+    setSurvey({ ...survey, metadata: { ...survey.metadata, started: true } });
+    setCurrentSlide(index);
     setIsLoading(false);
   }, []);
 
@@ -78,39 +86,39 @@ const SurveyPage = () => {
   }, [survey]);
 
   useEffect(() => {
-    if (!currentSlide) return;
-    setSurveyIndexUtil(currentSlide[0]);
+    if (currentSlide === undefined) return;
+    setSurveyIndexUtil(currentSlide);
   }, [currentSlide]);
 
   const nextSlide = (force?: boolean) => {
-    setCurrentSlide((prev) => {
-      if (!prev) return;
-
-      const [index, id] = prev;
-
+    setCurrentSlide((index) => {
       if (index === SurveyEntries.length - 1 && force === true) {
         setIsSubmitted(true);
-        setIsLoading(true);
-        return [index, id];
+        setSurvey((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            metadata: {
+              ...prev.metadata,
+              finished: true,
+            },
+          };
+        });
+        return index;
       }
-
       setDirection(1);
-
+      if (index === undefined) return 0;
       const nextSlideIndex = Math.min(index + 1, SurveyEntries.length - 1);
-      const nextID = SurveyEntries[nextSlideIndex][0] as ID;
 
-      //setNextButton(false);
-      return [nextSlideIndex, nextID];
+      return nextSlideIndex;
     });
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) => {
-      if (!prev) return;
-
-      const [index, id] = prev;
-      const nextID = Math.max(index - 1, 0);
-      return [nextID, SurveyEntries[nextID][0] as ID];
+      if (!prev) return 0;
+      if (prev === 0) return 0;
+      return prev - 1;
     });
     setDirection(-1);
   };
@@ -118,18 +126,20 @@ const SurveyPage = () => {
   const handleSkip = useCallback(() => {
     if (!currentSlide) return;
     if (!survey) return;
+    if (!questionID) return;
 
-    if (survey.skipped.includes(currentSlide[1])) {
+    if (survey.skipped.includes(questionID)) {
       return;
     }
     setSurvey((prev) => {
-      if (!prev) return;
+      if (!prev) return prev;
       const data = prev.data;
-      delete data[currentSlide[1]];
+      delete data[questionID];
 
       return {
+        ...prev,
         data,
-        skipped: [...prev.skipped, currentSlide[1]],
+        skipped: [...prev.skipped, questionID],
       };
     });
   }, [survey, currentSlide]);
@@ -138,7 +148,7 @@ const SurveyPage = () => {
 
   return (
     <SurveyContainer className="min-h-screen-nav overflow-hidden flex flex-col relative">
-      {isLoading || !currentSlide || !survey ? (
+      {isLoading || currentSlide === undefined || !survey || !questionID ? (
         <div className="flex flex-1 items-center justify-center dark:bg-secondary/5 bg-primary/5">
           <div className="flex h-10 w-10 aspect-square border-4 rounded-full border-t-primary animate-spin" />
         </div>
@@ -146,17 +156,17 @@ const SurveyPage = () => {
         <>
           <div className="grid-layout text-muted-foreground bg-muted dark:bg-primary/40 py-8 gap-4">
             <h2 className="text-center text-sm">
-              Question {currentSlide[0] + 1} of {SurveyEntries.length}
+              Question {currentSlide + 1} of {SurveyEntries.length}
             </h2>
             <ProgressSurvey
-              currentSlide={currentSlide[0]}
+              currentSlide={currentSlide}
               totalSlides={SurveyEntries.length - 1}
             />
           </div>
           <div className="flex flex-col flex-1">
             <SurveyView
               direction={direction}
-              surveyID={currentSlide[1]}
+              surveyID={questionID}
               className="flex flex-1 relative"
             >
               <AnimatePresence
@@ -164,7 +174,7 @@ const SurveyPage = () => {
                 initial={false}
                 custom={direction}
               >
-                {survey.skipped.includes(currentSlide[1]) && (
+                {survey.skipped.includes(questionID) && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -176,7 +186,7 @@ const SurveyPage = () => {
                   </motion.div>
                 )}
                 <motion.div
-                  key={currentSlide[0]}
+                  key={currentSlide}
                   variants={variants}
                   custom={direction}
                   initial="enter"
@@ -186,7 +196,7 @@ const SurveyPage = () => {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
                   <SurveyParseInput
-                    questionID={currentSlide[1]}
+                    questionID={questionID}
                     {...{
                       survey,
                       setNextButton,
@@ -206,7 +216,7 @@ const SurveyPage = () => {
           onClick={prevSlide}
           size={"lg"}
           icon={<ArrowBack />}
-          disabled={isLoading}
+          disabled={isLoading || !currentSlide || currentSlide === 0}
         >
           <span className="min-w-[45px] flex justify-center">BACK</span>
         </SurveyButton>
@@ -224,7 +234,7 @@ const SurveyPage = () => {
         <SurveyButton
           disabled={!nextButton || isLoading}
           variant={
-            !currentSlide || currentSlide[0] < SurveyEntries.length - 1
+            !currentSlide || currentSlide < SurveyEntries.length - 1
               ? "default"
               : "success"
           }
@@ -236,7 +246,7 @@ const SurveyPage = () => {
           }}
         >
           <span className="min-w-[45px] flex justify-center">
-            {!currentSlide || currentSlide[0] < SurveyEntries.length - 1
+            {!currentSlide || currentSlide < SurveyEntries.length - 1
               ? "NEXT"
               : "FINISH"}
           </span>

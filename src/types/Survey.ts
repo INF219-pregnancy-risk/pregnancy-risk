@@ -19,6 +19,9 @@ export interface Survey {
     [key in ID]?: SurveyData;
   };
   skipped: ID[];
+  metadata: {
+    [key: string]: any;
+  };
 }
 
 type RiskTypeToFactor = {

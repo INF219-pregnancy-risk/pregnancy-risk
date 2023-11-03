@@ -32,7 +32,7 @@ const SurveyButton = ({
       disabled={disabled}
       {...props}
       className={cn(
-        "max-w-min",
+        "w-min",
         _className,
         disabled && "grayscale",
         props.size === "lg" && icon && "px-4"

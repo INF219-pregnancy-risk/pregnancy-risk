@@ -29,8 +29,15 @@ const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
     <div className="h-full grid grid-cols-1 grid-rows-[1fr_auto_1fr] gap-8">
       <div className="w-full text-center self-end grid grid-cols-[auto_auto] items-center mt-8 gap-y-2 gap-x-4 justify-center">
         <h1 className="font-semibold text-xl md:text-2xl">{input.label}</h1>
-        {input.info && <InfoSurvey className="text-red-500 place-self-start" content={input.info} />}
-        <i className="text-base text-foreground flex row-start-2">{getInfo(questionID)}</i>
+        {input.info && (
+          <InfoSurvey
+            className="text-red-500 place-self-start"
+            content={input.info}
+          />
+        )}
+        <i className="text-base text-foreground flex row-start-2">
+          {getInfo(questionID)}
+        </i>
       </div>
       <div className="w-full items-center justify-center flex">
         <Parser {...props} questionID={questionID} />

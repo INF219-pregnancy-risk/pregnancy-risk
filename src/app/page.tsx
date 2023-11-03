@@ -42,9 +42,10 @@ export default function Home() {
                 // src='/pregnant.svg'
                 src="/gptpregnant.png"
                 alt="product preview"
-                layout="fill"
                 objectFit="contain"
                 quality={100}
+                width={400}
+                height={400}
                 priority={true}
                 // layout="responsive"
                 className="rounded-md bg-white shadow-2xl shadow-foreground/50 ring-2 ring-foreground/20"

@@ -30,6 +30,7 @@ const SurveyBooleanInput = ({
 
       return prev
         ? {
+            ...prev,
             data: {
               ...prev.data,
               [questionID]: bool,
@@ -37,6 +38,10 @@ const SurveyBooleanInput = ({
             skipped: isSkipped
               ? prev.skipped.filter((id) => id !== questionID)
               : prev.skipped,
+            metadata: {
+              ...prev.metadata,
+              finished: false,
+            },
           }
         : prev;
     });
