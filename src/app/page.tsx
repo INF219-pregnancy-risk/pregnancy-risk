@@ -1,9 +1,17 @@
+'use client'
 import LinkButton from "@/components/inputs/buttons/LinkButton";
+import StartSurveyButton from "@/components/inputs/buttons/StartSurveyButton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <>
       <div className="w-full min-h-screen-nav flex flex-col">
@@ -34,6 +42,9 @@ export default function Home() {
               <p className="mt-4 text-xl text-center md:text-start md:text-3xl">
                 Instant assessment for a safer maternity.
               </p>
+              <div className=" mt-4">
+                <StartSurveyButton onClick={toggleMenu} />
+              </div>
             </div>
 
             {/* Image Section */}
@@ -42,7 +53,7 @@ export default function Home() {
                 // src='/pregnant.svg'
                 src="/gptpregnant.png"
                 alt="product preview"
-                objectFit="contain"
+                // objectFit="contain"
                 quality={100}
                 width={400}
                 height={400}
@@ -93,15 +104,7 @@ export default function Home() {
               conditions and potential complications.
             </p>
 
-            <LinkButton
-              href="/survey"
-              variant={"default"}
-              icon={<ArrowForwardIcon />}
-              iconPosition={"right"}
-              className="w-min"
-            >
-              Start the Quiz
-            </LinkButton>
+
           </div>
 
           <div
@@ -137,11 +140,11 @@ export default function Home() {
           <li className="md:flex-1">
             <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4">
               <span className="text-sm font-medium text-primary">Step 1</span>
-              <span className="text-xl font-semibold">Start the Quiz</span>
+              <span className="text-xl font-semibold">Start the Survey</span>
               <span className="mt-2">
                 No sign-up required! Jump straight in and start the
                 <Link href="/survey" className="text-accent">
-                  {` quiz `}
+                  {` survey `}
                 </Link>
                 to share details about your pregnancy and health.
               </span>
@@ -178,6 +181,7 @@ export default function Home() {
   );
 }
 
+// SHADOW
 // <div>
 // <div className='relative isolate'>
 //   <div
