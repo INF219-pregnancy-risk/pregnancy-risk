@@ -21,6 +21,7 @@ export interface RiskInput {
 export interface RiskInputInteger extends RiskInput {
   min?: number;
   max?: number;
+  placeholder?: string;
 }
 // Multiple riskinput
 export interface RiskInputMultiple extends RiskInput {
@@ -122,16 +123,19 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   [ID.AGE]: {
     label: "What is your age?",
     why: "The older you are, the higher the risk of complications",
+    placeholder: "Enter your age",
 
   },
   [ID.WEIGHT]: {
     label: "What is your weight?",
     why: "The heavier you are, the higher the risk of complications",
+    placeholder: "Enter in kg",
 
   },
   [ID.HEIGHT]: {
     label: "What is your height?",
     why: "The shorter you are, the higher the risk of complications",
+    placeholder: "Enter in cm",
 
   },
   [ID.DIABETES]: {

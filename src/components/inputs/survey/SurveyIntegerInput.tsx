@@ -2,9 +2,11 @@ import SurveyButton from "../buttons/SurveyButton";
 import { SurveyInputSlideProps } from "./SurveyParseInput";
 import { ID, RiskInputInteger, SurveyQuestions } from "@/types/RiskInput";
 import { Survey, SurveyInteger } from "@/types/Survey";
-import React, { useRef, useEffect, LegacyRef, MutableRefObject } from "react";
+import React, { useState, useRef, useEffect, LegacyRef, MutableRefObject } from "react";
+import { poundsToKilograms, feetToCentimeters } from '@/utils/Conversion';
 
-interface SurveyIntegerInputProps extends SurveyInputSlideProps {}
+
+interface SurveyIntegerInputProps extends SurveyInputSlideProps { }
 
 const SurveyIntegerInput = ({
   questionID,
@@ -17,6 +19,10 @@ const SurveyIntegerInput = ({
   const input = SurveyQuestions[questionID] as RiskInputInteger;
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // New piece of state for the display value
+  const [displayValue, setDisplayValue] = useState('');
+
   // disable next button if input is NaN
   useEffect(() => {
     if (isNaN(surveyData) && !survey?.skipped.includes(questionID)) {
@@ -33,6 +39,9 @@ const SurveyIntegerInput = ({
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Update the display value directly with the user input
+    setDisplayValue(e.target.value);
+
     // only allow numbers
     const re = /^[0-9\b]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
@@ -51,6 +60,7 @@ const SurveyIntegerInput = ({
         }
       }
 
+
       // if value is NaN, remove the question from the survey
       if (isNaN(value)) {
         setSurvey((prev) => {
@@ -68,18 +78,39 @@ const SurveyIntegerInput = ({
         });
         return;
       }
+
+      // Add conversion logic before setting the survey data
+      let convertedValue = value;
+      console.log(convertedValue);
+      // Fetch the measurement system preference from the survey data
+      const measurementSystem = survey?.data.MEASURING; // Assuming 'MEASURING' is the key for the measurement system preference
+
+      // Check if the current question needs conversion
+      if (measurementSystem === 'IMPERIAL') {
+        if (questionID === ID.WEIGHT) {
+          // Assuming 'value' is in pounds, convert to kilograms
+          convertedValue = poundsToKilograms(value);
+        } else if (questionID === ID.HEIGHT) {
+          // Assuming 'value' is in feet, convert to centimeters
+          // Note: This is a simplified example. You might need to handle feet and inches separately
+          convertedValue = feetToCentimeters(value);
+        }
+      }
+
+      console.log("After conv " + convertedValue);
       // otherwise, set the value
       setSurvey((prev) =>
         prev
           ? {
-              ...prev,
-              data: {
-                ...prev.data,
-                [questionID]: value,
-              },
-            }
+            ...prev,
+            data: {
+              ...prev.data,
+              [questionID]: convertedValue,
+            },
+          }
           : prev
       );
+
     }
   };
 
@@ -89,9 +120,11 @@ const SurveyIntegerInput = ({
         type="text"
         inputMode="numeric"
         className="border-2 rounded-lg p-2"
-        value={!isNaN(surveyData) ? surveyData : ""}
+        // value={!isNaN(surveyData) ? surveyData : ""}
+        value={displayValue} // Use displayValue here
         onChange={handleChange}
         ref={inputRef}
+        placeholder={input.placeholder || "Enter value"}
       />
       <SurveyButton
         onClick={() => {
@@ -99,9 +132,9 @@ const SurveyIntegerInput = ({
             setSurvey((prev) =>
               prev
                 ? {
-                    ...prev,
-                    skipped: prev.skipped.filter((id) => id !== questionID),
-                  }
+                  ...prev,
+                  skipped: prev.skipped.filter((id) => id !== questionID),
+                }
                 : prev
             );
           }
