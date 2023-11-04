@@ -1,0 +1,12 @@
+.main_wrapper {
+  display: grid;
+  grid-template-columns:
+    minmax(var(--main-padding, 0), 1fr) minmax(auto, var(--main-size, 800px))
+    minmax(var(--main-padding, 0), 1fr);
+
+  justify-items: start;
+}
+
+.main_wrapper > * {
+  grid-column: 2;
+}
