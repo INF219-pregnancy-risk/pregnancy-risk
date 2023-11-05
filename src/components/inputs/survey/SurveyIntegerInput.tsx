@@ -8,6 +8,10 @@ import { poundsToKilograms, feetToCentimeters } from '@/utils/Conversion';
 
 interface SurveyIntegerInputProps extends SurveyInputSlideProps { }
 
+
+
+
+
 const SurveyIntegerInput = ({
   questionID,
   setSurvey,
@@ -17,11 +21,14 @@ const SurveyIntegerInput = ({
 }: SurveyIntegerInputProps) => {
   const surveyData = survey?.data[questionID] as SurveyInteger;
   const input = SurveyQuestions[questionID] as RiskInputInteger;
+  const measurementSystem = survey?.data.MEASURING;
+  const [placeholderText, setPlaceholderText] = useState(input.placeholder);
+
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // New piece of state for the display value
-  const [displayValue, setDisplayValue] = useState('');
+  // New piece of state for the display value since it will change when imperial is selected
+  // const [displayValue, setDisplayValue] = useState('');
 
   // disable next button if input is NaN
   useEffect(() => {
@@ -37,10 +44,23 @@ const SurveyIntegerInput = ({
       inputRef.current?.focus({ preventScroll: true });
     }
   }, []);
+  useEffect(() => {
+    if (measurementSystem === 'IMPERIAL') {
+      if (questionID === ID.WEIGHT) {
+        setPlaceholderText("Enter in lbs");
+      } else if (questionID === ID.HEIGHT) {
+        setPlaceholderText("Enter in feet and inches");
+      }
+    } else {
+      // Set to default placeholder when not imperial
+      setPlaceholderText(input.placeholder);
+    }
+  }, [survey?.data.MEASURING, questionID, input.placeholder]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Update the display value directly with the user input
-    setDisplayValue(e.target.value);
+    // setDisplayValue(e.target.value);
 
     // only allow numbers
     const re = /^[0-9\b]+$/;
@@ -80,24 +100,26 @@ const SurveyIntegerInput = ({
       }
 
       // Add conversion logic before setting the survey data
-      let convertedValue = value;
-      console.log(convertedValue);
-      // Fetch the measurement system preference from the survey data
-      const measurementSystem = survey?.data.MEASURING; // Assuming 'MEASURING' is the key for the measurement system preference
+      // let convertedValue = value;
+      // const measurementSystem = survey?.data.MEASURING;
+      // Use getPlaceholderText function inside the component
+
 
       // Check if the current question needs conversion
-      if (measurementSystem === 'IMPERIAL') {
-        if (questionID === ID.WEIGHT) {
-          // Assuming 'value' is in pounds, convert to kilograms
-          convertedValue = poundsToKilograms(value);
-        } else if (questionID === ID.HEIGHT) {
-          // Assuming 'value' is in feet, convert to centimeters
-          // Note: This is a simplified example. You might need to handle feet and inches separately
-          convertedValue = feetToCentimeters(value);
-        }
-      }
+      // if (measurementSystem === 'IMPERIAL') {
+      //   console.log(convertedValue);
+      //   if (questionID === ID.WEIGHT) {
+      //     convertedValue = poundsToKilograms(value);
+      //     placeholderText = "Enter in lbs";
+      //     console.log(placeholderText);
+      //     console.log(value + " lbs to kg: " + convertedValue);
+      //   } else if (questionID === ID.HEIGHT) {
+      //     // Note: Feet and inches should have seperate inputs and this is not done so skip
+      //     // question for now while testing
+      //     convertedValue = feetToCentimeters(value);
+      //   }
+      // }
 
-      console.log("After conv " + convertedValue);
       // otherwise, set the value
       setSurvey((prev) =>
         prev
@@ -105,7 +127,7 @@ const SurveyIntegerInput = ({
             ...prev,
             data: {
               ...prev.data,
-              [questionID]: convertedValue,
+              [questionID]: value,
             },
           }
           : prev
@@ -120,11 +142,11 @@ const SurveyIntegerInput = ({
         type="text"
         inputMode="numeric"
         className="border-2 rounded-lg p-2"
-        // value={!isNaN(surveyData) ? surveyData : ""}
-        value={displayValue} // Use displayValue here
+        value={!isNaN(surveyData) ? surveyData : ""}
+        // value={displayValue} // Use displayValue here
         onChange={handleChange}
         ref={inputRef}
-        placeholder={input.placeholder || "Enter value"}
+        placeholder={placeholderText || "Enter value"}
       />
       <SurveyButton
         onClick={() => {
