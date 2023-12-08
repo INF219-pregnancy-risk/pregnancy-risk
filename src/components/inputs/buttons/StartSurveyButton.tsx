@@ -47,7 +47,6 @@ const StartSurveyButton = ({
     const storedSurvey = getSurveyUtil();
     if (pathname === "/survey") return;
     if (!storedSurvey.metadata.started) {
-      console.log("redirecting");
       onClick && onClick();
       router.push("/survey");
       return;

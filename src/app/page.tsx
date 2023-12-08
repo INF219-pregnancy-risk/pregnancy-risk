@@ -1,17 +1,8 @@
-'use client'
-import LinkButton from "@/components/inputs/buttons/LinkButton";
 import StartSurveyButton from "@/components/inputs/buttons/StartSurveyButton";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <>
       <div className="w-full min-h-screen-nav flex flex-col">
@@ -43,7 +34,7 @@ export default function Home() {
                 Instant assessment for a safer maternity.
               </p>
               <div className=" mt-4">
-                <StartSurveyButton onClick={toggleMenu} />
+                <StartSurveyButton />
               </div>
             </div>
 
@@ -103,8 +94,6 @@ export default function Home() {
               receive a comprehensive risk assessment for various health
               conditions and potential complications.
             </p>
-
-
           </div>
 
           <div
