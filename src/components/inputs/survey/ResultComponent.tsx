@@ -1,11 +1,12 @@
 "use client";
 
+import AccordationResult from "../info/AccordionResult";
+import Popover from "@/components/ui/popover";
 import { CID, Conditions, ResultType } from "@/types/Conditions";
+import { getRegularNameForId } from "@/types/RiskInput";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { default as ArrowUpIcon } from "@mui/icons-material/ArrowUpward";
 import { AnimatePresence, motion } from "framer-motion";
-import AccordationResult from "../info/AccordionResult";
-import { getRegularNameForId } from "@/types/RiskInput";
 import React from "react";
 
 interface ResultComponentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -22,52 +23,38 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
   const [hovering, setHovering] = React.useState(false);
 
   const calculationContent = Object.entries(value.increasedBy)
-  .map(([factor, amount]) => `${factor}: ${amount}`)
-  .join(' + ')
-  .trim();
+    .map(([factor, amount]) => `${factor}: ${amount}`)
+    .join(" + ")
+    .trim();
 
   const getRiskColorClass = (risk: number) => {
-    if (risk >= high) return 'text-red-900';
-    if (risk >= moderate) return 'text-destructive';
-    if (risk >= increased) return 'text-warning';
-    if (risk >= low) return 'text-success';
-    return 'text-primary';
+    if (risk >= high) return "text-red-900";
+    if (risk >= moderate) return "text-destructive";
+    if (risk >= increased) return "text-warning";
+    if (risk >= low) return "text-success";
+    return "text-primary";
   };
 
   return (
     <div className="relative w-full min-h-[150px] flex flex-col bg-primary/5 flex-1 rounded-md p-8">
       <h1 className="mb-8 text-xl font-bold">{condition.name}</h1>
       {value.missingFactors.length > 0 && (
-        <div
-          className="flex top-0 right-0 m-2 items-center justify-center absolute"
-          onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
-        >
-          <ExclamationTriangleIcon className="h-8 w-8 text-warning" />
-          <AnimatePresence>
-            {hovering && (
-              <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0 }}
-                className="overflow-hidden min-w-[150px] min-h-[75px] z-50 top-0 right-0 translate-y-full flex flex-col justify-center bg-popover rounded-md p-2 absolute"
-              >
-                <span className="text-sm font-bold mb-2 text-center">
-                  Missing Factors
-                </span>
-                <i className="text-[10px] mb-2 text-gray-400">
-                  The factors below are missing from your survey. They will
-                  affect your risk score.
-                </i>
-                {value.missingFactors.map((factor) => (
-                  <span className="text-xs mb-1 font-bold" key={factor}>
-                    {getRegularNameForId(factor)}
-                  </span>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <>
+          <Popover
+            button={
+              <ExclamationTriangleIcon className="h-8 w-8 text-warning" />
+            }
+            title="Missing Factors"
+            description="The factors below are missing from your survey. They will affect your risk score."
+            className="top-0 right-0 m-2 absolute"
+          >
+            {value.missingFactors.map((factor) => (
+              <span className="text-xs mb-1 font-bold" key={factor}>
+                {getRegularNameForId(factor)}
+              </span>
+            ))}
+          </Popover>
+        </>
       )}
       <div className="w-full flex rounded-full h-2 bg-gray-200 relative">
         <motion.div
@@ -150,7 +137,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
         <div className="text-sm text-gray-500">Risk Score</div>
       </div>
       <div className="flex flex-col items-center justify-center my-2">
-      <div className="grid grid-cols-1 items-center justify-center text-center w-full">
+        <div className="grid grid-cols-1 items-center justify-center text-center w-full">
           <AccordationResult
             header={"Description of " + condition.name}
             content={condition.description}
@@ -161,15 +148,20 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
             key="calculation-accordion"
             header="Calculation for this complication"
             content={
-              <span className={`text-md font-medium bg-primary-100 rounded-lg p-2 shadow`}>
+              <span
+                className={`text-md font-medium bg-primary-100 rounded-lg p-2 shadow`}
+              >
                 {calculationContent + " = "}
-                <span className={`text-lg font-semibold ${getRiskColorClass(value.risk)}`}>
+                <span
+                  className={`text-lg font-semibold ${getRiskColorClass(
+                    value.risk
+                  )}`}
+                >
                   {value.risk}
                 </span>
               </span>
             }
             className="my-4"
-
           />
         </div>
       </div>

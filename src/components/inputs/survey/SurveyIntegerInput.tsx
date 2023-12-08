@@ -1,16 +1,15 @@
+/**
+ * Renders an input component for survey questions that require integer values.
+ * @param {SurveyIntegerInputProps} props - The component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 import SurveyButton from "../buttons/SurveyButton";
 import { SurveyInputSlideProps } from "./SurveyParseInput";
 import { ID, RiskInputInteger, SurveyQuestions } from "@/types/RiskInput";
-import { Survey, SurveyInteger } from "@/types/Survey";
-import React, { useState, useRef, useEffect, LegacyRef, MutableRefObject } from "react";
-import { poundsToKilograms, feetToCentimeters } from '@/utils/Conversion';
+import { SurveyInteger } from "@/types/Survey";
+import React, { useState, useRef, useEffect } from "react";
 
-
-interface SurveyIntegerInputProps extends SurveyInputSlideProps { }
-
-
-
-
+interface SurveyIntegerInputProps extends SurveyInputSlideProps {}
 
 const SurveyIntegerInput = ({
   questionID,
@@ -23,7 +22,6 @@ const SurveyIntegerInput = ({
   const input = SurveyQuestions[questionID] as RiskInputInteger;
   const measurementSystem = survey?.data.MEASURING;
   const [placeholderText, setPlaceholderText] = useState(input.placeholder);
-
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,7 +43,7 @@ const SurveyIntegerInput = ({
     }
   }, []);
   useEffect(() => {
-    if (measurementSystem === 'IMPERIAL') {
+    if (measurementSystem === "IMPERIAL") {
       if (questionID === ID.WEIGHT) {
         setPlaceholderText("Enter in lbs");
       } else if (questionID === ID.HEIGHT) {
@@ -56,7 +54,6 @@ const SurveyIntegerInput = ({
       setPlaceholderText(input.placeholder);
     }
   }, [survey?.data.MEASURING, questionID, input.placeholder]);
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Update the display value directly with the user input
@@ -79,7 +76,6 @@ const SurveyIntegerInput = ({
           value = input.max;
         }
       }
-
 
       // if value is NaN, remove the question from the survey
       if (isNaN(value)) {
@@ -104,7 +100,6 @@ const SurveyIntegerInput = ({
       // const measurementSystem = survey?.data.MEASURING;
       // Use getPlaceholderText function inside the component
 
-
       // Check if the current question needs conversion
       // if (measurementSystem === 'IMPERIAL') {
       //   console.log(convertedValue);
@@ -124,15 +119,14 @@ const SurveyIntegerInput = ({
       setSurvey((prev) =>
         prev
           ? {
-            ...prev,
-            data: {
-              ...prev.data,
-              [questionID]: value,
-            },
-          }
+              ...prev,
+              data: {
+                ...prev.data,
+                [questionID]: value,
+              },
+            }
           : prev
       );
-
     }
   };
 
@@ -154,9 +148,9 @@ const SurveyIntegerInput = ({
             setSurvey((prev) =>
               prev
                 ? {
-                  ...prev,
-                  skipped: prev.skipped.filter((id) => id !== questionID),
-                }
+                    ...prev,
+                    skipped: prev.skipped.filter((id) => id !== questionID),
+                  }
                 : prev
             );
           }

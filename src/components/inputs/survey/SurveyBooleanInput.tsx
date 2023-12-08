@@ -1,7 +1,13 @@
+/**
+ * Renders a boolean input for a survey question.
+ *
+ * @component
+ * @param {SurveyBooleanInputProps} props - The component props.
+ * @returns {JSX.Element} - The rendered component.
+ */
 import SurveyButton from "../buttons/SurveyButton";
 import { SurveyInputSlideProps } from "./SurveyParseInput";
-import { ID } from "@/types/RiskInput";
-import { Survey, SurveyBoolean } from "@/types/Survey";
+import { SurveyBoolean } from "@/types/Survey";
 import React, { useEffect } from "react";
 
 interface SurveyBooleanInputProps extends SurveyInputSlideProps {}

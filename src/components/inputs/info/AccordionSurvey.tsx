@@ -1,8 +1,16 @@
+/**
+ * AccordionSurvey component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <AccordionSurvey why="This is important because..." className="my-accordion" />
+ * ```
+ */
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionProps,
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
