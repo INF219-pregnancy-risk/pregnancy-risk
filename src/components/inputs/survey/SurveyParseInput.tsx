@@ -1,13 +1,26 @@
+/**
+ * Renders a survey input slide component.
+ *
+ * @component
+ * @param {object} props - The component props.
+ * @param {string} props.questionID - The ID of the question.
+ * @param {function} props.setSurvey - The function to set the survey state.
+ * @param {object} props.survey - The survey state.
+ * @param {function} props.nextSlide - The function to navigate to the next slide.
+ * @param {function} props.setNextButton - The function to set the visibility of the next button.
+ * @returns {JSX.Element} The rendered SurveyParseInput component.
+ */
 "use client";
 
 import AccordionSurvey from "../info/AccordionSurvey";
-import InfoSurvey from "../info/InfoSurvey";
 import SurveyBooleanInput from "./SurveyBooleanInput";
 import SurveyChoiceInput from "./SurveyChoiceInput";
 import SurveyIntegerInput from "./SurveyIntegerInput";
 import SurveyMultipleInput from "./SurveyMultipleInput";
+import Popover from "@/components/ui/popover";
 import { TYPE, ID, SurveyQuestions, RiskType } from "@/types/RiskInput";
 import { Survey } from "@/types/Survey";
+import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import React from "react";
 
 export interface SurveyInputSlideProps {
@@ -30,10 +43,12 @@ const SurveyParseInput = ({ questionID, ...props }: SurveyInputSlideProps) => {
       <div className="w-full text-center self-end grid grid-cols-[auto_auto] items-center mt-8 gap-y-2 gap-x-4 justify-center">
         <h1 className="font-semibold text-xl md:text-2xl">{input.label}</h1>
         {input.info && (
-          <InfoSurvey
-            className="text-red-500 place-self-start"
-            content={input.info}
-          />
+          <Popover
+            button={<HelpOutlinedIcon className="text-muted-foreground" />}
+            className="place-self-center"
+          >
+            {input.info}
+          </Popover>
         )}
         <i className="text-base text-foreground flex row-start-2">
           {getInfo(questionID)}

@@ -1,3 +1,20 @@
+/**
+ * A button component that serves as a link.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * import LinkButton from "./LinkButton";
+ *
+ * const MyComponent = () => {
+ *   return (
+ *     <LinkButton href="/home" variant="primary">
+ *       Go to Home
+ *     </LinkButton>
+ *   );
+ * };
+ * ```
+ */
 "use client";
 
 import SurveyButton, { SurveyButtonProps } from "./SurveyButton";

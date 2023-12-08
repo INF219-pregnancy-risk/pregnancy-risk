@@ -1,3 +1,14 @@
+/**
+ * Renders a survey view component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <SurveyView surveyID={1} direction={1}>
+ *   // Survey content here
+ * </SurveyView>
+ * ```
+ */
 "use client";
 
 import { cn } from "@/lib/utils";

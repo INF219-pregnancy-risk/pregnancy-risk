@@ -1,27 +1,30 @@
+/**
+ * StartSurveyButton component.
+ *
+ * This component renders a button that starts a survey. It handles the logic for checking if a survey has already been started and provides options to continue or start over.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <StartSurveyButton onClick={handleStartSurvey} />
+ * ```
+ */
 "use client";
 
-import LinkButton, { LinkButtonProps } from "./LinkButton";
 import SurveyButton, { SurveyButtonProps } from "./SurveyButton";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Survey } from "@/types/Survey";
-import {
-  DefaultSurvey,
-  getSurveyUtil,
-  resetSurveyUtil,
-} from "@/utils/StoreSurvey";
-import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
-import { redirect, usePathname } from "next/navigation";
+import { getSurveyUtil, resetSurveyUtil } from "@/utils/StoreSurvey";
+import { ArrowForward } from "@mui/icons-material";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 
 //with children
 

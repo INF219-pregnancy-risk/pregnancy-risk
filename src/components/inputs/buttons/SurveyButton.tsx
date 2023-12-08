@@ -1,3 +1,16 @@
+/**
+ * SurveyButton component.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * import SurveyButton from "@/components/inputs/buttons/SurveyButton";
+ *
+ * const MyComponent = () => {
+ *   return <SurveyButton>Click me</SurveyButton>;
+ * };
+ * ```
+ */
 "use client";
 
 import { Button, ButtonProps } from "@/components/ui/button";

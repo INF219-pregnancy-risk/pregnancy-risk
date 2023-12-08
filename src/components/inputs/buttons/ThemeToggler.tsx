@@ -12,6 +12,9 @@ import { default as Sun } from "@mui/icons-material/LightModeOutlined";
 import { useTheme } from "next-themes";
 import * as React from "react";
 
+/**
+ * Component for toggling between light and dark themes.
+ */
 export function ModeToggle() {
   const { setTheme } = useTheme();
 

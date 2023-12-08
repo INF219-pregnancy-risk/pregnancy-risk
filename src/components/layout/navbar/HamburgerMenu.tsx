@@ -1,3 +1,14 @@
+/**
+ * HamburgerMenu component.
+ *
+ * @component
+ * @param {object} props - The component props.
+ * @param {boolean} props.isOpen - Indicates whether the menu is open or closed.
+ * @param {function} props.toggle - Function to toggle the menu.
+ * @param {string} [props.variant="ghost"] - The button variant.
+ * @param {string} [props.size="icon"] - The button size.
+ * @returns {JSX.Element} The rendered HamburgerMenu component.
+ */
 import { Button, ButtonProps } from "@/components/ui/button";
 
 // components/HamburgerMenu.tsx

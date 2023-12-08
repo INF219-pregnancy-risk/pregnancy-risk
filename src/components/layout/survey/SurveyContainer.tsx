@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
+/**
+ * Container component for survey layout.
+ */
 interface SurveyContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SurveyContainer = ({

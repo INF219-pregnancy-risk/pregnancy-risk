@@ -1,5 +1,5 @@
 import "./globals.css";
-import PageWarpper from "@/components/layout/PageWrapper";
+import PageWrapper from "@/components/layout/PageWrapper";
 import Navbar from "@/components/layout/navbar/Navbar";
 import { ThemeProvider } from "@/components/layout/providers/theme-provider";
 import { constructMetadata } from "@/utils/Metadata";
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <Navbar />
-          <PageWarpper>{children}</PageWarpper>
+          <PageWrapper>{children}</PageWrapper>
         </ThemeProvider>
       </body>
     </html>

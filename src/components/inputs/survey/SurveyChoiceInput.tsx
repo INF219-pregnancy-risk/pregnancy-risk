@@ -1,7 +1,14 @@
+/**
+ * Renders a survey choice input component.
+ *
+ * @component
+ * @param {SurveyInputSlideProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered SurveyChoiceInput component.
+ */
 import SurveyButton from "../buttons/SurveyButton";
 import { SurveyInputSlideProps } from "./SurveyParseInput";
-import { ID, RiskInputChoice, SurveyQuestions } from "@/types/RiskInput";
-import { Survey, SurveyChoice } from "@/types/Survey";
+import { RiskInputChoice, SurveyQuestions } from "@/types/RiskInput";
+import { SurveyChoice } from "@/types/Survey";
 import React, { useEffect } from "react";
 
 interface SurveyChoiceInputProps extends SurveyInputSlideProps {}
