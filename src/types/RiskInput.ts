@@ -21,6 +21,7 @@ export interface RiskInput {
 export interface RiskInputInteger extends RiskInput {
   min?: number;
   max?: number;
+  placeholder?: string;
 }
 // Multiple riskinput
 export interface RiskInputMultiple extends RiskInput {
@@ -31,7 +32,7 @@ export interface RiskInputChoice extends RiskInput {
   options: Record<string, string>;
 }
 // Boolean riskinput
-export interface RiskInputBoolean extends RiskInput {}
+export interface RiskInputBoolean extends RiskInput { }
 
 const ID_DECLARATION = {
   AGE: RiskType.INTEGER,
@@ -55,6 +56,7 @@ const ID_DECLARATION = {
   ECLAMPSIA: RiskType.BOOLEAN,
   INFERILITY_TREATMENT: RiskType.BOOLEAN,
   GONORHEA_SYPHILIS: RiskType.BOOLEAN,
+  MEASURING: RiskType.CHOICE,
 } as const;
 
 const ID_NAME_MAPPING = {
@@ -79,6 +81,7 @@ const ID_NAME_MAPPING = {
   ECLAMPSIA: "Eclampsia",
   INFERILITY_TREATMENT: "Infertility Treatment",
   GONORHEA_SYPHILIS: "Gonorrhea or Syphilis Infection",
+  MEASURING: "Measuring",
 };
 
 export function getRegularNameForId(id: keyof typeof ID_DECLARATION): string {
@@ -101,6 +104,16 @@ type SurveyQuestionsType = {
 };
 
 export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
+  [ID.MEASURING]: {
+    label: "Which measuring unit would you like to use?",
+    options: {
+      METRIC: "Metric",
+      IMPERIAL: "Imperial",
+    },
+    why: "Help the assessment make the correct calculations regarding to your preffered measuring unit.",
+    info: "The measuring unit you choose will determine how heights and weights are displayed. The metric system uses centimeters and kilograms, while the imperial system uses feet for height and pounds for weight.",
+  },
+
   [ID.GDM]: {
     label: "Do you have a history of GDM?",
     why: "History of GDM increases the risk of GDM in future pregnancies",
@@ -110,16 +123,19 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   [ID.AGE]: {
     label: "What is your age?",
     why: "The older you are, the higher the risk of complications",
-  
+    placeholder: "Enter your age",
+
   },
   [ID.WEIGHT]: {
     label: "What is your weight?",
     why: "The heavier you are, the higher the risk of complications",
+    placeholder: "Enter in kg",
 
   },
   [ID.HEIGHT]: {
     label: "What is your height?",
     why: "The shorter you are, the higher the risk of complications",
+    placeholder: "Enter in cm",
 
   },
   [ID.DIABETES]: {
@@ -137,7 +153,7 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
     },
     why: "Hypertension increases the risk of complications",
     info: "Hypertension is a condition in which the force of the blood against the artery walls is too high. Usually hypertension is defined as blood pressure above 140/90, and is considered severe if the pressure is above 180/120. High blood pressure often has no symptoms. Over time, if untreated, it can cause health conditions, such as heart disease and stroke.",
-  
+
   },
   [ID.ACTIVITY]: {
     label: "Select your activity level:",
@@ -151,7 +167,7 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   },
   [ID.ETNISITY]: {
     label: "Select your ethnicity:",
-    why : "The ethnicity may intefere with the risk of complications",
+    why: "The ethnicity may intefere with the risk of complications",
     options: {
       ASIAN: "Asian",
       BLACK: "Black",
@@ -165,24 +181,24 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
 
 export type BOOLEANS = {
   [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.BOOLEAN
-    ? key
-    : never;
+  ? key
+  : never;
 }[keyof typeof ID_DECLARATION];
 
 export type INTEGERS = {
   [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.INTEGER
-    ? key
-    : never;
+  ? key
+  : never;
 }[keyof typeof ID_DECLARATION];
 
 export type MULTIPLES = {
   [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.MULTIPLE
-    ? key
-    : never;
+  ? key
+  : never;
 }[keyof typeof ID_DECLARATION];
 
 export type CHOICES = {
   [key in keyof typeof ID_DECLARATION]: (typeof ID_DECLARATION)[key] extends RiskType.CHOICE
-    ? key
-    : never;
+  ? key
+  : never;
 }[keyof typeof ID_DECLARATION];

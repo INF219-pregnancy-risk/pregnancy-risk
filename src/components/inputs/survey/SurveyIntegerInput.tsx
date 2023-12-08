@@ -2,9 +2,15 @@ import SurveyButton from "../buttons/SurveyButton";
 import { SurveyInputSlideProps } from "./SurveyParseInput";
 import { ID, RiskInputInteger, SurveyQuestions } from "@/types/RiskInput";
 import { Survey, SurveyInteger } from "@/types/Survey";
-import React, { useRef, useEffect, LegacyRef, MutableRefObject } from "react";
+import React, { useState, useRef, useEffect, LegacyRef, MutableRefObject } from "react";
+import { poundsToKilograms, feetToCentimeters } from '@/utils/Conversion';
 
-interface SurveyIntegerInputProps extends SurveyInputSlideProps {}
+
+interface SurveyIntegerInputProps extends SurveyInputSlideProps { }
+
+
+
+
 
 const SurveyIntegerInput = ({
   questionID,
@@ -15,8 +21,15 @@ const SurveyIntegerInput = ({
 }: SurveyIntegerInputProps) => {
   const surveyData = survey?.data[questionID] as SurveyInteger;
   const input = SurveyQuestions[questionID] as RiskInputInteger;
+  const measurementSystem = survey?.data.MEASURING;
+  const [placeholderText, setPlaceholderText] = useState(input.placeholder);
+
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // New piece of state for the display value since it will change when imperial is selected
+  // const [displayValue, setDisplayValue] = useState('');
+
   // disable next button if input is NaN
   useEffect(() => {
     if (isNaN(surveyData) && !survey?.skipped.includes(questionID)) {
@@ -31,8 +44,24 @@ const SurveyIntegerInput = ({
       inputRef.current?.focus({ preventScroll: true });
     }
   }, []);
+  useEffect(() => {
+    if (measurementSystem === 'IMPERIAL') {
+      if (questionID === ID.WEIGHT) {
+        setPlaceholderText("Enter in lbs");
+      } else if (questionID === ID.HEIGHT) {
+        setPlaceholderText("Enter in feet and inches");
+      }
+    } else {
+      // Set to default placeholder when not imperial
+      setPlaceholderText(input.placeholder);
+    }
+  }, [survey?.data.MEASURING, questionID, input.placeholder]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Update the display value directly with the user input
+    // setDisplayValue(e.target.value);
+
     // only allow numbers
     const re = /^[0-9\b]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {
@@ -51,6 +80,7 @@ const SurveyIntegerInput = ({
         }
       }
 
+
       // if value is NaN, remove the question from the survey
       if (isNaN(value)) {
         setSurvey((prev) => {
@@ -68,18 +98,41 @@ const SurveyIntegerInput = ({
         });
         return;
       }
+
+      // Add conversion logic before setting the survey data
+      // let convertedValue = value;
+      // const measurementSystem = survey?.data.MEASURING;
+      // Use getPlaceholderText function inside the component
+
+
+      // Check if the current question needs conversion
+      // if (measurementSystem === 'IMPERIAL') {
+      //   console.log(convertedValue);
+      //   if (questionID === ID.WEIGHT) {
+      //     convertedValue = poundsToKilograms(value);
+      //     placeholderText = "Enter in lbs";
+      //     console.log(placeholderText);
+      //     console.log(value + " lbs to kg: " + convertedValue);
+      //   } else if (questionID === ID.HEIGHT) {
+      //     // Note: Feet and inches should have seperate inputs and this is not done so skip
+      //     // question for now while testing
+      //     convertedValue = feetToCentimeters(value);
+      //   }
+      // }
+
       // otherwise, set the value
       setSurvey((prev) =>
         prev
           ? {
-              ...prev,
-              data: {
-                ...prev.data,
-                [questionID]: value,
-              },
-            }
+            ...prev,
+            data: {
+              ...prev.data,
+              [questionID]: value,
+            },
+          }
           : prev
       );
+
     }
   };
 
@@ -90,8 +143,10 @@ const SurveyIntegerInput = ({
         inputMode="numeric"
         className="border-2 rounded-lg p-2"
         value={!isNaN(surveyData) ? surveyData : ""}
+        // value={displayValue} // Use displayValue here
         onChange={handleChange}
         ref={inputRef}
+        placeholder={placeholderText || "Enter value"}
       />
       <SurveyButton
         onClick={() => {
@@ -99,9 +154,9 @@ const SurveyIntegerInput = ({
             setSurvey((prev) =>
               prev
                 ? {
-                    ...prev,
-                    skipped: prev.skipped.filter((id) => id !== questionID),
-                  }
+                  ...prev,
+                  skipped: prev.skipped.filter((id) => id !== questionID),
+                }
                 : prev
             );
           }

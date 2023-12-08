@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 
@@ -9,7 +9,6 @@ function ReportProblem() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Logic to send the feedback, for example, to an API endpoint
-    console.log("Feedback submitted:", feedback);
     setSubmitted(true);
   };
 
@@ -23,7 +22,10 @@ function ReportProblem() {
           <p>Thank you for your feedback!</p>
         ) : (
           <form onSubmit={handleSubmit}>
-            <label htmlFor="feedback" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="feedback"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Your Feedback:
             </label>
             <textarea
@@ -34,7 +36,7 @@ function ReportProblem() {
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
             ></textarea>
-            
+
             <button
               disabled={isSubmitDisabled}
               type="submit"

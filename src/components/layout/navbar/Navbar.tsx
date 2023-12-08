@@ -5,7 +5,6 @@ import HamburgerMenu from "./HamburgerMenu";
 import LinkButton from "@/components/inputs/buttons/LinkButton";
 import StartSurveyButton from "@/components/inputs/buttons/StartSurveyButton";
 import { ModeToggle } from "@/components/inputs/buttons/ThemeToggler";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useEffect, useState } from "react";
 
 const navItems = [
