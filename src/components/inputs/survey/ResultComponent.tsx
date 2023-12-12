@@ -46,7 +46,7 @@ const ResultComponent = ({ id, value }: ResultComponentProps) => {
             }
             title="Missing Factors"
             description="The factors below are missing from your survey. They will affect your risk score."
-            className="top-0 right-0 m-2 absolute"
+            className="top-2 right-2 m-2 absolute"
           >
             {value.missingFactors.map((factor) => (
               <span className="text-xs mb-1 font-bold" key={factor}>
