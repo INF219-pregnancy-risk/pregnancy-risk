@@ -41,8 +41,8 @@ export default function Home() {
             {/* Image Section */}
             <div className="flex relative h-auto w-[400px] max-w-full aspect-square md:h-auto">
               <Image
-                // src='/pregnant.svg'
-                src="/gptpregnant.png"
+                src="/pregnant.svg"
+                //src="/gptpregnant.png"
                 alt="product preview"
                 // objectFit="contain"
                 quality={100}

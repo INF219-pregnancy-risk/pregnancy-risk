@@ -1,6 +1,6 @@
 import LinkButton from "@/components/inputs/buttons/LinkButton";
-import React from "react";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import React from "react";
 
 const AboutPage = () => {
   return (
@@ -40,12 +40,12 @@ const AboutPage = () => {
         For any questions or feedback, please contact us at:
         <div className="mt-1">
           <LinkButton
-            href="#mailto:xxx@xxx"
+            href="mailto:Anagha.Joshi@uib.no"
             variant={"link"}
             size={"min"}
             icon={<EmailOutlinedIcon />}
           >
-            Choose a mail to enter here
+            Anagha.Joshi@uib.no
           </LinkButton>
         </div>
       </p>
