@@ -27,6 +27,17 @@ const ResultsPage = () => {
 
   return (
     <div className="grid-layout gap-4">
+      <div className="mt-6 flex flex-col">
+        <h1 className="text-3xl font-bold">Results</h1>
+        <p className="text-muted-foreground">
+          Here are your results from the survey
+        </p>
+        <p className="mt-2">
+          <span className="font-bold">Note:</span> This is not a medical
+          diagnosis, it is only a risk assessment. Please consult a doctor for a
+          medical diagnosis.
+        </p>
+      </div>
       <div className="w-full gap-6 flex flex-col h-max min-h-screen-nav relative items-center justify-center">
         <AnimatePresence mode="wait" initial={false}>
           {!loading ? (
