@@ -10,6 +10,7 @@ import { Survey, SurveyEntries } from "@/types/Survey";
 import {
   getSurveyIndexUtil,
   getSurveyUtil,
+  resetSurveyUtil,
   setSurveyIndexUtil,
   setSurveyUtil,
 } from "@/utils/StoreSurvey";
@@ -152,7 +153,7 @@ const SurveyPage = () => {
         <div className="flex flex-1 items-center justify-center dark:bg-secondary/5 bg-primary/5">
           <div className="flex h-10 w-10 aspect-square border-4 rounded-full border-t-primary animate-spin" />
         </div>
-      ) : (
+      ) : survey.metadata.disclamer ? (
         <>
           <div className="grid-layout text-muted-foreground bg-muted dark:bg-primary/40 py-8 gap-4">
             <h2 className="text-center text-sm">
@@ -209,6 +210,42 @@ const SurveyPage = () => {
             </SurveyView>
           </div>
         </>
+      ) : (
+        <div className="h-min flex flex-col justify-center flex-1 items-center gap-4 md:gap-8 py-8">
+          <h1 className="text-2xl font-bold">Disclamer</h1>
+          <p>
+            This is not a medical diagnosis, it is only a risk assessment.
+            Please consult a doctor for a medical diagnosis.
+          </p>
+          <div className="flex gap-2">
+            <SurveyButton
+              variant={"secondary"}
+              onClick={() => {
+                resetSurveyUtil();
+                router.push("/");
+              }}
+            >
+              Go back
+            </SurveyButton>
+            <SurveyButton
+              variant={"default"}
+              onClick={() => {
+                setSurvey((prev) => {
+                  if (!prev) return prev;
+                  return {
+                    ...prev,
+                    metadata: {
+                      ...prev.metadata,
+                      disclamer: true,
+                    },
+                  };
+                });
+              }}
+            >
+              I understand
+            </SurveyButton>
+          </div>
+        </div>
       )}
       <div className="h-min flex justify-center items-center gap-4 md:gap-8 py-8">
         <SurveyButton
@@ -221,7 +258,7 @@ const SurveyPage = () => {
           <span className="min-w-[45px] flex justify-center">BACK</span>
         </SurveyButton>
         <SurveyButton
-          disabled={isLoading}
+          disabled={isLoading || !survey?.metadata.disclamer}
           variant={"secondary"}
           size={"lg"}
           onClick={() => {

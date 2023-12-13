@@ -17,6 +17,7 @@ export const DefaultMetadata: Survey["metadata"] = {
   id: uuid(),
   finished: false,
   started: false,
+  disclamer: false,
 };
 
 export const DefaultSurvey: Survey = {
