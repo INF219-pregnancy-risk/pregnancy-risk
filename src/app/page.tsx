@@ -5,6 +5,10 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
+      <div className="w-full flex flex-col items-center bg-destructive col-span-full fixed z-50 opacity-90 p-2 hover:opacity-100 transition text-destructive-foreground">
+        <h2 className="text-sm">This page is under construction</h2>
+        <p className="text-xs">Please contact us if any bugs are found</p>
+      </div>
       <div className="w-full min-h-screen-nav flex flex-col">
         <div className="relative isolate">
           <div
