@@ -97,7 +97,7 @@ const GDM: Factors = {
     {
       multiplier: 2,
       condition: (value) =>
-        Object.entries(value).filter(([key, value]) => value).length > 2,
+        Object.entries(value).filter(([key, value]) => value).length < 2,
     },
   ],
   [ID.POS]: [

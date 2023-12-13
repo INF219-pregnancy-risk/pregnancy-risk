@@ -152,9 +152,9 @@ export const SurveyQuestions: Readonly<SurveyQuestionsType> = {
   [ID.ACTIVITY]: {
     label: "Select your activity level:",
     values: {
-      LOW: "Low",
-      MEDIUM: "Medium",
-      HIGH: "High",
+      WALKING: "Daily walking 30min",
+      PHYSICAL: "Vigorous physical activity",
+      STAIRS: "Daily stair climbing 10 stairs",
     },
     why: "Low activity level increases the risk of complications",
     info: "Physical activity is defined as any bodily movement produced by skeletal muscles that requires energy expenditure. Physical inactivity has been identified as the fourth leading risk factor for global mortality causing an estimated 3.2 million deaths globally.",
