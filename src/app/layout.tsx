@@ -24,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Navbar />
 
           <PageWrapper>
-            <div className="w-full flex flex-col items-center bg-destructive col-span-full fixed z-50 opacity-90 p-2 hover:opacity-100 transition">
+            <div className="w-full flex flex-col items-center bg-destructive col-span-full fixed z-50 opacity-90 p-2 hover:opacity-100 transition text-destructive-foreground">
               <h2 className="text-sm">This page is under construction</h2>
               <p className="text-xs">Please contact us if any bugs are found</p>
             </div>
